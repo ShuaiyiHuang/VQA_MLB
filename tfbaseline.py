@@ -32,9 +32,9 @@ y=tf.placeholder(tf.int64,(None))
 
 # shapes_data =pickle.load(open(dataroot))
 # train,val,test=tfloader.load_shapes(data_root)
-train_prefix='shapes/train.large'
-val_prefix='shapes/val'
-test_prefix='shapes/test'
+train_prefix='../data/shapes/train.large'
+val_prefix='../data/shapes/val'
+test_prefix='../data/shapes/test'
 shapes_data=tfloader.get_dataset(train_prefix,val_prefix,test_prefix,max_document_length=tfargs.max_doc_length)
 
 X_train,y_train,q_train,ques_train= shapes_data.train.images, shapes_data.train.labels, shapes_data.train.queries, shapes_data.train.ques

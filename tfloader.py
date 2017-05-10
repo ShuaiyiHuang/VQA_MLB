@@ -1,13 +1,11 @@
 import numpy as np
 import sexpdata
 import tensorflow as tf
-from tensorflow.contrib import learn
 import tfargs
 import tfembedding
 import pickle
 
 
-global Pretrain
 
 def extract_query(sexp):
   if isinstance(sexp, sexpdata.Symbol):
@@ -64,7 +62,7 @@ class Dataset():
     #     print 'Dataset with train_data only loaded successfully!'
 
 
-def get_dataset(data_prefix_train='shapes/train.tiny',data_prefix_val='shapes/val',data_prefix_test='shapes/test',max_document_length=7):
+def get_dataset(data_prefix_train='../data/shapes/train.tiny',data_prefix_val='../data/shapes/val',data_prefix_test='../data/shapes/test',max_document_length=7):
     train_data=[]
     val_data=[]
     test_data=[]
@@ -101,7 +99,7 @@ def prepare_embedding(max_document_length=10):
     tfembedding.embedding_prepare(max_document_length)
 
 
-def input_pipeline(data_prefix='shapes/train.tiny',max_doc_length=10,use_glove=False):
+def input_pipeline(data_prefix='../data/shapes/train.tiny',max_doc_length=10,use_glove=False):
 
     queries_list=[]
     labels_list=[]
@@ -190,10 +188,10 @@ if __name__=="__main__":
     #
     # ques=tf.placeholder(tf.int32)
 
-    datapath='./noglovedata/shapes.small.pkl'
-    dataset=pickle.load(open(datapath))
-    print dataset.train
-    # ques_train=dataset.train.ques
-    # print ques_train
-    # generate_all_dataset()
+
     print ''
+
+#pickle problem
+    # datapath='./noglovedata/shapes.small.pkl'
+    # dataset=pickle.load(open(datapath))
+    # print dataset.train

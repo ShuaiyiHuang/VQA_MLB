@@ -5,7 +5,7 @@ import tfloader
 import tfargs
 
 
-def loadGloVe(filename='glove.6B/glove.6B.50d.txt'):
+def loadGloVe(filename='../data/glove.6B/glove.6B.50d.txt'):
     vocab = []
     embd = []
     file = open(filename,'r')
@@ -62,6 +62,66 @@ def embedding_prepare(max_document_length=10,use_glove=True,trainable=False):
 
     return
 
+def embedding_prepare2(max_document_length=10,use_glove=True,trainable=False):
+    print 'use_glove:',use_glove
+    if use_glove:
+        vocab,embd=loadGloVe()
+        vocab_size = len(vocab)
+        embedding_dim = len(embd[0])
+        print 'vocab_size:',vocab_size
+        print 'embd size:',len(embd)
+        for i in range(220):
+            print i,':',vocab[i]
+        tfargs.embedded_dim=embedding_dim
+        tfargs.vocab_size=vocab_size
+
+        embedding_matrix = np.asarray(embd)
+        tfargs.Embedding_tensor = tf.Variable(tf.constant(0.1, shape=[vocab_size, embedding_dim]),
+                                          trainable=trainable, name="W")
+        tfargs.Embedding_tensor=tfargs.Embedding_tensor.assign(embedding_matrix)
+        vocab_processor = learn.preprocessing.VocabularyProcessor(max_document_length)
+        tfargs.Pretrain= vocab_processor.fit(vocab)
+    else:
+        tfargs.Embedding_tensor = tf.Variable(tf.random_normal(shape=[tfargs.vocab_size, tfargs.embedded_dim]),trainable=True, name="W")
+        print 'Not use glove,embdtensor is :',tfargs.Embedding_tensor
+
+    return
+
+def embedding_prepare3(max_document_length=10,use_glove=True,trainable=False):
+    print 'use_glove:',use_glove
+    if use_glove:
+        vocab,embd=loadGloVe()
+
+
+        vocab_trim = []
+        for item in vocab:
+            if item not in vocab_trim:
+                vocab_trim.append(item)
+        # print len(vocab_trim)
+        # embd_trim=list(set(embd))
+        print 'vocab_trim:',len(vocab_trim)
+        # print 'emdb_trim',len(embd_trim)
+        vocab_size = len(vocab)
+        embedding_dim = len(embd[0])
+        print 'vocab_size:',vocab_size
+        print 'embd size:',len(embd)
+        for i in range(220):
+            print i,':',vocab[i]
+        tfargs.embedded_dim=embedding_dim
+        tfargs.vocab_size=vocab_size
+
+        embedding_matrix = np.asarray(embd)
+        tfargs.Embedding_tensor = tf.Variable(tf.constant(0.1, shape=[vocab_size, embedding_dim]),
+                                          trainable=trainable, name="W")
+        tfargs.Embedding_tensor=tfargs.Embedding_tensor.assign(embedding_matrix)
+        vocab_processor = learn.preprocessing.VocabularyProcessor(max_document_length)
+        tfargs.Pretrain= vocab_processor.fit(vocab)
+    else:
+        tfargs.Embedding_tensor = tf.Variable(tf.random_normal(shape=[tfargs.vocab_size, tfargs.embedded_dim]),trainable=True, name="W")
+        print 'Not use glove,embdtensor is :',tfargs.Embedding_tensor
+
+    return
+
 def get_wordids(x_text):
     word_ids=np.array(list(tfargs.Pretrain.transform(x_text)))
     return word_ids
@@ -94,9 +154,9 @@ def LSTM_net(x,lstm_size=84,num_steps=5,batch_size=2):
     return outputs
 
 if __name__=="__main__":
-    train_prefix = 'shapes/train.tiny'
-    val_prefix = 'shapes/val'
-    test_prefix = 'shapes/test'
+    train_prefix = '../data/shapes/train.tiny'
+    val_prefix = '../data/shapes/val'
+    test_prefix = '../data/shapes/test'
     shapes_data = tfloader.get_dataset(train_prefix, val_prefix, test_prefix)
     X_train, y_train, q_train = shapes_data.train.images, shapes_data.train.labels, shapes_data.train.queries
     # text = [['is green right of red'], ['is red left of green']]
@@ -122,8 +182,8 @@ if __name__=="__main__":
     test2=q_train[:2]
     print test2
     with tf.Session() as sess:
-        embedded_chars=get_embedded_chars(test2)
-        print 'get', embedded_chars,sess.run(embedded_chars)
+        sess.run(tf.global_variables_initializer())
+
 
 
 
