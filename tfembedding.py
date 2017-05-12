@@ -41,27 +41,7 @@ def embedding(x_text,max_document_length=20):
     # print sess.run(embedded_chars.dtype)
     return embedded_chars
 
-def embedding_prepare(max_document_length=10,use_glove=True,trainable=False):
-    print 'use_glove:',use_glove
-    if use_glove:
-        vocab,embd=loadGloVe()
-        vocab_size = len(vocab)
-        embedding_dim = len(embd[0])
-        tfargs.embedded_dim=embedding_dim
-        tfargs.vocab_size=vocab_size
-
-        embedding_matrix = np.asarray(embd)
-        tfargs.Embedding_tensor = tf.Variable(tf.constant(0.1, shape=[vocab_size, embedding_dim]),
-                                          trainable=trainable, name="W")
-        tfargs.Embedding_tensor=tfargs.Embedding_tensor.assign(embedding_matrix)
-        vocab_processor = learn.preprocessing.VocabularyProcessor(max_document_length)
-        tfargs.Pretrain= vocab_processor.fit(vocab)
-    else:
-        tfargs.Embedding_tensor = tf.Variable(tf.random_normal(shape=[tfargs.vocab_size, tfargs.embedded_dim]),trainable=True, name="W")
-        print 'Not use glove,embdtensor is :',tfargs.Embedding_tensor
-
-    return
-
+#for tftestglove.py word_id not match
 def embedding_prepare2(max_document_length=10,use_glove=True,trainable=False):
     print 'use_glove:',use_glove
     if use_glove:
@@ -87,26 +67,13 @@ def embedding_prepare2(max_document_length=10,use_glove=True,trainable=False):
 
     return
 
-def embedding_prepare3(max_document_length=10,use_glove=True,trainable=False):
+def embedding_prepare(max_document_length=10,use_glove=True,trainable=False):
     print 'use_glove:',use_glove
     if use_glove:
         vocab,embd=loadGloVe()
-
-
-        vocab_trim = []
-        for item in vocab:
-            if item not in vocab_trim:
-                vocab_trim.append(item)
-        # print len(vocab_trim)
-        # embd_trim=list(set(embd))
-        print 'vocab_trim:',len(vocab_trim)
-        # print 'emdb_trim',len(embd_trim)
         vocab_size = len(vocab)
         embedding_dim = len(embd[0])
-        print 'vocab_size:',vocab_size
-        print 'embd size:',len(embd)
-        for i in range(220):
-            print i,':',vocab[i]
+
         tfargs.embedded_dim=embedding_dim
         tfargs.vocab_size=vocab_size
 
@@ -115,7 +82,7 @@ def embedding_prepare3(max_document_length=10,use_glove=True,trainable=False):
                                           trainable=trainable, name="W")
         tfargs.Embedding_tensor=tfargs.Embedding_tensor.assign(embedding_matrix)
         vocab_processor = learn.preprocessing.VocabularyProcessor(max_document_length)
-        tfargs.Pretrain= vocab_processor.fit(vocab)
+        tfargs.Pretrain= vocab_processor.fit_vocab(vocab)
     else:
         tfargs.Embedding_tensor = tf.Variable(tf.random_normal(shape=[tfargs.vocab_size, tfargs.embedded_dim]),trainable=True, name="W")
         print 'Not use glove,embdtensor is :',tfargs.Embedding_tensor

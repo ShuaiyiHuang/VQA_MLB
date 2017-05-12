@@ -9,16 +9,16 @@ import tflenet
 
 tfargs.definition()
 tfargs.embedded_dim=50
-tfargs.use_glove=False
+tfargs.use_glove=True
 tfargs.is_embd_matrix_trainable=True
-tfargs.max_doc_length=10
+tfargs.max_doc_length=6
 tfargs.batch_size=16
 tfargs.hidden_size=84
 tfargs.epochs=100
 tfargs.rate=0.001
 tfargs.n_classess=2
 tfargs.vocab_size=14
-dataroot='./noglovedata/shapes.large.pkl'
+
 dim=3
 img_dim=84
 pool_method=0
@@ -32,10 +32,13 @@ y=tf.placeholder(tf.int64,(None))
 
 # shapes_data =pickle.load(open(dataroot))
 # train,val,test=tfloader.load_shapes(data_root)
-train_prefix='../data/shapes/train.large'
+train_prefix='../data/shapes/train.tiny'
 val_prefix='../data/shapes/val'
 test_prefix='../data/shapes/test'
-shapes_data=tfloader.get_dataset(train_prefix,val_prefix,test_prefix,max_document_length=tfargs.max_doc_length)
+
+tfembedding.embedding_prepare(tfargs.max_doc_length,tfargs.use_glove,tfargs.is_emdb_matrix_trainable)
+
+shapes_data=tfloader.get_dataset(train_prefix,val_prefix,test_prefix,max_document_length=tfargs.max_doc_length,use_glove=tfargs.use_glove)
 
 X_train,y_train,q_train,ques_train= shapes_data.train.images, shapes_data.train.labels, shapes_data.train.queries, shapes_data.train.ques
 X_validation,y_validation,q_validation,ques_validation= shapes_data.val.images, shapes_data.val.labels, shapes_data.val.queries, shapes_data.val.ques
@@ -47,7 +50,7 @@ X_validation=tflenet.padding(X_validation,input_size)
 X_test=tflenet.padding(X_test,input_size)
 
 #LSTM
-tfembedding.embedding_prepare(tfargs.max_doc_length,tfargs.use_glove,tfargs.is_emdb_matrix_trainable)
+
 
 embedded_chars=tfembedding.get_embedded_from_wordid(ques)
 lstm = tf.contrib.rnn.BasicLSTMCell(tfargs.hidden_size, state_is_tuple=False)

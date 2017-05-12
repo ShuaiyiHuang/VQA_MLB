@@ -62,17 +62,17 @@ class Dataset():
     #     print 'Dataset with train_data only loaded successfully!'
 
 
-def get_dataset(data_prefix_train='../data/shapes/train.tiny',data_prefix_val='../data/shapes/val',data_prefix_test='../data/shapes/test',max_document_length=7):
+def get_dataset(data_prefix_train='../data/shapes/train.tiny',data_prefix_val='../data/shapes/val',data_prefix_test='../data/shapes/test',max_document_length=7,use_glove=True):
     train_data=[]
     val_data=[]
     test_data=[]
     # prepare_embedding(max_document_length)
     if data_prefix_train != '':
-        train_data=input_pipeline(data_prefix_train)
+        train_data=input_pipeline(data_prefix_train,use_glove=use_glove)
     if data_prefix_val!='':
-        val_data=input_pipeline(data_prefix_val)
+        val_data=input_pipeline(data_prefix_val,use_glove=use_glove)
     if data_prefix_test!='':
-        test_data=input_pipeline(data_prefix_test)
+        test_data=input_pipeline(data_prefix_test,use_glove=use_glove)
     return Dataset(train_data,val_data,test_data)
 
 shapes_words = ['NULL', 'red', 'green', 'blue', 'circle', 'square', 'triangle', \
@@ -148,7 +148,7 @@ def input_pipeline(data_prefix='../data/shapes/train.tiny',max_doc_length=10,use
     labels_arr=np.array(labels_list)
     queries_arr=np.array(queries_list)
     if use_glove:
-        ques_arr=np.array(list(tfargs.Pretrain.transform(queries_arr)))
+        ques_arr=np.array(list(tfargs.Pretrain.transform_vocab(queries_arr)))
     else:
         ques_arr=np.array(ques_list)
 
