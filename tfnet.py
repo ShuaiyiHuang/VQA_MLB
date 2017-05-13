@@ -10,7 +10,7 @@ dim=3
 rate = 0.001
 input_size=30
 output=10
-hidden_size=84
+q_dim=84
 max_document_length=20
 #After q*i
 hidden1_units=200
@@ -40,8 +40,8 @@ y = tf.placeholder(tf.int64, (None))
 
 # print batch_q.shape
 cnn_features=tflenet.LeNet_4(x,dim,output)
-lstm_features=tfLSTM.LSTMNet(batch_q,batch_size,hidden_size, max_document_length)
-cnn_feature_reshape=tf.reshape(cnn_features,shape=[batch_size,1,hidden_size])
+lstm_features=tfLSTM.LSTMNet(batch_q, batch_size, q_dim, max_document_length)
+cnn_feature_reshape=tf.reshape(cnn_features, shape=[batch_size, 1, q_dim])
 # sess=tf.Session()
 # sess.run(tf.global_variables_initializer())
 # print cnn_features,sess.run(cnn_features, feed_dict={x:batch_x, y: batch_y})
@@ -52,11 +52,11 @@ cnn_feature_reshape=tf.reshape(cnn_features,shape=[batch_size,1,hidden_size])
 #
 img_feature_updated=tf.multiply(cnn_feature_reshape,lstm_features)
 
-img_feature_updated2=tf.reshape(img_feature_updated,shape=[batch_size,hidden_size])
+img_feature_updated2=tf.reshape(img_feature_updated, shape=[batch_size, q_dim])
 print 'img_feature_updated2 shape:',img_feature_updated2.shape
 weights = tf.Variable(
-    tf.truncated_normal([hidden_size, hidden1_units],
-                        stddev=1.0 / np.sqrt(float(hidden_size))),
+    tf.truncated_normal([q_dim, hidden1_units],
+                        stddev=1.0 / np.sqrt(float(q_dim))),
     name='weights')
 print 'weights shape:',weights
 biases = tf.Variable(tf.zeros([hidden1_units]),
@@ -69,7 +69,7 @@ print 'hidden1 shape:',hidden1
 #output
 weights_o = tf.Variable(
     tf.truncated_normal([hidden1_units, output_dim],
-                        stddev=1.0 / np.sqrt(float(hidden_size))))
+                        stddev=1.0 / np.sqrt(float(q_dim))))
 biases_o = tf.Variable(tf.zeros([output_dim]))
 
 logits = tf.matmul(hidden1, weights_o) + biases_o

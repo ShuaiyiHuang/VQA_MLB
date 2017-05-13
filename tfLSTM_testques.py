@@ -15,7 +15,7 @@ shapes_data=tfloader.get_dataset(train_prefix,val_prefix,test_prefix,max_documen
 # imdb_data=tfimdbloader.load_imdb(max_length=tfargs.max_doc_length)
 
 batch_size=64
-hidden_size=128
+q_dim=128
 n_classes=2
 rate=0.001
 Epochs=20
@@ -34,7 +34,7 @@ ques=tf.placeholder(tf.int32)
 raw_embedded_chars=tfembedding.get_embedded_from_wordid(ques)
 embedded_chars=tf.reshape(raw_embedded_chars,shape=[batch_size,max_document_length,embedded_dim])
 # embedded_chars = np.float32(np.random.rand(batch_size, max_document_length, embedded_dim))
-lstm = tf.contrib.rnn.BasicLSTMCell(hidden_size, state_is_tuple=False)
+lstm = tf.contrib.rnn.BasicLSTMCell(q_dim, state_is_tuple=False)
 initial_state = lstm.zero_state(batch_size, dtype=tf.float32)
 outputs, final_state = tf.nn.dynamic_rnn(lstm, embedded_chars, sequence_length=None, initial_state=initial_state, dtype=None,time_major=False)
 q_features=outputs[:,max_document_length-1,:]
@@ -52,7 +52,7 @@ def FullyConnected(input,hidden_size,n_classes):
     logits=tf.matmul(input,W)+b
     return logits
 
-logits=FullyConnected(q_features,hidden_size,n_classes)
+logits=FullyConnected(q_features, q_dim, n_classes)
 cross_entropy=tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y,logits=logits)
 loss_operation = tf.reduce_mean(cross_entropy)
 optimizer = tf.train.AdamOptimizer(learning_rate = rate)

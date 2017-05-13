@@ -6,14 +6,15 @@ import numpy as np
 import tfloader
 import pickle
 import tflenet
+import testMLB
 
 tfargs.definition()
 tfargs.embedded_dim=128
-tfargs.use_glove=False
-tfargs.is_embd_matrix_trainable=True
+tfargs.use_glove=True
+tfargs.is_embd_matrix_trainable=False
 tfargs.max_doc_length=7
 tfargs.batch_size=128
-tfargs.q_dim=84
+tfargs.q_dim=64
 tfargs.epochs=200
 tfargs.rate=0.001
 tfargs.n_classess=2
@@ -21,8 +22,16 @@ tfargs.n_classess=2
 
 dim=3
 img_dim=84
-pool_method=0
+use_mlb=1
 input_size=30
+#para for MLB
+#grid size s*s
+s=5
+#feature vector length
+M=16
+#number of glimpse
+G=2
+d=128
 
 x = tf.placeholder(tf.float32, (None, 32, 32, dim))
 ques=tf.placeholder(tf.int32)
@@ -32,17 +41,17 @@ y=tf.placeholder(tf.int64,(None))
 
 # shapes_data =pickle.load(open(dataroot))
 # train,val,test=tfloader.load_shapes(data_root)
-# train_prefix='../data/shapes/train.tiny'
-# val_prefix='../data/shapes/val'
-# test_prefix='../data/shapes/test'
+train_prefix='../data/shapes/train.large'
+val_prefix='../data/shapes/val'
+test_prefix='../data/shapes/test'
 
 # train_prefix='../data/shapes_control-2x/train.large'
 # val_prefix='../data/shapes_control-2x/val'
 # test_prefix='../data/shapes_control-2x/test'
 
-train_prefix='../data/shapes_control-3x/train.large'
-val_prefix='../data/shapes_control-3x/val'
-test_prefix='../data/shapes_control-3x/test'
+# train_prefix='../data/shapes_control-3x/train.large'
+# val_prefix='../data/shapes_control-3x/val'
+# test_prefix='../data/shapes_control-3x/test'
 
 tfembedding.embedding_prepare(tfargs.max_doc_length,tfargs.use_glove,tfargs.is_emdb_matrix_trainable)
 
@@ -66,10 +75,14 @@ initial_state = lstm.zero_state(tfargs.batch_size, dtype=tf.float32)
 outputs, final_state = tf.nn.dynamic_rnn(lstm, embedded_chars, sequence_length=None, initial_state=initial_state, dtype=None,time_major=False)
 q_features=outputs[:,tfargs.max_doc_length-1,:]
 #****CNN***
-img_features=tflenet.LeNet_4(x,dim,img_dim)
+img_features=tflenet.LeNet_4(x,use_mlb=use_mlb,dim=dim,img_dim=img_dim,)
+print 'img_features in main:',img_features
 #Combine
-mixed_features=tfnetwork.Combine(img_features,q_features,pool_method)
-logits=tfnetwork.Routine(mixed_features, tfargs.n_classes, tfargs.q_dim)
+if use_mlb==0:
+    mixed_features=tfnetwork.Combine(img_features, q_features, use_mlb)
+    logits=tfnetwork.Routine(mixed_features, tfargs.n_classes, tfargs.q_dim)
+if use_mlb==1:
+    logits = testMLB.MLB_predict(img_features, q_features, s, tfargs.q_dim, M, d, G, tfargs.batch_size, tfargs.n_classes)
 
 # logits=tfnetwork.FullyConnected(q_features,tfargs.hidden_size,tfargs.n_classes)
 cross_entropy=tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y,logits=logits)

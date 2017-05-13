@@ -12,7 +12,7 @@ tfargs.use_glove=False
 tfargs.is_embd_matrix_trainable=True
 tfargs.max_doc_length=10
 tfargs.batch_size=64
-tfargs.hidden_size=128
+tfargs.q_dim=128
 tfargs.epochs=200
 tfargs.rate=0.001
 tfargs.n_classess=2
@@ -35,14 +35,14 @@ X_test,y_test,q_test,ques_test= shapes_data.test.images, shapes_data.test.labels
 tfembedding.embedding_prepare(tfargs.max_doc_length,tfargs.use_glove,tfargs.is_emdb_matrix_trainable)
 
 embedded_chars=tfembedding.get_embedded_from_wordid(x)
-lstm = tf.contrib.rnn.BasicLSTMCell(tfargs.hidden_size, state_is_tuple=False)
+lstm = tf.contrib.rnn.BasicLSTMCell(tfargs.q_dim, state_is_tuple=False)
 initial_state = lstm.zero_state(tfargs.batch_size, dtype=tf.float32)
 outputs, final_state = tf.nn.dynamic_rnn(lstm, embedded_chars, sequence_length=None, initial_state=initial_state, dtype=None,time_major=False)
 q_features=outputs[:,tfargs.max_doc_length-1,:]
 
 
 
-logits=tfnetwork.FullyConnected(q_features,tfargs.hidden_size,tfargs.n_classes)
+logits=tfnetwork.FullyConnected(q_features, tfargs.q_dim, tfargs.n_classes)
 cross_entropy=tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y,logits=logits)
 loss_operation = tf.reduce_mean(cross_entropy)
 optimizer = tf.train.AdamOptimizer(learning_rate =tfargs.rate)

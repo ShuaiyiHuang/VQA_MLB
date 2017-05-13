@@ -62,7 +62,7 @@ def padding(data,input_size):
     data_padded=np.pad(data, ((0, 0), (nbefore, nafter), (nbefore, nafter), (0, 0)), 'constant')
     return data_padded
 
-def LeNet_4(x,dim=3,fc2_units=84):
+def LeNet_4(x,use_mlb,dim=3,img_dim=84):
     # Hyperparameters
     mu = 0
     sigma = 0.1
@@ -90,22 +90,36 @@ def LeNet_4(x,dim=3,fc2_units=84):
     conv2 = tf.nn.relu(conv2)
     #Pooling. Input = 10x10x16. Output = 5x5x16.
     pool_2 = tf.nn.max_pool(conv2, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='VALID')
-    print 'pool_2:',pool_2
-    #Flatten. Input = 5x5x16. Output = 400.
-    fc1 = flatten(pool_2)
-    print 'flattern:',flatten
-    #Layer 3: Fully Connected. Input = 400. Output = 120.
-    fc1_w = tf.Variable(tf.truncated_normal(shape=(400, 120), mean=mu, stddev=sigma))
-    fc1_b = tf.Variable(tf.zeros(120))
-    fc1 = tf.matmul(fc1, fc1_w) + fc1_b
-    #Activation.
-    fc1 = tf.nn.relu(fc1)
 
-    #layer 4: Fully Connected. Input = 120. Output = 84.
-    fc2_w = tf.Variable(tf.truncated_normal(shape=(120, fc2_units), mean=mu, stddev=sigma))
-    fc2_b = tf.Variable(tf.zeros(fc2_units))
-    fc2 = tf.matmul(fc1, fc2_w) + fc2_b
-    #Activation.
-    fc2 = tf.nn.relu(fc2)
 
-    return fc2
+    if use_mlb==1:
+        print 'use_mlb',use_mlb,'pool_2:', pool_2
+        return pool_2
+    else:
+        #Flatten. Input = 5x5x16. Output = 400.
+        fc1 = flatten(pool_2)
+        print 'flattern:',flatten
+        #Layer 3: Fully Connected. Input = 400. Output = 120.
+        fc1_w = tf.Variable(tf.truncated_normal(shape=(400, 120), mean=mu, stddev=sigma))
+        fc1_b = tf.Variable(tf.zeros(120))
+        fc1 = tf.matmul(fc1, fc1_w) + fc1_b
+        #Activation.
+        fc1 = tf.nn.relu(fc1)
+
+        #layer 4: Fully Connected. Input = 120. Output = 84.
+        fc2_w = tf.Variable(tf.truncated_normal(shape=(120, 84), mean=mu, stddev=sigma))
+        fc2_b = tf.Variable(tf.zeros(84))
+        fc2 = tf.matmul(fc1, fc2_w) + fc2_b
+        #Activation.
+        fc2 = tf.nn.relu(fc2)
+
+        if img_dim!=84:
+        #output layer
+            fc3_w=tf.Variable(tf.truncated_normal(shape=(84, img_dim), mean=0, stddev=1))
+            fc3_b = tf.Variable(tf.zeros(img_dim))
+            fc3 = tf.matmul(fc2, fc3_w) + fc3_b
+            fc3=tf.nn.relu(fc3)
+            return fc3
+        else:
+            return fc2
+

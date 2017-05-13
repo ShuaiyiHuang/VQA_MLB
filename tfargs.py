@@ -6,7 +6,7 @@ use_glove=None
 is_emdb_matrix_trainable=None
 max_doc_length=None
 batch_size=None
-hidden_size=None
+q_dim=None
 n_classes=None
 epochs=None
 rate=None
@@ -21,7 +21,7 @@ def definition():
     global is_embd_matrix_trainable
     global max_doc_length
     global batch_size
-    global hidden_size
+    global q_dim
     global n_classes
     global epochs
     global rate
@@ -33,7 +33,7 @@ def definition():
     is_embd_matrix_trainable = False
     max_doc_length = 100
     batch_size=64
-    hidden_size=128
+    q_dim=128
     n_classes=2
     epochs=2
     rate=0.001

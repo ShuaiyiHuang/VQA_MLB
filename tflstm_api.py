@@ -12,9 +12,9 @@ embedded_matrix = np.float32(np.random.rand(batch_size, max_document_length, emb
 words = tf.placeholder(tf.float32, shape=[batch_size, max_document_length, embedded_dim])
 
 num_steps = 5
-hidden_size = 128
+q_dim = 128
 
-lstm = tf.contrib.rnn.BasicLSTMCell(hidden_size, state_is_tuple=False)
+lstm = tf.contrib.rnn.BasicLSTMCell(q_dim, state_is_tuple=False)
 
 initial_state = lstm.zero_state(batch_size, dtype=tf.float32)
 

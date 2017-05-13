@@ -1,5 +1,6 @@
 import tensorflow as tf
 import numpy as np
+import testMLB
 def FullyConnected(input,hidden_size,n_classes):
     print 'input shape',input.shape
     batch_size=input.get_shape().as_list()[0]
@@ -12,9 +13,8 @@ def FullyConnected(input,hidden_size,n_classes):
     logits=tf.matmul(input,W)+b
     return logits
 
-def Combine(img_features,q_features,pool_method):
-    if pool_method==0:
-        mixed_features = tf.multiply(img_features, q_features)
+def Combine(img_features, q_features, use_mlb,s,N,M,d,G,batch_size,dim_out):
+    mixed_features = tf.multiply(img_features, q_features)
     return mixed_features
 
 def Routine(mixed_features,output_dim,hidden_size,hidden1_units=200):
