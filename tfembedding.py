@@ -68,7 +68,7 @@ def embedding_prepare2(max_document_length=10,use_glove=True,trainable=False):
     return
 
 def embedding_prepare(max_document_length=10,use_glove=True,trainable=False):
-    print 'use_glove:',use_glove
+    print 'use_glove:',use_glove,'max_document_length:',max_document_length
     if use_glove:
         vocab,embd=loadGloVe()
         vocab_size = len(vocab)

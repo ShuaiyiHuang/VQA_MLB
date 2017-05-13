@@ -68,11 +68,11 @@ def get_dataset(data_prefix_train='../data/shapes/train.tiny',data_prefix_val='.
     test_data=[]
     # prepare_embedding(max_document_length)
     if data_prefix_train != '':
-        train_data=input_pipeline(data_prefix_train,use_glove=use_glove)
+        train_data=input_pipeline(data_prefix_train,max_doc_length=max_document_length,use_glove=use_glove)
     if data_prefix_val!='':
-        val_data=input_pipeline(data_prefix_val,use_glove=use_glove)
+        val_data=input_pipeline(data_prefix_val,max_doc_length=max_document_length,use_glove=use_glove)
     if data_prefix_test!='':
-        test_data=input_pipeline(data_prefix_test,use_glove=use_glove)
+        test_data=input_pipeline(data_prefix_test,max_doc_length=max_document_length,use_glove=use_glove)
     return Dataset(train_data,val_data,test_data)
 
 shapes_words = ['NULL', 'red', 'green', 'blue', 'circle', 'square', 'triangle', \
@@ -99,7 +99,7 @@ def prepare_embedding(max_document_length=10):
     tfembedding.embedding_prepare(max_document_length)
 
 
-def input_pipeline(data_prefix='../data/shapes/train.tiny',max_doc_length=10,use_glove=False):
+def input_pipeline(data_prefix='../data/shapes/train.tiny',max_doc_length=6,use_glove=False):
 
     queries_list=[]
     labels_list=[]
@@ -113,6 +113,7 @@ def input_pipeline(data_prefix='../data/shapes/train.tiny',max_doc_length=10,use
 
     with open(fqueries) as fq, open(foutputs) as fo:
         inputs = np.load(fimages)
+        print 'inputs shape',inputs.shape
         start_idx = 0
         for query, iimg, output in zip(fq, range(inputs.shape[0]), fo):
             output = index[output.strip()]
@@ -145,6 +146,7 @@ def input_pipeline(data_prefix='../data/shapes/train.tiny',max_doc_length=10,use
             ques_list.append(ques)
 
     imgs_arr=np.array(imgs_list)
+    print 'img processed shape:',imgs_arr.shape
     labels_arr=np.array(labels_list)
     queries_arr=np.array(queries_list)
     if use_glove:

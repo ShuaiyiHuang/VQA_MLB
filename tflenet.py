@@ -31,8 +31,10 @@ def LeNet(x,dim=3,output=10):
     conv2 = tf.nn.relu(conv2)
     # Pooling. Input = 10x10x16. Output = 5x5x16.
     pool_2 = tf.nn.max_pool(conv2, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='VALID')
+    print 'pool_2:',pool_2
     # Flatten. Input = 5x5x16. Output = 400.
     fc1 = flatten(pool_2)
+    print 'flattern:',flatten
 
     # layer 3: Fully Connected. Input = 400. Output = 120.
     fc1_w = tf.Variable(tf.truncated_normal(shape=(400, 120), mean=mu, stddev=sigma))
@@ -88,10 +90,10 @@ def LeNet_4(x,dim=3,fc2_units=84):
     conv2 = tf.nn.relu(conv2)
     #Pooling. Input = 10x10x16. Output = 5x5x16.
     pool_2 = tf.nn.max_pool(conv2, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='VALID')
-
+    print 'pool_2:',pool_2
     #Flatten. Input = 5x5x16. Output = 400.
     fc1 = flatten(pool_2)
-
+    print 'flattern:',flatten
     #Layer 3: Fully Connected. Input = 400. Output = 120.
     fc1_w = tf.Variable(tf.truncated_normal(shape=(400, 120), mean=mu, stddev=sigma))
     fc1_b = tf.Variable(tf.zeros(120))

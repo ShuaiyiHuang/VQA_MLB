@@ -24,6 +24,7 @@ def Routine(mixed_features,output_dim,hidden_size,hidden1_units=200):
     biases = tf.Variable(tf.zeros([hidden1_units]),name='biases')
 
     hidden1_features = tf.nn.relu(tf.matmul(mixed_features, weights) + biases)
+    print mixed_features,weights,biases,hidden1_features
     weights_o = tf.Variable(
         tf.truncated_normal([hidden1_units, output_dim],
                             stddev=1.0 / np.sqrt(float(hidden_size))))

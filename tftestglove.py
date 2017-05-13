@@ -49,3 +49,18 @@ testarr2=q_train[0:2]
 print testarr2.shape,testarr2
 res2=np.array(list(tfargs.Pretrain.transform(testarr2)))
 print res2.shape,res2
+
+###error Cannot feed value of shape (128, 5, 32, 30) for Tensor u'Placeholder:0', which has shape '(?, 32, 32, 3)'
+
+# image = inputs[iimg, :, :, :].copy()
+# # make it directly processable by CNN
+# tmp = image[:, :, 0].copy()
+# image[:, :, 0] = image[:, :, 2]
+# image[:, :, 2] = tmp
+# image = np.transpose(image, (2, 0, 1)) / 255.
+# image = np.float32(image)
+
+#error ValueError: Cannot feed value of shape (128, 5, 32, 30) for Tensor u'Placeholder:0', which has shape '(?, 32, 32, 3)'
+# image = inputs[iimg, :, :, :].copy()
+# image = np.transpose(image, (2, 0, 1)) / 255.
+# image = np.float32(image)

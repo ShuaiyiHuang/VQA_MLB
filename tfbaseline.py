@@ -8,16 +8,16 @@ import pickle
 import tflenet
 
 tfargs.definition()
-tfargs.embedded_dim=50
-tfargs.use_glove=True
+tfargs.embedded_dim=128
+tfargs.use_glove=False
 tfargs.is_embd_matrix_trainable=True
-tfargs.max_doc_length=6
-tfargs.batch_size=16
+tfargs.max_doc_length=7
+tfargs.batch_size=128
 tfargs.hidden_size=84
-tfargs.epochs=100
+tfargs.epochs=200
 tfargs.rate=0.001
 tfargs.n_classess=2
-tfargs.vocab_size=14
+# tfargs.vocab_size=14
 
 dim=3
 img_dim=84
@@ -32,9 +32,17 @@ y=tf.placeholder(tf.int64,(None))
 
 # shapes_data =pickle.load(open(dataroot))
 # train,val,test=tfloader.load_shapes(data_root)
-train_prefix='../data/shapes/train.tiny'
-val_prefix='../data/shapes/val'
-test_prefix='../data/shapes/test'
+# train_prefix='../data/shapes/train.tiny'
+# val_prefix='../data/shapes/val'
+# test_prefix='../data/shapes/test'
+
+# train_prefix='../data/shapes_control-2x/train.large'
+# val_prefix='../data/shapes_control-2x/val'
+# test_prefix='../data/shapes_control-2x/test'
+
+train_prefix='../data/shapes_control-3x/train.large'
+val_prefix='../data/shapes_control-3x/val'
+test_prefix='../data/shapes_control-3x/test'
 
 tfembedding.embedding_prepare(tfargs.max_doc_length,tfargs.use_glove,tfargs.is_emdb_matrix_trainable)
 
@@ -141,11 +149,11 @@ with sess.as_default():
         test_accuracy, test_loss = evaluate(X_test, y_test,ques_test, tfargs.batch_size)
         print("Test Accuracy = {:.3f}".format(test_accuracy))
 
-    saver.save(sess, 'Models/0509/LSTM')
+    saver.save(sess, '../data/Models/baseline')
     print("LSTM Model saved")
 
 with tf.Session() as sess:
-    saver.restore(sess, tf.train.latest_checkpoint('./Models/0509'))
+    saver.restore(sess, tf.train.latest_checkpoint('../data/Models'))
 
     test_accuracy2,test_loss2 = evaluate(X_test, y_test,ques_test,tfargs.batch_size)
     print("Test Accuracy = {:.3f}".format(test_accuracy2))
