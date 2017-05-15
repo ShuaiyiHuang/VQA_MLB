@@ -9,7 +9,7 @@ import tflenet
 import testMLB
 
 tfargs.definition()
-tfargs.embedded_dim=128
+tfargs.embedded_dim=50
 tfargs.use_glove=True
 tfargs.is_embd_matrix_trainable=False
 tfargs.max_doc_length=7
@@ -19,6 +19,7 @@ tfargs.epochs=200
 tfargs.rate=0.001
 tfargs.n_classess=2
 # tfargs.vocab_size=14
+
 
 dim=3
 img_dim=84
