@@ -13,7 +13,7 @@ from sklearn.utils import shuffle
 
 tfargs.definition()
 tfargs.embedded_dim=128
-tfargs.use_glove=False
+tfargs.use_glove=True
 tfargs.is_embd_matrix_trainable=True
 tfargs.max_doc_length=7
 tfargs.batch_size=128
@@ -23,11 +23,22 @@ tfargs.rate=0.001
 tfargs.n_classess=2
 # tfargs.vocab_size=14
 
+parser = argparse.ArgumentParser(description='tune VQA MLB baseline')
 
-dim=3
-img_dim=84
-use_mlb=1
-input_size=30
+parser.add_argument('--img-size', type=int, default=30,
+                    help='channel for input images')
+parser.add_argument('--channel', type=int, default=3,
+                    help='channel for input images')
+parser.add_argument('--gdp', type=float, default=0.25,
+                    help='general dropout')
+parser.add_argument('--dcommon', type=int, default=128,
+                    help='q and img projected to the same dimension')
+parser.add_argument('--use-mlb', type=int, default=1,
+                    help='0 do not use mlb,1 use mlb')
+
+img_dim=64
+
+
 #para for MLB
 #grid size s*s
 s=5
@@ -35,27 +46,30 @@ s=5
 M=16
 #number of glimpse
 G=2
-d=128
 
-x = tf.placeholder(tf.float32, (None, 32, 32, dim))
+args=parser.parse_args()
+
+x = tf.placeholder(tf.float32, (None, 32, 32, args.channel))
 ques=tf.placeholder(tf.int32)
 y=tf.placeholder(tf.int64,(None))
+keep_prob=tf.placeholder(dtype=tf.float32,name='gdp')
 
 #imdb_data=tfimdbloader.load_imdb(max_length=tfargs.max_doc_length)
 
 # shapes_data =pickle.load(open(dataroot))
 # train,val,test=tfloader.load_shapes(data_root)
-train_prefix='../data/shapes/train.large'
-val_prefix='../data/shapes/val'
-test_prefix='../data/shapes/test'
+
+# train_prefix='../data/shapes/train.large'
+# val_prefix='../data/shapes/val'
+# test_prefix='../data/shapes/test'
 
 # train_prefix='../data/shapes_control-2x/train.large'
 # val_prefix='../data/shapes_control-2x/val'
 # test_prefix='../data/shapes_control-2x/test'
 
-# train_prefix='../data/shapes_control-3x/train.large'
-# val_prefix='../data/shapes_control-3x/val'
-# test_prefix='../data/shapes_control-3x/test'
+train_prefix='../data/shapes_control-3x/train.large'
+val_prefix='../data/shapes_control-3x/val'
+test_prefix='../data/shapes_control-3x/test'
 
 tfembedding.embedding_prepare(tfargs.max_doc_length,tfargs.use_glove,tfargs.is_emdb_matrix_trainable)
 
@@ -72,9 +86,9 @@ X_test,y_test,q_test,ques_test=shuffle(X_test,y_test,q_test,ques_test)
 
 
 #Padding to fit Lenet
-X_train=tflenet.padding(X_train,input_size)
-X_validation=tflenet.padding(X_validation,input_size)
-X_test=tflenet.padding(X_test,input_size)
+X_train=tflenet.padding(X_train,args.img_size)
+X_validation=tflenet.padding(X_validation,args.img_size)
+X_test=tflenet.padding(X_test,args.img_size)
 
 #LSTM
 
@@ -85,14 +99,14 @@ initial_state = lstm.zero_state(tfargs.batch_size, dtype=tf.float32)
 outputs, final_state = tf.nn.dynamic_rnn(lstm, embedded_chars, sequence_length=None, initial_state=initial_state, dtype=None,time_major=False)
 q_features=outputs[:,tfargs.max_doc_length-1,:]
 #****CNN***
-img_features=tflenet.LeNet_4(x,use_mlb=use_mlb,dim=dim,img_dim=img_dim,)
+img_features=tflenet.LeNet_4(x,use_mlb=args.use_mlb,dim=args.channel,img_dim=img_dim,keep_prob=keep_prob)
 print 'img_features in main:',img_features
 #Combine
-if use_mlb==0:
-    mixed_features=tfnetwork.Combine(img_features, q_features, use_mlb)
-    logits=tfnetwork.Routine(mixed_features, tfargs.n_classes, tfargs.q_dim)
-if use_mlb==1:
-    logits = testMLB.MLB_predict(img_features, q_features, s, tfargs.q_dim, M, d, G, tfargs.batch_size, tfargs.n_classes)
+if args.use_mlb==0:
+    mixed_features=tfnetwork.Combine(img_features, q_features)
+    logits=tfnetwork.Routine(mixed_features, tfargs.n_classes, tfargs.q_dim,keep_prob)
+if args.use_mlb==1:
+    logits = testMLB.MLB_predict(img_features, q_features, s, tfargs.q_dim, M, args.dcommon, G, tfargs.batch_size, tfargs.n_classes)
 
 # logits=tfnetwork.FullyConnected(q_features,tfargs.hidden_size,tfargs.n_classes)
 cross_entropy=tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y,logits=logits)
@@ -130,8 +144,8 @@ def evaluate(X_data, y_data,ques_data,batch_size):
     sess = tf.get_default_session()
     for offset in range(0, num_examples, batch_size):
         batch_x, batch_y,batch_ques= X_data[offset:offset + batch_size], y_data[offset:offset + batch_size],ques_data[offset:offset + batch_size]
-        loss=sess.run(loss_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques})
-        accuracy = sess.run(accuracy_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques})
+        loss=sess.run(loss_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:1.0})
+        accuracy = sess.run(accuracy_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:1.0})
         total_accuracy += (accuracy *len(batch_x))
         total_loss+=(loss*len(batch_x))
     mean_accuracy=total_accuracy/num_examples
@@ -156,10 +170,10 @@ with sess.as_default():
             # print type(batch_y[0])
             # batch_ques=np.ones(shape=[tfargs.batch_size,tfargs.max_doc_length],dtype=int)
             # print 'np.ones',batch_ques.shape,batch_ques
-            train_loss=sess.run(loss_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques})
-            train_accuracy=sess.run(accuracy_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques})
+            train_loss=sess.run(loss_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:args.gdp})
+            train_accuracy=sess.run(accuracy_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:args.gdp})
 
-            sess.run(training_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques})
+            sess.run(training_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:args.gdp})
             total_train_accuracy += (train_accuracy * len(batch_ques))
             total_train_loss+=(train_loss*len(batch_ques))
 

@@ -62,10 +62,11 @@ def padding(data,input_size):
     data_padded=np.pad(data, ((0, 0), (nbefore, nafter), (nbefore, nafter), (0, 0)), 'constant')
     return data_padded
 
-def LeNet_4(x,use_mlb,dim=3,img_dim=84):
+def LeNet_4(x,use_mlb,dim=3,img_dim=84,keep_prob=0.8):
     # Hyperparameters
     mu = 0
     sigma = 0.1
+
     layer_depth = {
         'layer_1': 6,
         'layer_2': 16,
@@ -119,7 +120,9 @@ def LeNet_4(x,use_mlb,dim=3,img_dim=84):
             fc3_b = tf.Variable(tf.zeros(img_dim))
             fc3 = tf.matmul(fc2, fc3_w) + fc3_b
             fc3=tf.nn.relu(fc3)
-            return fc3
+            fc3_drop=tf.nn.dropout(fc3,keep_prob=keep_prob)
+            return fc3_drop
         else:
-            return fc2
+            fc2_drop = tf.nn.dropout(fc2, keep_prob=keep_prob)
+            return fc2_drop
 

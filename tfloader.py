@@ -146,7 +146,7 @@ def input_pipeline(data_prefix='../data/shapes/train.tiny',max_doc_length=6,use_
             ques_list.append(ques)
 
     imgs_arr=np.array(imgs_list)
-    print 'img processed shape:',imgs_arr.shape
+
     labels_arr=np.array(labels_list)
     queries_arr=np.array(queries_list)
     if use_glove:
