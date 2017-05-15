@@ -7,11 +7,14 @@ import tfloader
 import pickle
 import tflenet
 import testMLB
+import argparse
+from sklearn.utils import shuffle
+
 
 tfargs.definition()
-tfargs.embedded_dim=50
-tfargs.use_glove=True
-tfargs.is_embd_matrix_trainable=False
+tfargs.embedded_dim=128
+tfargs.use_glove=False
+tfargs.is_embd_matrix_trainable=True
 tfargs.max_doc_length=7
 tfargs.batch_size=128
 tfargs.q_dim=64
@@ -61,6 +64,12 @@ shapes_data=tfloader.get_dataset(train_prefix,val_prefix,test_prefix,max_documen
 X_train,y_train,q_train,ques_train= shapes_data.train.images, shapes_data.train.labels, shapes_data.train.queries, shapes_data.train.ques
 X_validation,y_validation,q_validation,ques_validation= shapes_data.val.images, shapes_data.val.labels, shapes_data.val.queries, shapes_data.val.ques
 X_test,y_test,q_test,ques_test= shapes_data.test.images, shapes_data.test.labels, shapes_data.test.queries, shapes_data.test.ques
+
+#shuffle
+X_train,y_train,q_train,ques_train=shuffle(X_train,y_train,q_train,ques_train)
+X_validation,y_validation,q_validation,ques_validation=shuffle(X_validation,y_validation,q_validation,ques_validation)
+X_test,y_test,q_test,ques_test=shuffle(X_test,y_test,q_test,ques_test)
+
 
 #Padding to fit Lenet
 X_train=tflenet.padding(X_train,input_size)
@@ -135,7 +144,8 @@ with sess.as_default():
     sess.run(tf.global_variables_initializer())
     for i in range(tfargs.epochs):
         print('Epoch{}...'.format(i))
-
+        #before each epoch,shuffle the training set
+        X_train, y_train, q_train, ques_train = shuffle(X_train, y_train, q_train, ques_train)
         total_train_accuracy=0
         total_train_loss=0
         for offset in range(0,num_examples,tfargs.batch_size):
