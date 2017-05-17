@@ -77,8 +77,11 @@ def embedding_prepare(max_document_length=10,use_glove=True,trainable=False):
         tfargs.embedded_dim=embedding_dim
         tfargs.vocab_size=vocab_size
 
+        unknow_array=[-1]*embedding_dim
+        embd.append(unknow_array)
+
         embedding_matrix = np.asarray(embd)
-        tfargs.Embedding_tensor = tf.Variable(tf.constant(0.1, shape=[vocab_size, embedding_dim]),
+        tfargs.Embedding_tensor = tf.Variable(tf.constant(0.1, shape=[vocab_size+1, embedding_dim]),
                                           trainable=trainable, name="W")
         tfargs.Embedding_tensor=tfargs.Embedding_tensor.assign(embedding_matrix)
         vocab_processor = learn.preprocessing.VocabularyProcessor(max_document_length)
@@ -93,11 +96,11 @@ def get_wordids(x_text):
     word_ids=np.array(list(tfargs.Pretrain.transform(x_text)))
     return word_ids
 
-def get_embedded_from_wordid(word_ids):
+def get_embedded_from_wordid(word_ids,batch_size=tfargs.batch_size,max_doc_length=tfargs.max_doc_length,embedded_dim=tfargs.embedded_dim):
     print 'word_ids:',word_ids
     embedded_chars_unshape=tf.nn.embedding_lookup(tfargs.Embedding_tensor, word_ids)
-    print 'embedded_unshape',embedded_chars_unshape
-    embedded_chars = tf.reshape(embedded_chars_unshape, shape=[tfargs.batch_size,tfargs.max_doc_length, tfargs.embedded_dim])
+    print 'embedded_unshape',embedded_chars_unshape,'batch_size:',batch_size,'max_doc_length:',max_doc_length,'embedded_dim:',embedded_dim
+    embedded_chars = tf.reshape(embedded_chars_unshape, shape=[batch_size,max_doc_length,embedded_dim])
     return embedded_chars
 
 def get_embedded_chars(x_text):

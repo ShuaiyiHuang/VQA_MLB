@@ -12,13 +12,13 @@ from sklearn.utils import shuffle
 
 
 tfargs.definition()
-tfargs.embedded_dim=128
+tfargs.embedded_dim=50
 tfargs.use_glove=True
-tfargs.is_embd_matrix_trainable=True
+tfargs.is_embd_matrix_trainable=False
 tfargs.max_doc_length=7
-tfargs.batch_size=128
+tfargs.batch_size=16
 tfargs.q_dim=64
-tfargs.epochs=200
+tfargs.epochs=10
 tfargs.rate=0.001
 tfargs.n_classess=2
 # tfargs.vocab_size=14
@@ -33,7 +33,7 @@ parser.add_argument('--gdp', type=float, default=0.25,
                     help='general dropout')
 parser.add_argument('--dcommon', type=int, default=128,
                     help='q and img projected to the same dimension')
-parser.add_argument('--use-mlb', type=int, default=1,
+parser.add_argument('--use-mlb', type=int, default=0,
                     help='0 do not use mlb,1 use mlb')
 
 img_dim=64
@@ -59,17 +59,17 @@ keep_prob=tf.placeholder(dtype=tf.float32,name='gdp')
 # shapes_data =pickle.load(open(dataroot))
 # train,val,test=tfloader.load_shapes(data_root)
 
-# train_prefix='../data/shapes/train.large'
-# val_prefix='../data/shapes/val'
-# test_prefix='../data/shapes/test'
+train_prefix='../data/shapes/train.tiny'
+val_prefix='../data/shapes/val'
+test_prefix='../data/shapes/test'
 
 # train_prefix='../data/shapes_control-2x/train.large'
 # val_prefix='../data/shapes_control-2x/val'
 # test_prefix='../data/shapes_control-2x/test'
 
-train_prefix='../data/shapes_control-3x/train.large'
-val_prefix='../data/shapes_control-3x/val'
-test_prefix='../data/shapes_control-3x/test'
+# train_prefix='../data/shapes_control-3x/train.large'
+# val_prefix='../data/shapes_control-3x/val'
+# test_prefix='../data/shapes_control-3x/test'
 
 tfembedding.embedding_prepare(tfargs.max_doc_length,tfargs.use_glove,tfargs.is_emdb_matrix_trainable)
 

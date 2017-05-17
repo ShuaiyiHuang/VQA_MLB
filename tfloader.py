@@ -6,7 +6,6 @@ import tfembedding
 import pickle
 
 
-
 def extract_query(sexp):
   if isinstance(sexp, sexpdata.Symbol):
     return sexp.value()
@@ -174,22 +173,30 @@ def load_shapes(dataroot):
     return train,valid,test
 
 if __name__=="__main__":
-    # train_prefix = 'shapes/train.small'
-    # val_prefix = 'shapes/val'
-    # test_prefix = 'shapes/test'
+    train_prefix = '../data/shapes/train.tiny'
+    val_prefix = '../data/shapes/val'
+    test_prefix = '../data/shapes/test'
     # q0='is green left of red'
     # q1='is square left of above square'
     # q2='is triangle above green'
-    # max_document_length=7
-    # embedded_dim=50
+    max_document_length=7
+    embedded_dim=50
     # batch_size=2
     # hidden_size=128
     #
-    # shapes_data = get_dataset(train_prefix, val_prefix, test_prefix,max_document_length)
-    # X_train, y_train, q_train,ques_train = shapes_data.train.images, shapes_data.train.labels, shapes_data.train.queries,shapes_data.train.ques
+    batch_size=2
+    start_id=0
+    tfembedding.embedding_prepare(max_document_length,True,False)
+    shapes_data = get_dataset(train_prefix, val_prefix, test_prefix,max_document_length)
+
+    X_train, y_train, q_train,ques_train = shapes_data.train.images, shapes_data.train.labels, shapes_data.train.queries,shapes_data.train.ques
     #
     # ques=tf.placeholder(tf.int32)
-
+    embedded_chars = tfembedding.get_embedded_from_wordid(ques_train[start_id:start_id+batch_size],batch_size,max_document_length,embedded_dim)
+    print embedded_chars
+    with tf.Session() as sess:
+        sess.run(tf.global_variables_initializer())
+        print 'embedded_chars',sess.run(embedded_chars)
 
     print ''
 
