@@ -114,15 +114,6 @@ def LeNet_4(x,use_mlb,dim=3,img_dim=84,keep_prob=0.8):
         #Activation.
         fc2 = tf.nn.relu(fc2)
 
-        if img_dim!=84:
-        #output layer
-            fc3_w=tf.Variable(tf.truncated_normal(shape=(84, img_dim), mean=0, stddev=1))
-            fc3_b = tf.Variable(tf.zeros(img_dim))
-            fc3 = tf.matmul(fc2, fc3_w) + fc3_b
-            fc3=tf.nn.relu(fc3)
-            fc3_drop=tf.nn.dropout(fc3,keep_prob=keep_prob)
-            return fc3_drop
-        else:
-            fc2_drop = tf.nn.dropout(fc2, keep_prob=keep_prob)
-            return fc2_drop
+        fc2_drop = tf.nn.dropout(fc2, keep_prob=keep_prob)
+        return fc2_drop
 

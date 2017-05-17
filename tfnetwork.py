@@ -13,7 +13,16 @@ def FullyConnected(input,hidden_size,n_classes):
     logits=tf.matmul(input,W)+b
     return logits
 
-def Combine(img_features, q_features):
+def Combine(img_features, q_features,dimg,dq,keep_prob):#???what if dq,dimg not the same?
+    if dimg!= 84:
+        # output layer
+        fc3_w = tf.Variable(tf.truncated_normal(shape=(84, dimg), mean=0, stddev=1))
+        fc3_b = tf.Variable(tf.zeros(dimg))
+        fc3 = tf.matmul(img_features, fc3_w) + fc3_b
+        fc3 = tf.nn.relu(fc3)
+        fc3_drop = tf.nn.dropout(fc3, keep_prob=keep_prob)
+        img_features=fc3_drop
+    assert (dimg==dq)
     mixed_features = tf.multiply(img_features, q_features)
     return mixed_features
 
