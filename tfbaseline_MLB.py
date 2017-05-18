@@ -41,9 +41,9 @@ parser.add_argument('--use-mlb', type=int, default=0,
                     help='0 do not use mlb,1 use mlb')
 parser.add_argument('--max-doclength', type=int, default=7,
                     help='max length for each question')
-parser.add_argument('--epochs', type=int, default=10,
-                    help='batch size for training epoch')
-parser.add_argument('--batch-size', type=int, default=128,
+parser.add_argument('--epochs', type=int, default=12,
+                    help='training epochs')
+parser.add_argument('--batch-size', type=int, default=64,
                     help='batch size for training epoch')
 parser.add_argument('--use-glove', type=bool, default=True,
                     help='whether use glove')
@@ -83,7 +83,7 @@ keep_prob=tf.placeholder(dtype=tf.float32,name='gdp')
 # shapes_data =pickle.load(open(dataroot))
 # train,val,test=tfloader.load_shapes(data_root)
 
-train_prefix='../data/shapes/train.large'
+train_prefix='../data/shapes/train.small'
 val_prefix='../data/shapes/val'
 test_prefix='../data/shapes/test'
 
@@ -115,8 +115,6 @@ X_validation=tflenet.padding(X_validation,args.img_size)
 X_test=tflenet.padding(X_test,args.img_size)
 
 #LSTM
-
-
 embedded_chars=tfembedding.get_embedded_from_wordid(ques,args.batch_size,args.max_doclength,args.dembd)
 lstm = tf.contrib.rnn.BasicLSTMCell(args.dq, state_is_tuple=False)
 initial_state = lstm.zero_state(args.batch_size, dtype=tf.float32)
@@ -124,13 +122,15 @@ outputs, final_state = tf.nn.dynamic_rnn(lstm, embedded_chars, sequence_length=N
 q_features=outputs[:,args.max_doclength-1,:]
 #****CNN***
 img_features=tflenet.LeNet_4(x,use_mlb=args.use_mlb,dim=args.channel,img_dim=args.dimg,keep_prob=keep_prob)
-print 'img_features in main:',img_features
+# print 'img_features in main:',img_features
 #Combine
 if args.use_mlb==0:
-    mixed_features=tfnetwork.Combine(img_features, q_features,args.dimg,args.dq,keep_prob)
-    logits=tfnetwork.Routine(mixed_features, args.n_class, args.dq,keep_prob)
+    with tf.name_scope('Combine-0'):
+        mixed_features=tfnetwork.Combine(img_features, q_features,args.dimg,args.dq,keep_prob)
+        logits=tfnetwork.Routine(mixed_features, args.n_class, args.dq,keep_prob)
 if args.use_mlb==1:
-    logits = testMLB.MLB_predict(img_features, q_features, s, args.dq, M, args.dcommon, G, args.batch_size, args.n_class)
+    with tf.name_scope('Combine-1'):
+        logits = testMLB.MLB_predict(img_features, q_features, s, args.dq, M, args.dcommon, G, args.batch_size, args.n_class)
 
 # logits=tfnetwork.FullyConnected(q_features,tfargs.hidden_size,tfargs.n_classes)
 cross_entropy=tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y,logits=logits)
@@ -145,7 +145,7 @@ num_examples=len(ques_train)
 saver = tf.train.Saver()
 
 #for tensorboard
-tf.summary.scalar('cross_entropy', cross_entropy)
+# tf.summary.scalar('cross_entropy', cross_entropy)
 tf.summary.histogram('cross_entropy_histogram', cross_entropy)
 tf.summary.scalar('loss operation', loss_operation)
 merged=tf.summary.merge_all()
@@ -211,8 +211,8 @@ with sess.as_default():
             sess.run(training_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:args.gdp})
             total_train_accuracy += (train_accuracy * len(batch_ques))
             total_train_loss+=(train_loss*len(batch_ques))
-            # summary=sess.run(merged,feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:args.gdp})
-            # train_writer.add_summary(summary,iternum)
+            summary=sess.run(merged,feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:args.gdp})
+            train_writer.add_summary(summary,iternum)
             iternum=iternum+1
         train_accuracy=total_train_accuracy/num_examples
         train_loss=total_train_loss/num_examples
