@@ -42,7 +42,7 @@ parser.add_argument('--use-mlb', type=int, default=0,
                     help='0 do not use mlb,1 use mlb')
 parser.add_argument('--max-doclength', type=int, default=7,
                     help='max length for each question')
-parser.add_argument('--epochs', type=int, default=12,
+parser.add_argument('--epochs', type=int, default=50,
                     help='training epochs')
 parser.add_argument('--batch-size', type=int, default=128,
                     help='batch size for training epoch')
@@ -84,7 +84,7 @@ keep_prob=tf.placeholder(dtype=tf.float32,name='gdp')
 # shapes_data =pickle.load(open(dataroot))
 # train,val,test=tfloader.load_shapes(data_root)
 
-train_prefix='../data/shapes/train.small'
+train_prefix='../data/shapes/train.large'
 val_prefix='../data/shapes/val'
 test_prefix='../data/shapes/test'
 
@@ -169,7 +169,8 @@ merged=tf.summary.merge_all()
 #     #print('Total loss{:.3},num examples{},mean_loss{:.3}'.format(total_loss, num_examples, mean_loss))
 #     return mean_accuracy,mean_loss
 
-matpath='./matsmall/'
+matpath='./matsmall2/'
+savemat=False
 def evaluate(X_data, y_data,ques_data,batch_size, writer, merged, iternum):
     num_examples = len(X_data)
     total_accuracy = 0
@@ -181,9 +182,11 @@ def evaluate(X_data, y_data,ques_data,batch_size, writer, merged, iternum):
         accuracy = sess.run(accuracy_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:1.0})
         summary=sess.run(merged,feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:1.0})
         mixf=sess.run(mixed_features,feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:1.0})
-        mixf_matrix=np.asmatrix(mixf)
-        mat_str=matpath+'iternum'+str(iternum)
-        sio.savemat(mat_str,{'feature':mixf_matrix})
+        if savemat==True:
+            #any need to convert to matrix?
+            # mixf_matrix=np.asmatrix(mixf)
+            mat_str=matpath+'iternum'+str(iternum)
+            sio.savemat(mat_str,{'feature':mixf})
         writer.add_summary(summary, iternum)
         total_accuracy += (accuracy *len(batch_x))
         total_loss+=(loss*len(batch_x))

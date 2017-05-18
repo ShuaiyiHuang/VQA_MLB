@@ -11,3 +11,16 @@ import tensorflow as tf
 iternum=10
 str='test'+str(iternum)
 print str
+dataroot='matsmall-past/'
+
+from scipy.io import loadmat
+x = loadmat(dataroot+'iternum5.mat')['feature']
+
+print x
+print type(x)
+
+dataroot2='matsmall2/'
+
+x2 = loadmat(dataroot+'iternum5.mat')['feature']
+print type(x2)
+print x2
