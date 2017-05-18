@@ -80,7 +80,7 @@ def embedding_prepare(max_document_length=7,vocabs=400001,use_glove=True,trainab
         assert(vocab_size+1==vocabs)
 
         #zero vector for unknow word or pad word
-        unknow_array=[-1]*embedding_dim
+        unknow_array=[0]*embedding_dim
         embd.append(unknow_array)
 
         embedding_matrix = np.asarray(embd)

@@ -56,11 +56,11 @@ parser.add_argument('--lr', type=float, default=0.001,
 parser.add_argument('--n-class', type=int, default=2,
                     help='# output class')
 parser.add_argument('--img-size', type=int, default=30,
-                    help='channel for input images')
+                    help='size of input images')
 parser.add_argument('--channel', type=int, default=3,
                     help='channel for input images')
-
-
+parser.add_argument('--log-dir', type=str, default='../data/tensorboard',
+                    help='directory for tensorboard')
 
 
 #para for MLB
@@ -119,7 +119,7 @@ embedded_chars=tfembedding.get_embedded_from_wordid(ques,args.batch_size,args.ma
 lstm = tf.contrib.rnn.BasicLSTMCell(args.dq, state_is_tuple=False)
 initial_state = lstm.zero_state(args.batch_size, dtype=tf.float32)
 outputs, final_state = tf.nn.dynamic_rnn(lstm, embedded_chars, sequence_length=None, initial_state=initial_state, dtype=None,time_major=False)
-q_features=outputs[:,args.max_doclength-1,:]
+q_features=outputs[:,-1,:]
 #****CNN***
 img_features=tflenet.LeNet_4(x,use_mlb=args.use_mlb,dim=args.channel,img_dim=args.dimg,keep_prob=keep_prob)
 # print 'img_features in main:',img_features
@@ -168,7 +168,7 @@ merged=tf.summary.merge_all()
 #     #print('Total loss{:.3},num examples{},mean_loss{:.3}'.format(total_loss, num_examples, mean_loss))
 #     return mean_accuracy,mean_loss
 
-def evaluate(X_data, y_data,ques_data,batch_size):
+def evaluate(X_data, y_data,ques_data,batch_size, writer, merged, iternum):
     num_examples = len(X_data)
     total_accuracy = 0
     total_loss=0
@@ -177,15 +177,18 @@ def evaluate(X_data, y_data,ques_data,batch_size):
         batch_x, batch_y,batch_ques= X_data[offset:offset + batch_size], y_data[offset:offset + batch_size],ques_data[offset:offset + batch_size]
         loss=sess.run(loss_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:1.0})
         accuracy = sess.run(accuracy_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:1.0})
+        summary=sess.run(merged,feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:1.0})
+        writer.add_summary(summary, iternum)
         total_accuracy += (accuracy *len(batch_x))
         total_loss+=(loss*len(batch_x))
     mean_accuracy=total_accuracy/num_examples
     mean_loss=total_loss/num_examples
     return mean_accuracy,mean_loss
 
-
 sess=tf.Session()
-train_writer=tf.summary.FileWriter('./tensorboard',sess.graph)
+train_writer=tf.summary.FileWriter(args.log_dir+'/train',sess.graph)
+valid_writer=tf.summary.FileWriter(args.log_dir+'/valid')
+test_writer=tf.summary.FileWriter(args.log_dir+'/test')
 
 with sess.as_default():
     sess.run(tf.global_variables_initializer())
@@ -218,20 +221,22 @@ with sess.as_default():
         train_loss=total_train_loss/num_examples
         print('Train Accuracy= {:.3f}, loss = {:.3f} '.format(train_accuracy,train_loss))
 
-        val_accuracy,val_loss=evaluate(X_validation,y_validation,ques_validation,args.batch_size)
+        val_accuracy,val_loss=evaluate(X_validation,y_validation,ques_validation,args.batch_size,valid_writer,merged,iternum)
         print("Validation Accuracy = {:.3f} , loss = {:.3f} ".format(val_accuracy,val_loss))
 
-        test_accuracy, test_loss = evaluate(X_test, y_test,ques_test, args.batch_size)
+        test_accuracy, test_loss = evaluate(X_test, y_test,ques_test, args.batch_size,test_writer, merged, iternum)
         print("Test Accuracy = {:.3f}".format(test_accuracy))
 
     train_writer.close()
+    valid_writer.close()
+    test_writer.close()
     saver.save(sess, '../data/Models/baseline')
     print("LSTM Model saved")
 
 
 
-with tf.Session() as sess:
-    saver.restore(sess, tf.train.latest_checkpoint('../data/Models'))
+#with tf.Session() as sess:
+    #saver.restore(sess, tf.train.latest_checkpoint('../data/Models'))
 
-    test_accuracy2,test_loss2 = evaluate(X_test, y_test,ques_test,args.batch_size)
-    print("Test Accuracy = {:.3f}".format(test_accuracy2))
+    #test_accuracy2,test_loss2 = evaluate(X_test, y_test,ques_test,args.batch_size)
+    #print("Test Accuracy = {:.3f}".format(test_accuracy2))
