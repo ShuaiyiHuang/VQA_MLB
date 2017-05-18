@@ -41,9 +41,9 @@ parser.add_argument('--use-mlb', type=int, default=0,
                     help='0 do not use mlb,1 use mlb')
 parser.add_argument('--max-doclength', type=int, default=7,
                     help='max length for each question')
-parser.add_argument('--epochs', type=int, default=150,
+parser.add_argument('--epochs', type=int, default=10,
                     help='batch size for training epoch')
-parser.add_argument('--batch-size', type=int, default=64,
+parser.add_argument('--batch-size', type=int, default=128,
                     help='batch size for training epoch')
 parser.add_argument('--use-glove', type=bool, default=True,
                     help='whether use glove')
@@ -83,7 +83,7 @@ keep_prob=tf.placeholder(dtype=tf.float32,name='gdp')
 # shapes_data =pickle.load(open(dataroot))
 # train,val,test=tfloader.load_shapes(data_root)
 
-train_prefix='../data/shapes/train.small'
+train_prefix='../data/shapes/train.large'
 val_prefix='../data/shapes/val'
 test_prefix='../data/shapes/test'
 
@@ -144,6 +144,13 @@ accuracy_operation = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 num_examples=len(ques_train)
 saver = tf.train.Saver()
 
+#for tensorboard
+tf.summary.scalar('cross_entropy', cross_entropy)
+tf.summary.histogram('cross_entropy_histogram', cross_entropy)
+tf.summary.scalar('loss operation', loss_operation)
+merged=tf.summary.merge_all()
+
+
 # def evaluate(X_data, y_data, batch_size):
 #     num_examples = len(X_data)
 #     total_accuracy = 0
@@ -178,8 +185,11 @@ def evaluate(X_data, y_data,ques_data,batch_size):
 
 
 sess=tf.Session()
+train_writer=tf.summary.FileWriter('./tensorboard',sess.graph)
+
 with sess.as_default():
     sess.run(tf.global_variables_initializer())
+    iternum=0
     for i in range(args.epochs):
         print('Epoch{}...'.format(i))
         #before each epoch,shuffle the training set
@@ -187,6 +197,7 @@ with sess.as_default():
         total_train_accuracy=0
         total_train_loss=0
         for offset in range(0,num_examples,args.batch_size):
+
             batch_x=X_train[offset:offset+args.batch_size]
             batch_ques=ques_train[offset:offset+args.batch_size]
             batch_y=y_train[offset:offset+args.batch_size]
@@ -200,7 +211,9 @@ with sess.as_default():
             sess.run(training_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:args.gdp})
             total_train_accuracy += (train_accuracy * len(batch_ques))
             total_train_loss+=(train_loss*len(batch_ques))
-
+            # summary=sess.run(merged,feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:args.gdp})
+            # train_writer.add_summary(summary,iternum)
+            iternum=iternum+1
         train_accuracy=total_train_accuracy/num_examples
         train_loss=total_train_loss/num_examples
         print('Train Accuracy= {:.3f}, loss = {:.3f} '.format(train_accuracy,train_loss))
@@ -211,8 +224,11 @@ with sess.as_default():
         test_accuracy, test_loss = evaluate(X_test, y_test,ques_test, args.batch_size)
         print("Test Accuracy = {:.3f}".format(test_accuracy))
 
+    train_writer.close()
     saver.save(sess, '../data/Models/baseline')
     print("LSTM Model saved")
+
+
 
 with tf.Session() as sess:
     saver.restore(sess, tf.train.latest_checkpoint('../data/Models'))
