@@ -32,11 +32,11 @@ parser.add_argument('--gdp', type=float, default=0.5,
                     help='general dropout')
 parser.add_argument('--dembd', type=int, default=50,
                     help='dimension for word embedding')
-parser.add_argument('--dcommon', type=int, default=512,
+parser.add_argument('--dcommon', type=int, default=256,
                     help='q and img projected to the same dimension')
 parser.add_argument('--dq', type=int, default=4800,
                     help='dimension for question feature')
-parser.add_argument('--dimg', type=int, default=512,
+parser.add_argument('--dimg', type=int, default=256,
                     help='dimension for images CNN feature')
 parser.add_argument('--use-mlb', type=int, default=0,
                     help='0 do not use mlb,1 use mlb')

@@ -15,19 +15,20 @@ def FullyConnected(input,hidden_size,n_classes):
 
 def Combine(img_features, q_features,dimg,dq,dcommon,pool_method,keep_prob):#???what if dq,dimg not the same?
     #project img_features from lenet to dimg
-    img_features_dimg=img_features
-    if dimg!= 84:
-        with tf.name_scope('img2dimg'):
-            print 'img2dimg'
-            # output layer
-            fc3_w = tf.Variable(tf.truncated_normal(shape=(84, dimg), mean=0, stddev=1))
-            fc3_b = tf.Variable(tf.zeros(dimg))
-            fc3 = tf.matmul(img_features, fc3_w) + fc3_b
-            fc3 = tf.nn.relu(fc3)
-            fc3_drop = tf.nn.dropout(fc3, keep_prob=keep_prob)
-            img_features_dimg=fc3_drop
+    # img_features_dimg=img_features
+    # if dimg!= 84:
+    #     with tf.name_scope('img2dimg'):
+    #         print 'img2dimg'
+    #         # output layer
+    #         fc3_w = tf.Variable(tf.truncated_normal(shape=(84, dimg), mean=0, stddev=1))
+    #         fc3_b = tf.Variable(tf.zeros(dimg))
+    #         fc3 = tf.matmul(img_features, fc3_w) + fc3_b
+    #         fc3 = tf.nn.relu(fc3)
+    #         fc3_drop = tf.nn.dropout(fc3, keep_prob=keep_prob)
+    #         img_features_dimg=fc3_drop
+
     #project img from dimg to dcommon
-    img_features_dcommon = img_features_dimg
+    img_features_dcommon = img_features
     if  dimg!=dcommon:
         with tf.name_scope('dimg2d'):
             print 'dimg2d'

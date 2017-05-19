@@ -22,11 +22,11 @@ parser.add_argument('--gdp', type=float, default=0.5,
                     help='general dropout')
 parser.add_argument('--dembd', type=int, default=50,
                     help='dimension for word embedding')
-parser.add_argument('--dcommon', type=int, default=512,
+parser.add_argument('--dcommon', type=int, default=128,
                     help='q and img projected to the same dimension')
 parser.add_argument('--dq', type=int, default=4800,
                     help='dimension for question feature')
-parser.add_argument('--dimg', type=int, default=512,
+parser.add_argument('--dimg', type=int, default=4096,
                     help='dimension for images CNN feature')
 parser.add_argument('--use-mlb', type=int, default=0,
                     help='0 do not use mlb,1 use mlb')
@@ -42,7 +42,7 @@ parser.add_argument('--is-emtrainable', type=bool, default=False,
                     help='whether embedding matrix trainable')
 parser.add_argument('--vocabs', type=int, default=400001,
                     help='if use-glove is true,vocabs=400001')
-parser.add_argument('--lr', type=float, default=0.0001,
+parser.add_argument('--lr', type=float, default=0.001,
                     help='learning rate')
 parser.add_argument('--n-class', type=int, default=2,
                     help='# output class')
@@ -52,7 +52,9 @@ parser.add_argument('--channel', type=int, default=3,
                     help='channel for input images')
 parser.add_argument('--log-dir', type=str, default='../data/tensorboard',
                     help='directory for tensorboard')
-parser.add_argument('--pool-method', type=int, default=0,
+parser.add_argument('--pool-method', type=int, default=1,
+                    help='0 concatenate,1 element-wise product')
+parser.add_argument('--expnum', type=str, default='exp05',
                     help='0 concatenate,1 element-wise product')
 
 
@@ -72,7 +74,7 @@ ques=tf.placeholder(tf.int32,name='ques')
 y=tf.placeholder(tf.int64,(None),name='y_label')
 keep_prob=tf.placeholder(dtype=tf.float32,name='gdp')
 # q_features=tf.placeholder(dtype=tf.float32,shape=[None,4800],name='q_features')
-imgvec=tf.placeholder(dtype=tf.float32,name='imgvec-pretrained')
+imgvec=tf.placeholder(dtype=tf.float32,shape=[None,4096],name='imgvec-pretrained')
 
 #imdb_data=tfimdbloader.load_imdb(max_length=tfargs.max_doc_length)
 
@@ -83,7 +85,7 @@ train_prefix='../data/shapes/train.large'
 val_prefix='../data/shapes/val'
 test_prefix='../data/shapes/test'
 qfeatures_prefix='../data/shapes/'
-imgfeature_prefix='../data/img-pretrained-large'
+imgfeature_prefix='../data/shapes/features/'
 
 # train_prefix='../data/shapes_control-2x/train.large'
 # val_prefix='../data/shapes_control-2x/val'
@@ -104,9 +106,12 @@ def load_feature(data_prefix='../data/shapes/'):
     return train_qvec,valid_qvec,test_qvec
 
 def load_imgfeature(data_prefix):
-    train=[]
-    valid=[]
-    test=[]
+    train_path=data_prefix+'train_img_lg.npy'
+    valid_path=data_prefix+'valid_img.npy'
+    test_path=data_prefix+'test_img.npy'
+    train=np.load(train_path)
+    valid=np.load(valid_path)
+    test=np.load(test_path)
     return train,valid,test
 
 tfembedding.embedding_prepare(args.max_doclength,args.vocabs,args.use_glove,args.is_emtrainable,args.dembd)
@@ -137,18 +142,18 @@ initial_state = lstm.zero_state(args.batch_size, dtype=tf.float32)
 outputs, final_state = tf.nn.dynamic_rnn(lstm, embedded_chars, sequence_length=None, initial_state=initial_state, dtype=None,time_major=False)
 q_features=outputs[:,-1,:]
 #****CNN***
-img_features=tflenet.LeNet_4(x,use_mlb=args.use_mlb,dim=args.channel,img_dim=args.dimg,keep_prob=keep_prob)
+# img_features=tflenet.LeNet_4(x,use_mlb=args.use_mlb,dim=args.channel,img_dim=args.dimg,keep_prob=keep_prob)
 
 #Combine
 if args.use_mlb==0:
     with tf.name_scope('Combine-0'):
         print 'Combine-0'
-        mixed_features=tfnetwork.Combine(img_features, q_features,args.dimg,args.dq,args.dcommon,args.pool_method,keep_prob)
+        mixed_features=tfnetwork.Combine(imgvec, q_features,args.dimg,args.dq,args.dcommon,args.pool_method,keep_prob)
         logits=tfnetwork.Routine(mixed_features, args.n_class, args.dcommon,args.pool_method,keep_prob)
 if args.use_mlb==1:
     with tf.name_scope('Combine-1'):
         print 'Combine-1'
-        logits = testMLB.MLB_predict(img_features, q_features, s, args.dq, M, args.dcommon, G, args.batch_size, args.n_class)
+        logits = testMLB.MLB_predict(imgvec, q_features, s, args.dq, M, args.dcommon, G, args.batch_size, args.n_class)
 
 # logits=tfnetwork.FullyConnected(q_features,tfargs.hidden_size,tfargs.n_classes)
 cross_entropy=tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y,logits=logits)
@@ -164,8 +169,9 @@ saver = tf.train.Saver()
 
 #for tensorboard
 # tf.summary.scalar('cross_entropy', cross_entropy)
-tf.summary.histogram('cross_entropy_histogram', cross_entropy)
-tf.summary.scalar('loss operation', loss_operation)
+tf.summary.histogram(args.expnum+'cross_entropy_histogram', cross_entropy)
+tf.summary.scalar(args.expnum+'loss operation', loss_operation)
+tf.summary.scalar(args.expnum+'accuracy',accuracy_operation)
 # tf.summary.scalar('M',M)
 merged=tf.summary.merge_all()
 
