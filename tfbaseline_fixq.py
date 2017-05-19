@@ -28,7 +28,7 @@ parser = argparse.ArgumentParser(description='tune VQA MLB baseline')
 
 
 
-parser.add_argument('--gdp', type=float, default=0.25,
+parser.add_argument('--gdp', type=float, default=0.5,
                     help='general dropout')
 parser.add_argument('--dembd', type=int, default=50,
                     help='dimension for word embedding')
@@ -36,13 +36,13 @@ parser.add_argument('--dcommon', type=int, default=512,
                     help='q and img projected to the same dimension')
 parser.add_argument('--dq', type=int, default=4800,
                     help='dimension for question feature')
-parser.add_argument('--dimg', type=int, default=128,
+parser.add_argument('--dimg', type=int, default=512,
                     help='dimension for images CNN feature')
 parser.add_argument('--use-mlb', type=int, default=0,
                     help='0 do not use mlb,1 use mlb')
 parser.add_argument('--max-doclength', type=int, default=7,
                     help='max length for each question')
-parser.add_argument('--epochs', type=int, default=10,
+parser.add_argument('--epochs', type=int, default=200,
                     help='training epochs')
 parser.add_argument('--batch-size', type=int, default=128,
                     help='batch size for training epoch')
@@ -62,6 +62,9 @@ parser.add_argument('--channel', type=int, default=3,
                     help='channel for input images')
 parser.add_argument('--log-dir', type=str, default='../data/tensorboard',
                     help='directory for tensorboard')
+parser.add_argument('--pool-method', type=int, default=0,
+                    help='0 concatenate,1 element-wise product')
+
 
 
 #para for MLB
@@ -139,10 +142,12 @@ img_features=tflenet.LeNet_4(x,use_mlb=args.use_mlb,dim=args.channel,img_dim=arg
 #Combine
 if args.use_mlb==0:
     with tf.name_scope('Combine-0'):
-        mixed_features=tfnetwork.Combine(img_features, q_features,args.dimg,args.dq,args.dcommon,keep_prob)
-        logits=tfnetwork.Routine(mixed_features, args.n_class, args.dcommon,keep_prob)
+        print 'Combine-0'
+        mixed_features=tfnetwork.Combine(img_features, q_features,args.dimg,args.dq,args.dcommon,args.pool_method,keep_prob)
+        logits=tfnetwork.Routine(mixed_features, args.n_class, args.dcommon,args.pool_method,keep_prob)
 if args.use_mlb==1:
     with tf.name_scope('Combine-1'):
+        print 'Combine-1'
         logits = testMLB.MLB_predict(img_features, q_features, s, args.dq, M, args.dcommon, G, args.batch_size, args.n_class)
 
 # logits=tfnetwork.FullyConnected(q_features,tfargs.hidden_size,tfargs.n_classes)
