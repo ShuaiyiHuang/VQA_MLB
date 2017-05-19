@@ -13,29 +13,52 @@ def FullyConnected(input,hidden_size,n_classes):
     logits=tf.matmul(input,W)+b
     return logits
 
-def Combine(img_features, q_features,dimg,dq,keep_prob):#???what if dq,dimg not the same?
+def Combine(img_features, q_features,dimg,dq,dcommon,keep_prob):#???what if dq,dimg not the same?
+    #project img_features from lenet to dimg
+    img_features_dimg=img_features
     if dimg!= 84:
-        # output layer
-        fc3_w = tf.Variable(tf.truncated_normal(shape=(84, dimg), mean=0, stddev=1))
-        fc3_b = tf.Variable(tf.zeros(dimg))
-        fc3 = tf.matmul(img_features, fc3_w) + fc3_b
-        fc3 = tf.nn.relu(fc3)
-        fc3_drop = tf.nn.dropout(fc3, keep_prob=keep_prob)
-        img_features=fc3_drop
-    assert (dimg==dq)
-    mixed_features = tf.multiply(img_features, q_features)
+        with tf.name_scope('img2dimg'):
+            # output layer
+            fc3_w = tf.Variable(tf.truncated_normal(shape=(84, dimg), mean=0, stddev=1))
+            fc3_b = tf.Variable(tf.zeros(dimg))
+            fc3 = tf.matmul(img_features, fc3_w) + fc3_b
+            fc3 = tf.nn.relu(fc3)
+            fc3_drop = tf.nn.dropout(fc3, keep_prob=keep_prob)
+            img_features=fc3_drop
+    #project img from dimg to dcommon
+    img_features_dcommon = img_features_dimg
+    if  dimg!=dcommon:
+        with tf.name_scope('dimg2d'):
+            fc_w = tf.Variable(tf.truncated_normal(shape=(dimg, dcommon), mean=0, stddev=1))
+            fc_b = tf.Variable(tf.zeros(dcommon))
+            fc = tf.matmul(img_features, fc_w) + fc_b
+            fc = tf.nn.relu(fc)
+            fc_drop = tf.nn.dropout(fc, keep_prob=keep_prob)
+            img_features_dcommon=fc_drop
+    #project qfeatures from dq to dcommon
+    q_features_dcommon=q_features
+    if dq!=dcommon:
+        with tf.name_scope('dq2d'):
+            projectq_w = tf.Variable(tf.truncated_normal(shape=(dq, dcommon), mean=0, stddev=1))
+            projectq_b = tf.Variable(tf.zeros(dcommon))
+            q_fc = tf.matmul(q_features, projectq_w) + projectq_b
+            q_relu = tf.nn.relu(q_fc)
+            q_drop = tf.nn.dropout(q_relu, keep_prob=keep_prob)
+            q_features_dcommon=q_drop
+
+    mixed_features = tf.multiply(img_features_dcommon, q_features_dcommon)
     return mixed_features
 
-def Routine(mixed_features,output_dim,hidden_size,keep_prob=0.8,hidden1_units=200):
+def Routine(mixed_features, output_dim, dcommon, keep_prob=0.8, hidden1_units=200):
     weights = tf.Variable(
-        tf.truncated_normal([hidden_size, hidden1_units],stddev=1.0 / np.sqrt(float(hidden_size))),name='weights')
+        tf.truncated_normal([dcommon, hidden1_units], stddev=1.0 / np.sqrt(float(dcommon))),name='weights')
 
     biases = tf.Variable(tf.zeros([hidden1_units]),name='biases')
 
     fc1 = tf.nn.relu(tf.matmul(mixed_features, weights) + biases)
 
     weights2 = tf.Variable(
-        tf.truncated_normal([hidden1_units, hidden1_units],stddev=1.0 / np.sqrt(float(hidden_size))),name='weights')
+        tf.truncated_normal([hidden1_units, hidden1_units], stddev=1.0 / np.sqrt(float(dcommon))),name='weights')
 
     biases2 = tf.Variable(tf.zeros([hidden1_units]),name='biases')
 
@@ -45,7 +68,7 @@ def Routine(mixed_features,output_dim,hidden_size,keep_prob=0.8,hidden1_units=20
 
     weights_o = tf.Variable(
         tf.truncated_normal([hidden1_units, output_dim],
-                            stddev=1.0 / np.sqrt(float(hidden_size))))
+                            stddev=1.0 / np.sqrt(float(dcommon))))
     biases_o = tf.Variable(tf.zeros([output_dim]))
 
     logits = tf.matmul(fc2_drop, weights_o) + biases_o
