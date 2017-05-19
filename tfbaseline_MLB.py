@@ -42,7 +42,7 @@ parser.add_argument('--use-mlb', type=int, default=0,
                     help='0 do not use mlb,1 use mlb')
 parser.add_argument('--max-doclength', type=int, default=7,
                     help='max length for each question')
-parser.add_argument('--epochs', type=int, default=50,
+parser.add_argument('--epochs', type=int, default=10,
                     help='training epochs')
 parser.add_argument('--batch-size', type=int, default=128,
                     help='batch size for training epoch')
@@ -52,7 +52,7 @@ parser.add_argument('--is-emtrainable', type=bool, default=False,
                     help='whether embedding matrix trainable')
 parser.add_argument('--vocabs', type=int, default=400001,
                     help='if use-glove is true,vocabs=400001')
-parser.add_argument('--lr', type=float, default=0.001,
+parser.add_argument('--lr', type=float, default=0.0001,
                     help='learning rate')
 parser.add_argument('--n-class', type=int, default=2,
                     help='# output class')
@@ -149,6 +149,7 @@ saver = tf.train.Saver()
 # tf.summary.scalar('cross_entropy', cross_entropy)
 tf.summary.histogram('cross_entropy_histogram', cross_entropy)
 tf.summary.scalar('loss operation', loss_operation)
+tf.summary.scalar('M',M)
 merged=tf.summary.merge_all()
 
 
@@ -229,12 +230,15 @@ with sess.as_default():
         train_accuracy=total_train_accuracy/num_examples
         train_loss=total_train_loss/num_examples
         print('Train Accuracy= {:.3f}, loss = {:.3f} '.format(train_accuracy,train_loss))
-
+        t_acc=tf.summary.scalar('train acc',train_accuracy)
+        t_merged=tf.summary.merge([t_acc])
+        t_summary=sess.run(t_merged,feed_dict=None)
+        train_writer.add_summary(t_summary)
         val_accuracy,val_loss=evaluate(X_validation,y_validation,ques_validation,args.batch_size,valid_writer,merged,iternum)
         print("Validation Accuracy = {:.3f} , loss = {:.3f} ".format(val_accuracy,val_loss))
 
-        test_accuracy, test_loss = evaluate(X_test, y_test,ques_test, args.batch_size,test_writer, merged, iternum)
-        print("Test Accuracy = {:.3f}".format(test_accuracy))
+        # test_accuracy, test_loss = evaluate(X_test, y_test,ques_test, args.batch_size,test_writer, merged, iternum)
+        # print("Test Accuracy = {:.3f}".format(test_accuracy))
 
     train_writer.close()
     valid_writer.close()
