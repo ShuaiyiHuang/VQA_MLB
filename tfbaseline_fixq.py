@@ -120,9 +120,9 @@ X_test,y_test,q_test,ques_test= shapes_data.test.images, shapes_data.test.labels
 
 qvec_train,qvec_valid,qvec_test=load_feature(qfeatures_prefix)
 #shuffle
-X_train,y_train,q_train,ques_train=shuffle(X_train,y_train,q_train,ques_train)
-X_validation,y_validation,q_validation,ques_validation=shuffle(X_validation,y_validation,q_validation,ques_validation)
-X_test,y_test,q_test,ques_test=shuffle(X_test,y_test,q_test,ques_test)
+X_train,y_train,q_train,ques_train,qvec_train=shuffle(X_train,y_train,q_train,ques_train,qvec_train)
+X_validation,y_validation,q_validation,ques_validation,qvec_valid=shuffle(X_validation,y_validation,q_validation,ques_validation,qvec_valid)
+X_test,y_test,q_test,ques_test,qvec_test=shuffle(X_test,y_test,q_test,ques_test,qvec_test)
 
 
 #Padding to fit Lenet
@@ -223,7 +223,7 @@ with sess.as_default():
     for i in range(args.epochs):
         print('Epoch{}...'.format(i))
         #before each epoch,shuffle the training set
-        X_train, y_train, q_train, ques_train = shuffle(X_train, y_train, q_train, ques_train)
+        X_train, y_train, q_train, ques_train,qvec_train = shuffle(X_train, y_train, q_train, ques_train,qvec_train)
         total_train_accuracy=0
         total_train_loss=0
         for offset in range(0,num_examples,args.batch_size):
