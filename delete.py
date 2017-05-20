@@ -8,19 +8,38 @@ import tensorflow as tf
 # word_ids=word_ids-1
 # print type(arr0)
 # print word_ids
-iternum=10
-str='test'+str(iternum)
-print str
-dataroot='matsmall-past/'
 
-from scipy.io import loadmat
-x = loadmat(dataroot+'iternum5.mat')['feature']
+#0519
+# iternum=10
+# str='test'+str(iternum)
+# print str
+# dataroot='matsmall-past/'
+#
+# from scipy.io import loadmat
+# x = loadmat(dataroot+'iternum5.mat')['feature']
+#
+# print x
+# print type(x)
+#
+# dataroot2='matsmall2/'
+#
+# x2 = loadmat(dataroot+'iternum5.mat')['feature']
+# print type(x2)
+# print x2
 
-print x
-print type(x)
+import logging
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
-dataroot2='matsmall2/'
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 
-x2 = loadmat(dataroot+'iternum5.mat')['feature']
-print type(x2)
-print x2
+fh = logging.FileHandler('log_filename.txt')
+fh.setLevel(logging.INFO)
+fh.setFormatter(formatter)
+logger.addHandler(fh)
+
+ch = logging.StreamHandler()
+ch.setLevel(logging.INFO)
+ch.setFormatter(formatter)
+logger.addHandler(ch)
+logger.info('This is a test log message.')

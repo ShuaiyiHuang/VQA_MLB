@@ -10,6 +10,9 @@ import testMLB
 import argparse
 from sklearn.utils import shuffle
 import scipy.io as sio
+import logging
+import os
+import shutil
 
 
 tfargs.definition()
@@ -54,8 +57,10 @@ parser.add_argument('--log-dir', type=str, default='../data/tensorboard',
                     help='directory for tensorboard')
 parser.add_argument('--pool-method', type=int, default=1,
                     help='0 concatenate,1 element-wise product')
-parser.add_argument('--expnum', type=str, default='exp05',
+parser.add_argument('--expnum', type=str, default='exp01',
                     help='0 concatenate,1 element-wise product')
+parser.add_argument('--res-root', type=str, default='../data/expresult/0520/',
+                    help='path for restoring result')
 
 
 
@@ -68,6 +73,45 @@ M=16
 G=2
 
 args=parser.parse_args()
+
+
+#directory
+if not os.path.exists(args.res_root):
+    os.makedirs(args.res_root)
+if not os.path.exists(args.res_root+args.expnum):
+    os.makedirs(args.res_root+args.expnum)
+if not os.path.exists(args.res_root+args.expnum+'/train'):
+    os.makedirs(args.res_root+args.expnum+'/train')
+else:
+    shutil.rmtree(args.res_root+args.expnum+'/train')
+if not os.path.exists(args.res_root+args.expnum+'/valid'):
+    os.makedirs(args.res_root+args.expnum+'/valid')
+else:
+    shutil.rmtree(args.res_root + args.expnum + '/valid')
+if not os.path.exists(args.res_root+args.expnum+'/test'):
+    os.makedirs(args.res_root+args.expnum+'/test')
+else:
+    shutil.rmtree(args.res_root + args.expnum + '/test')
+
+
+
+#logging
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+fh = logging.FileHandler(args.res_root+args.expnum+'/'+args.expnum+'.txt')
+fh.setLevel(logging.INFO)
+fh.setFormatter(formatter)
+logger.addHandler(fh)
+
+ch = logging.StreamHandler()
+ch.setLevel(logging.INFO)
+ch.setFormatter(formatter)
+logger.addHandler(ch)
+
+
+logger.info('\n'+'Starting '+args.expnum+'......')
+logger.info(args)
 
 x = tf.placeholder(tf.float32, (None, 32, 32, args.channel),name='x_img')
 ques=tf.placeholder(tf.int32,name='ques')
@@ -147,12 +191,12 @@ q_features=outputs[:,-1,:]
 #Combine
 if args.use_mlb==0:
     with tf.name_scope('Combine-0'):
-        print 'Combine-0'
+        logger.info('Combine-0')
         mixed_features=tfnetwork.Combine(imgvec, q_features,args.dimg,args.dq,args.dcommon,args.pool_method,keep_prob)
         logits=tfnetwork.Routine(mixed_features, args.n_class, args.dcommon,args.pool_method,keep_prob)
 if args.use_mlb==1:
     with tf.name_scope('Combine-1'):
-        print 'Combine-1'
+        logger.info('Combine-1')
         logits = testMLB.MLB_predict(imgvec, q_features, s, args.dq, M, args.dcommon, G, args.batch_size, args.n_class)
 
 # logits=tfnetwork.FullyConnected(q_features,tfargs.hidden_size,tfargs.n_classes)
@@ -219,15 +263,15 @@ def evaluate(imgvec_data, y_data, ques_data, batch_size, writer, merged, iternum
     return mean_accuracy,mean_loss
 
 sess=tf.Session()
-train_writer=tf.summary.FileWriter(args.log_dir+'/train',sess.graph)
-valid_writer=tf.summary.FileWriter(args.log_dir+'/valid')
-test_writer=tf.summary.FileWriter(args.log_dir+'/test')
+train_writer=tf.summary.FileWriter(args.res_root+args.expnum+'/train',sess.graph)
+valid_writer=tf.summary.FileWriter(args.res_root+args.expnum+'/valid')
+test_writer=tf.summary.FileWriter(args.res_root+args.expnum+'/test')
 
 with sess.as_default():
     sess.run(tf.global_variables_initializer())
     iternum=0
     for i in range(args.epochs):
-        print('Epoch{}...'.format(i))
+        logger.info('Epoch{}...'.format(i))
         #before each epoch,shuffle the training set
         X_train, y_train, q_train, ques_train,imgvec_train = shuffle(X_train, y_train, q_train, ques_train,imgvec_train)
         total_train_accuracy=0
@@ -250,13 +294,13 @@ with sess.as_default():
             iternum=iternum+1
         train_accuracy=total_train_accuracy/num_examples
         train_loss=total_train_loss/num_examples
-        print('Train Accuracy= {:.3f}, loss = {:.3f} '.format(train_accuracy,train_loss))
+        logger.info('Train Accuracy= {:.3f}, loss = {:.3f} '.format(train_accuracy,train_loss))
         # t_acc=tf.summary.scalar('train acc',train_accuracy)
         # t_merged=tf.summary.merge([t_acc])
         # t_summary=sess.run(t_merged,feed_dict=None)
         # train_writer.add_summary(t_summary)
         val_accuracy,val_loss=evaluate(imgvec_valid,y_validation,ques_validation,args.batch_size,valid_writer,merged,iternum)
-        print("Validation Accuracy = {:.3f} , loss = {:.3f} ".format(val_accuracy,val_loss))
+        logger.info("Validation Accuracy = {:.3f} , loss = {:.3f} ".format(val_accuracy,val_loss))
 
         # test_accuracy, test_loss = evaluate(X_test, y_test,ques_test, args.batch_size,test_writer, merged, iternum)
         # print("Test Accuracy = {:.3f}".format(test_accuracy))
@@ -265,7 +309,7 @@ with sess.as_default():
     valid_writer.close()
     test_writer.close()
     saver.save(sess, '../data/Models/baseline')
-    print("LSTM Model saved")
+    logger.info("LSTM Model saved")
 
 
 
