@@ -10,19 +10,13 @@ import testMLB
 import argparse
 from sklearn.utils import shuffle
 import scipy.io as sio
-
+import tfcifar
+import logging
+import os
+import shutil
 
 tfargs.definition()
-# tfargs.embedded_dim=50
-# tfargs.use_glove=True
-# tfargs.is_embd_matrix_trainable=False
-# tfargs.max_doc_length=7
-# tfargs.batch_size=16
-# tfargs.q_dim=64
-# tfargs.epochs=10
-# tfargs.rate=0.001
-# tfargs.n_classess=2
-# tfargs.vocab_size=14
+
 
 parser = argparse.ArgumentParser(description='tune VQA MLB baseline')
 
@@ -36,7 +30,7 @@ parser.add_argument('--dcommon', type=int, default=256,
                     help='q and img projected to the same dimension')
 parser.add_argument('--dq', type=int, default=4800,
                     help='dimension for question feature')
-parser.add_argument('--dimg', type=int, default=256,
+parser.add_argument('--dimg', type=int, default=192,
                     help='dimension for images CNN feature')
 parser.add_argument('--use-mlb', type=int, default=0,
                     help='0 do not use mlb,1 use mlb')
@@ -64,7 +58,14 @@ parser.add_argument('--log-dir', type=str, default='../data/tensorboard',
                     help='directory for tensorboard')
 parser.add_argument('--pool-method', type=int, default=0,
                     help='0 concatenate,1 element-wise product')
-
+parser.add_argument('--use-lenet', type=int, default=0,
+                    help='0 cifar network,1 lenet')
+parser.add_argument('--expnum', type=str, default='exp02',
+                    help='exp number')
+parser.add_argument('--res-root', type=str, default='../data/expresult/0521/',
+                    help='path for restoring result')
+parser.add_argument('--data-root', type=str, default='../data/shapes',
+                    help='path for restoring result')
 
 
 #para for MLB
@@ -77,7 +78,47 @@ G=2
 
 args=parser.parse_args()
 
-x = tf.placeholder(tf.float32, (None, 32, 32, args.channel),name='x_img')
+#directory
+if not os.path.exists(args.res_root):
+    os.makedirs(args.res_root)
+if not os.path.exists(args.res_root+args.expnum):
+    os.makedirs(args.res_root+args.expnum)
+if not os.path.exists(args.res_root+args.expnum+'/train'):
+    os.makedirs(args.res_root+args.expnum+'/train')
+else:
+    shutil.rmtree(args.res_root+args.expnum+'/train')
+if not os.path.exists(args.res_root+args.expnum+'/valid'):
+    os.makedirs(args.res_root+args.expnum+'/valid')
+else:
+    shutil.rmtree(args.res_root + args.expnum + '/valid')
+if not os.path.exists(args.res_root+args.expnum+'/test'):
+    os.makedirs(args.res_root+args.expnum+'/test')
+else:
+    shutil.rmtree(args.res_root + args.expnum + '/test')
+
+
+
+#logging
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+fh = logging.FileHandler(args.res_root+args.expnum+'/'+args.expnum+'.txt')
+fh.setLevel(logging.INFO)
+fh.setFormatter(formatter)
+logger.addHandler(fh)
+
+ch = logging.StreamHandler()
+ch.setLevel(logging.INFO)
+ch.setFormatter(formatter)
+logger.addHandler(ch)
+
+
+logger.info('\n'+'Starting '+args.expnum+'......')
+logger.info(args)
+
+
+
+x = tf.placeholder(tf.float32, (args.batch_size, 32, 32, args.channel),name='x_img')
 ques=tf.placeholder(tf.int32,name='ques')
 y=tf.placeholder(tf.int64,(None),name='y_label')
 keep_prob=tf.placeholder(dtype=tf.float32,name='gdp')
@@ -87,9 +128,10 @@ q_features=tf.placeholder(dtype=tf.float32,shape=[None,4800],name='q_features')
 # shapes_data =pickle.load(open(dataroot))
 # train,val,test=tfloader.load_shapes(data_root)
 
-train_prefix='../data/shapes/train.large'
-val_prefix='../data/shapes/val'
-test_prefix='../data/shapes/test'
+train_prefix=os.path.join(args.data_root,'train.large')
+val_prefix=os.path.join(args.data_root,'val')
+test_prefix=os.path.join(args.data_root,'test')
+
 qfeatures_prefix='../data/shapes/'
 
 # train_prefix='../data/shapes_control-2x/train.large'
@@ -137,17 +179,23 @@ X_test=tflenet.padding(X_test,args.img_size)
 # outputs, final_state = tf.nn.dynamic_rnn(lstm, embedded_chars, sequence_length=None, initial_state=initial_state, dtype=None,time_major=False)
 # q_features=outputs[:,-1,:]
 #****CNN***
-img_features=tflenet.LeNet_4(x,use_mlb=args.use_mlb,dim=args.channel,img_dim=args.dimg,keep_prob=keep_prob)
-# print 'img_features in main:',img_features
+if args.use_lenet:
+    logger.info('lenet cnn')
+    img_features=tflenet.LeNet_4(x,use_mlb=args.use_mlb,dim=args.channel,img_dim=args.dimg,keep_prob=keep_prob)
+else:
+    logger.info('cifar cnn')
+    img_features=tfcifar.inference(x,args.batch_size)
+
 #Combine
+
 if args.use_mlb==0:
     with tf.name_scope('Combine-0'):
-        print 'Combine-0'
+        logger.info('Combine-0')
         mixed_features=tfnetwork.Combine(img_features, q_features,args.dimg,args.dq,args.dcommon,args.pool_method,keep_prob)
         logits=tfnetwork.Routine(mixed_features, args.n_class, args.dcommon,args.pool_method,keep_prob)
 if args.use_mlb==1:
     with tf.name_scope('Combine-1'):
-        print 'Combine-1'
+        logger.info('Combine-1')
         logits = testMLB.MLB_predict(img_features, q_features, s, args.dq, M, args.dcommon, G, args.batch_size, args.n_class)
 
 # logits=tfnetwork.FullyConnected(q_features,tfargs.hidden_size,tfargs.n_classes)
@@ -165,8 +213,8 @@ saver = tf.train.Saver()
 #for tensorboard
 # tf.summary.scalar('cross_entropy', cross_entropy)
 tf.summary.histogram('cross_entropy_histogram', cross_entropy)
-tf.summary.scalar('loss operation', loss_operation)
-# tf.summary.scalar('M',M)
+tf.summary.scalar(args.expnum+'_loss', loss_operation)
+tf.summary.scalar(args.expnum+'_accuracy',accuracy_operation)
 merged=tf.summary.merge_all()
 
 
@@ -199,10 +247,10 @@ def evaluate(X_data, y_data, qvec_data, batch_size, writer, merged, iternum):
         loss=sess.run(loss_operation, feed_dict={x:batch_x, y:batch_y,q_features:batch_qvec,keep_prob:1.0})
         accuracy = sess.run(accuracy_operation, feed_dict={x:batch_x, y:batch_y,q_features:batch_qvec,keep_prob:1.0})
         summary=sess.run(merged,feed_dict={x:batch_x, y:batch_y,q_features:batch_qvec,keep_prob:1.0})
-        mixf=sess.run(mixed_features,feed_dict={x:batch_x, y:batch_y,q_features:batch_qvec,keep_prob:1.0})
         if savemat==True:
             #any need to convert to matrix?
             # mixf_matrix=np.asmatrix(mixf)
+            mixf = sess.run(mixed_features, feed_dict={x: batch_x, y: batch_y, q_features: batch_qvec, keep_prob: 1.0})
             mat_str=matpath+'iternum'+str(iternum)
             sio.savemat(mat_str,{'feature':mixf})
         writer.add_summary(summary, iternum)
@@ -213,15 +261,15 @@ def evaluate(X_data, y_data, qvec_data, batch_size, writer, merged, iternum):
     return mean_accuracy,mean_loss
 
 sess=tf.Session()
-train_writer=tf.summary.FileWriter(args.log_dir+'/train',sess.graph)
-valid_writer=tf.summary.FileWriter(args.log_dir+'/valid')
-test_writer=tf.summary.FileWriter(args.log_dir+'/test')
+train_writer=tf.summary.FileWriter(args.res_root+args.expnum+'/train',sess.graph)
+valid_writer=tf.summary.FileWriter(args.res_root+args.expnum+'/valid')
+test_writer=tf.summary.FileWriter(args.res_root+args.expnum+'/test')
 
 with sess.as_default():
     sess.run(tf.global_variables_initializer())
     iternum=0
     for i in range(args.epochs):
-        print('Epoch{}...'.format(i))
+        logger.info(('Epoch{}...'.format(i)))
         #before each epoch,shuffle the training set
         X_train, y_train, q_train, ques_train,qvec_train = shuffle(X_train, y_train, q_train, ques_train,qvec_train)
         total_train_accuracy=0
@@ -247,13 +295,10 @@ with sess.as_default():
             iternum=iternum+1
         train_accuracy=total_train_accuracy/num_examples
         train_loss=total_train_loss/num_examples
-        print('Train Accuracy= {:.3f}, loss = {:.3f} '.format(train_accuracy,train_loss))
-        # t_acc=tf.summary.scalar('train acc',train_accuracy)
-        # t_merged=tf.summary.merge([t_acc])
-        # t_summary=sess.run(t_merged,feed_dict=None)
-        # train_writer.add_summary(t_summary)
+        logger.info('Train Accuracy= {:.3f}, loss = {:.3f} '.format(train_accuracy,train_loss))
+
         val_accuracy,val_loss=evaluate(X_validation,y_validation,qvec_valid,args.batch_size,valid_writer,merged,iternum)
-        print("Validation Accuracy = {:.3f} , loss = {:.3f} ".format(val_accuracy,val_loss))
+        logger.info("Validation Accuracy = {:.3f} , loss = {:.3f} ".format(val_accuracy,val_loss))
 
         # test_accuracy, test_loss = evaluate(X_test, y_test,ques_test, args.batch_size,test_writer, merged, iternum)
         # print("Test Accuracy = {:.3f}".format(test_accuracy))
@@ -261,8 +306,8 @@ with sess.as_default():
     train_writer.close()
     valid_writer.close()
     test_writer.close()
-    saver.save(sess, '../data/Models/baseline')
-    print("LSTM Model saved")
+    saver.save(sess, args.res_root+args.expnum+'/'+'fixq'+args.expnum)
+    logger.info("fixq Model saved")
 
 
 

@@ -25,7 +25,7 @@ parser.add_argument('--gdp', type=float, default=0.5,
                     help='general dropout')
 parser.add_argument('--dembd', type=int, default=50,
                     help='dimension for word embedding')
-parser.add_argument('--dcommon', type=int, default=128,
+parser.add_argument('--dcommon', type=int, default=256,
                     help='q and img projected to the same dimension')
 parser.add_argument('--dq', type=int, default=4800,
                     help='dimension for question feature')
@@ -57,9 +57,13 @@ parser.add_argument('--log-dir', type=str, default='../data/tensorboard',
                     help='directory for tensorboard')
 parser.add_argument('--pool-method', type=int, default=1,
                     help='0 concatenate,1 element-wise product')
+parser.add_argument('--use-lenet', type=int, default=0,
+                    help='0 cifar network,1 lenet')
 parser.add_argument('--expnum', type=str, default='exp01',
                     help='0 concatenate,1 element-wise product')
 parser.add_argument('--res-root', type=str, default='../data/expresult/0520/',
+                    help='path for restoring result')
+parser.add_argument('--data-root', type=str, default='../data/shapes',
                     help='path for restoring result')
 
 
@@ -125,9 +129,13 @@ imgvec=tf.placeholder(dtype=tf.float32,shape=[None,4096],name='imgvec-pretrained
 # shapes_data =pickle.load(open(dataroot))
 # train,val,test=tfloader.load_shapes(data_root)
 
-train_prefix='../data/shapes/train.large'
-val_prefix='../data/shapes/val'
-test_prefix='../data/shapes/test'
+# train_prefix='../data/shapes/train.large'
+# val_prefix='../data/shapes/val'
+# test_prefix='../data/shapes/test'
+train_prefix=os.path.join(args.data_root,'train.large')
+val_prefix=os.path.join(args.data_root,'val')
+test_prefix=os.path.join(args.data_root,'test')
+
 qfeatures_prefix='../data/shapes/'
 imgfeature_prefix='../data/shapes/features/'
 

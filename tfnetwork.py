@@ -26,7 +26,10 @@ def Combine(img_features, q_features,dimg,dq,dcommon,pool_method,keep_prob):#???
     #         fc3 = tf.nn.relu(fc3)
     #         fc3_drop = tf.nn.dropout(fc3, keep_prob=keep_prob)
     #         img_features_dimg=fc3_drop
-
+    print 'img_feature in combine:',img_features
+    # img_dim=img_features.get_shape()[1].value
+    img_dim=192
+    assert (dimg==img_dim)
     #project img from dimg to dcommon
     img_features_dcommon = img_features
     if  dimg!=dcommon:
