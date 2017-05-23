@@ -21,7 +21,8 @@ tfargs.definition()
 parser = argparse.ArgumentParser(description='tune VQA MLB baseline')
 
 
-
+parser.add_argument('--projectdp', type=float, default=1.0,
+                    help='projection dropout')
 parser.add_argument('--gdp', type=float, default=0.5,
                     help='general dropout')
 parser.add_argument('--dembd', type=int, default=50,
@@ -54,17 +55,15 @@ parser.add_argument('--img-size', type=int, default=30,
                     help='size of input images')
 parser.add_argument('--channel', type=int, default=3,
                     help='channel for input images')
-parser.add_argument('--log-dir', type=str, default='../data/tensorboard',
-                    help='directory for tensorboard')
 parser.add_argument('--pool-method', type=int, default=0,
                     help='0 concatenate,1 element-wise product')
 parser.add_argument('--use-lenet', type=int, default=0,
                     help='0 cifar network,1 lenet')
-parser.add_argument('--expnum', type=str, default='exp02',
+parser.add_argument('--expnum', type=str, default='exp08',
                     help='exp number')
-parser.add_argument('--res-root', type=str, default='../data/expresult/0521/',
+parser.add_argument('--res-root', type=str, default='../data/expresult/0523/',
                     help='path for restoring result')
-parser.add_argument('--data-root', type=str, default='../data/shapes',
+parser.add_argument('--data-root', type=str, default='../data/shapes_control-3x/',
                     help='path for restoring result')
 
 
@@ -132,7 +131,7 @@ train_prefix=os.path.join(args.data_root,'train.large')
 val_prefix=os.path.join(args.data_root,'val')
 test_prefix=os.path.join(args.data_root,'test')
 
-qfeatures_prefix='../data/shapes/'
+qfeatures_prefix=args.data_root
 
 # train_prefix='../data/shapes_control-2x/train.large'
 # val_prefix='../data/shapes_control-2x/val'
@@ -191,7 +190,7 @@ else:
 if args.use_mlb==0:
     with tf.name_scope('Combine-0'):
         logger.info('Combine-0')
-        mixed_features=tfnetwork.Combine(img_features, q_features,args.dimg,args.dq,args.dcommon,args.pool_method,keep_prob)
+        mixed_features=tfnetwork.Combine(img_features, q_features,args.dimg,args.dq,args.dcommon,args.pool_method,args.projectdp)
         logits=tfnetwork.Routine(mixed_features, args.n_class, args.dcommon,args.pool_method,keep_prob)
 if args.use_mlb==1:
     with tf.name_scope('Combine-1'):
@@ -286,17 +285,18 @@ with sess.as_default():
             # print 'np.ones',batch_ques.shape,batch_ques
             train_loss=sess.run(loss_operation, feed_dict={x:batch_x,y:batch_y,q_features:batch_qvec,keep_prob:args.gdp})
             train_accuracy=sess.run(accuracy_operation, feed_dict={x:batch_x, y:batch_y,q_features:batch_qvec,keep_prob:args.gdp})
-
             sess.run(training_operation, feed_dict={x:batch_x, y:batch_y,q_features:batch_qvec,keep_prob:args.gdp})
+            summary=sess.run(merged,feed_dict={x:batch_x, y:batch_y,q_features:batch_qvec,keep_prob:args.gdp})
+
             total_train_accuracy += (train_accuracy * len(batch_y))
             total_train_loss+=(train_loss*len(batch_y))
-            summary=sess.run(merged,feed_dict={x:batch_x, y:batch_y,q_features:batch_qvec,keep_prob:args.gdp})
+
             train_writer.add_summary(summary,iternum)
             iternum=iternum+1
         train_accuracy=total_train_accuracy/num_examples
         train_loss=total_train_loss/num_examples
         logger.info('Train Accuracy= {:.3f}, loss = {:.3f} '.format(train_accuracy,train_loss))
-
+        saver.save(sess, args.res_root+args.expnum+'/'+'fixq'+args.expnum+'E'+str(i))
         val_accuracy,val_loss=evaluate(X_validation,y_validation,qvec_valid,args.batch_size,valid_writer,merged,iternum)
         logger.info("Validation Accuracy = {:.3f} , loss = {:.3f} ".format(val_accuracy,val_loss))
 

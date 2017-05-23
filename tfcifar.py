@@ -3,8 +3,8 @@ import re
 
 FLAGS = tf.app.flags.FLAGS
 TOWER_NAME = 'tower'
-tf.app.flags.DEFINE_boolean('use_fp16', False,
-                            """Train the model using fp16.""")
+#tf.app.flags.DEFINE_boolean('use_fp16', False,
+#                            """Train the model using fp16.""")
 
 def _activation_summary(x):
   """Helper to create summaries for activations.
@@ -36,7 +36,8 @@ def _variable_on_cpu(name, shape, initializer):
     Variable Tensor
   """
   with tf.device('/cpu:0'):
-    dtype = tf.float16 if FLAGS.use_fp16 else tf.float32
+#    dtype = tf.float16 if FLAGS.use_fp16 else tf.float32
+    dtype=tf.float32
     var = tf.get_variable(name, shape, initializer=initializer, dtype=dtype)
   return var
 
@@ -57,7 +58,8 @@ def _variable_with_weight_decay(name, shape, stddev, wd):
   Returns:
     Variable Tensor
   """
-  dtype = tf.float16 if FLAGS.use_fp16 else tf.float32
+#  dtype = tf.float16 if FLAGS.use_fp16 else tf.float32
+  dtype=tf.float32
   var = _variable_on_cpu(
       name,
       shape,
@@ -135,7 +137,7 @@ def inference(images,batch_size):
     # Move everything into depth so we can perform a single matrix multiply.
     #reshape=[batch_size,4096]
     reshape = tf.reshape(pool2, [batch_size, -1])
-    print 'reshape',reshape
+    print 'cifar reshape',reshape
     dim = reshape.get_shape()[1].value
     weights = _variable_with_weight_decay('weights', shape=[dim, 384],
                                           stddev=0.04, wd=0.004)
@@ -150,5 +152,5 @@ def inference(images,batch_size):
     biases = _variable_on_cpu('biases', [192], tf.constant_initializer(0.1))
     local4 = tf.nn.relu(tf.matmul(local3, weights) + biases, name=scope.name)
     # _activation_summary(local4)
-  print 'local 4',local4,type(local4)
+  print 'cifar local 4',local4,type(local4)
   return local4

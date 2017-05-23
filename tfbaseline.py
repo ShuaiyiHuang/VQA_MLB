@@ -21,14 +21,15 @@ tfargs.definition()
 parser = argparse.ArgumentParser(description='tune VQA MLB baseline')
 
 
-
+parser.add_argument('--projectdp', type=float, default=1.0,
+                    help='projection dropout')
 parser.add_argument('--gdp', type=float, default=0.5,
                     help='general dropout')
 parser.add_argument('--dembd', type=int, default=50,
                     help='dimension for word embedding')
 parser.add_argument('--dcommon', type=int, default=256,
                     help='q and img projected to the same dimension')
-parser.add_argument('--dq', type=int, default=256,
+parser.add_argument('--dq', type=int, default=4800,
                     help='dimension for question feature')
 parser.add_argument('--dimg', type=int, default=192,
                     help='dimension for images CNN feature')
@@ -36,7 +37,7 @@ parser.add_argument('--use-mlb', type=int, default=0,
                     help='0 do not use mlb,1 use mlb')
 parser.add_argument('--max-doclength', type=int, default=7,
                     help='max length for each question')
-parser.add_argument('--epochs', type=int, default=200,
+parser.add_argument('--epochs', type=int, default=20,
                     help='training epochs')
 parser.add_argument('--batch-size', type=int, default=128,
                     help='batch size for training epoch')
@@ -60,13 +61,13 @@ parser.add_argument('--pool-method', type=int, default=0,
                     help='0 concatenate,1 element-wise product')
 parser.add_argument('--use-lenet', type=int, default=0,
                     help='0 cifar network,1 lenet')
-parser.add_argument('--expnum', type=str, default='exp03',
+parser.add_argument('--expnum', type=str, default='exp05',
                     help='exp number')
-parser.add_argument('--res-root', type=str, default='../data/expresult/0521/',
+parser.add_argument('--res-root', type=str, default='../data/expresult/0523/',
                     help='path for restoring result')
 parser.add_argument('--data-root', type=str, default='../data/shapes_control-3x',
                     help='path for restoring result')
-parser.add_argument('--use-senenc', type=bool, default=False,
+parser.add_argument('--use-senenc', type=bool, default=True,
                     help='whether use sentence encoding')
 
 
@@ -135,7 +136,7 @@ train_prefix=os.path.join(args.data_root,'train.large')
 val_prefix=os.path.join(args.data_root,'val')
 test_prefix=os.path.join(args.data_root,'test')
 
-qfeatures_prefix='../data/shapes/'
+qfeatures_prefix=args.data_root
 
 # train_prefix='../data/shapes_control-2x/train.large'
 # val_prefix='../data/shapes_control-2x/val'
@@ -145,14 +146,14 @@ qfeatures_prefix='../data/shapes/'
 # val_prefix='../data/shapes_control-3x/val'
 # test_prefix='../data/shapes_control-3x/test'
 
-def load_feature(data_prefix='../data/shapes/'):
-    train_path=data_prefix+'train_skipvec_lg.npy'
-    valid_path=data_prefix+'valid_skipvec.npy'
-    test_path=data_prefix+'test_skipvec.npy'
+def load_feature(data_prefix):
+    train_path=os.path.join(data_prefix,'train_skipvec_lg.npy')
+    valid_path=os.path.join(data_prefix,'valid_skipvec.npy')
+    test_path=os.path.join(data_prefix,'test_skipvec.npy')
     train_qvec=np.load(train_path)
     valid_qvec=np.load(valid_path)
     test_qvec=np.load(test_path)
-    print type(train_qvec),train_qvec.shape,valid_qvec.shape,test_qvec.shape
+    print 'load sentence encoding:',type(train_qvec),train_qvec.shape,valid_qvec.shape,test_qvec.shape
     return train_qvec,valid_qvec,test_qvec
 
 tfembedding.embedding_prepare(args.max_doclength,args.vocabs,args.use_glove,args.is_emtrainable,args.dembd)
@@ -163,15 +164,15 @@ X_train,y_train,q_train,ques_train= shapes_data.train.images, shapes_data.train.
 X_validation,y_validation,q_validation,ques_validation= shapes_data.val.images, shapes_data.val.labels, shapes_data.val.queries, shapes_data.val.ques
 X_test,y_test,q_test,ques_test= shapes_data.test.images, shapes_data.test.labels, shapes_data.test.queries, shapes_data.test.ques
 
-qvec_train,qvec_valid,qvec_test=load_feature(qfeatures_prefix)
 #shuffle
 if args.use_senenc==True:
-    logger.info('use_senenc:yes,')
+    logger.info('shuffle use_senenc:yes,')
+    qvec_train, qvec_valid, qvec_test = load_feature(qfeatures_prefix)
     X_train,y_train,q_train,ques_train,qvec_train=shuffle(X_train,y_train,q_train,ques_train,qvec_train)
     X_validation,y_validation,q_validation,ques_validation,qvec_valid=shuffle(X_validation,y_validation,q_validation,ques_validation,qvec_valid)
     X_test,y_test,q_test,ques_test,qvec_test=shuffle(X_test,y_test,q_test,ques_test,qvec_test)
 else:
-    logger.info('use_senenc:no,')
+    logger.info('shuffle use_senenc:no,')
     X_train,y_train,q_train,ques_train=shuffle(X_train,y_train,q_train,ques_train)
     X_validation,y_validation,q_validation,ques_validation=shuffle(X_validation,y_validation,q_validation,ques_validation)
     X_test,y_test,q_test,ques_test=shuffle(X_test,y_test,q_test,ques_test)
@@ -183,11 +184,16 @@ X_validation=tflenet.padding(X_validation,args.img_size)
 X_test=tflenet.padding(X_test,args.img_size)
 
 #LSTM
-embedded_chars=tfembedding.get_embedded_from_wordid(ques,args.batch_size,args.max_doclength,args.dembd)
-lstm = tf.contrib.rnn.BasicLSTMCell(args.dq, state_is_tuple=False)
-initial_state = lstm.zero_state(args.batch_size, dtype=tf.float32)
-outputs, final_state = tf.nn.dynamic_rnn(lstm, embedded_chars, sequence_length=None, initial_state=initial_state, dtype=None,time_major=False)
-q_features=outputs[:,-1,:]
+if args.use_senenc==True:
+    logger.info('LSTM use_senenc:yes')
+    q_features = tf.placeholder(dtype=tf.float32, shape=[None, 4800], name='q_features')
+else:
+    logger.info('LSTM use_senenc:no')
+    embedded_chars=tfembedding.get_embedded_from_wordid(ques,args.batch_size,args.max_doclength,args.dembd)
+    lstm = tf.contrib.rnn.BasicLSTMCell(args.dq, state_is_tuple=False)
+    initial_state = lstm.zero_state(args.batch_size, dtype=tf.float32)
+    outputs, final_state = tf.nn.dynamic_rnn(lstm, embedded_chars, sequence_length=None, initial_state=initial_state, dtype=None,time_major=False)
+    q_features=outputs[:,-1,:]
 
 #****CNN***
 if args.use_lenet:
@@ -202,7 +208,7 @@ else:
 if args.use_mlb==0:
     with tf.name_scope('Combine-0'):
         logger.info('Combine-0')
-        mixed_features=tfnetwork.Combine(img_features, q_features,args.dimg,args.dq,args.dcommon,args.pool_method,keep_prob)
+        mixed_features=tfnetwork.Combine(img_features, q_features,args.dimg,args.dq,args.dcommon,args.pool_method,args.projectdp)
         logits=tfnetwork.Routine(mixed_features, args.n_class, args.dcommon,args.pool_method,keep_prob)
 if args.use_mlb==1:
     with tf.name_scope('Combine-1'):
@@ -248,18 +254,28 @@ merged=tf.summary.merge_all()
 
 matpath='./matsmall2/'
 savemat=False
-def evaluate(X_data, y_data, ques_data, batch_size, writer, merged, iternum):
+def evaluate(X_data, y_data, q_data, batch_size, writer, merged, iternum, use_se):
     num_examples = len(X_data)
     total_accuracy = 0
     total_loss=0
     sess = tf.get_default_session()
     for offset in range(0, num_examples, batch_size):
-        batch_x, batch_y,batch_ques= X_data[offset:offset + batch_size], y_data[offset:offset + batch_size], ques_data[offset:offset + batch_size]
-        loss=sess.run(loss_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:1.0})
-        accuracy = sess.run(accuracy_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:1.0})
-        summary=sess.run(merged,feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:1.0})
-        mixf=sess.run(mixed_features,feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:1.0})
+        if use_se==True:
+            batch_x, batch_y, batch_q = X_data[offset:offset + batch_size], y_data[offset:offset + batch_size], q_data[offset:offset + batch_size]
+            loss = sess.run(loss_operation, feed_dict={x: batch_x, y: batch_y, q_features: batch_q, keep_prob: 1.0})
+            accuracy = sess.run(accuracy_operation,feed_dict={x: batch_x, y: batch_y, q_features: batch_q, keep_prob: 1.0})
+            summary = sess.run(merged, feed_dict={x: batch_x, y: batch_y, q_features: batch_q, keep_prob: 1.0})
+        else:
+            batch_x, batch_y,batch_q= X_data[offset:offset + batch_size], y_data[offset:offset + batch_size], q_data[offset:offset + batch_size]
+            loss=sess.run(loss_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_q,keep_prob:1.0})
+            accuracy = sess.run(accuracy_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_q,keep_prob:1.0})
+            summary=sess.run(merged,feed_dict={x:batch_x, y:batch_y,ques:batch_q,keep_prob:1.0})
+
         if savemat==True:
+            if use_se==True:
+                mixf = sess.run(mixed_features, feed_dict={x: batch_x, y: batch_y, q_features: batch_q, keep_prob: 1.0})
+            else:
+                mixf = sess.run(mixed_features, feed_dict={x: batch_x, y: batch_y, ques: batch_q, keep_prob: 1.0})
             #any need to convert to matrix?
             # mixf_matrix=np.asmatrix(mixf)
             mat_str=matpath+'iternum'+str(iternum)
@@ -291,17 +307,21 @@ with sess.as_default():
         for offset in range(0,num_examples,args.batch_size):
 
             batch_x=X_train[offset:offset+args.batch_size]
-            batch_ques=ques_train[offset:offset+args.batch_size]
+
             batch_y=y_train[offset:offset+args.batch_size]
-            # batch_qvec=qvec_train[offset:offset+args.batch_size]
-            # print batch_y.shape,batch_y
-            # print type(batch_y[0])
-            # batch_ques=np.ones(shape=[tfargs.batch_size,tfargs.max_doc_length],dtype=int)
-            # print 'np.ones',batch_ques.shape,batch_ques
-            train_loss=sess.run(loss_operation, feed_dict={x:batch_x,y:batch_y,ques:batch_ques,keep_prob:args.gdp})
-            train_accuracy=sess.run(accuracy_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:args.gdp})
-            sess.run(training_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:args.gdp})
-            summary=sess.run(merged,feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:args.gdp})
+            #
+            if args.use_senenc==True:
+                batch_qvec = qvec_train[offset:offset + args.batch_size]
+                train_loss = sess.run(loss_operation,feed_dict={x: batch_x, y: batch_y, q_features: batch_qvec, keep_prob: args.gdp})
+                train_accuracy = sess.run(accuracy_operation, feed_dict={x: batch_x, y: batch_y, q_features: batch_qvec,keep_prob: args.gdp})
+                sess.run(training_operation,feed_dict={x: batch_x, y: batch_y, q_features: batch_qvec, keep_prob: args.gdp})
+                summary = sess.run(merged,feed_dict={x: batch_x, y: batch_y, q_features: batch_qvec, keep_prob: args.gdp})
+            else:
+                batch_ques = ques_train[offset:offset + args.batch_size]
+                train_loss=sess.run(loss_operation, feed_dict={x:batch_x,y:batch_y,ques:batch_ques,keep_prob:args.gdp})
+                train_accuracy=sess.run(accuracy_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:args.gdp})
+                sess.run(training_operation, feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:args.gdp})
+                summary=sess.run(merged,feed_dict={x:batch_x, y:batch_y,ques:batch_ques,keep_prob:args.gdp})
 
             train_writer.add_summary(summary,iternum)
             total_train_accuracy += (train_accuracy * len(batch_y))
@@ -309,9 +329,12 @@ with sess.as_default():
             iternum=iternum+1
         train_accuracy=total_train_accuracy/num_examples
         train_loss=total_train_loss/num_examples
+        saver.save(sess, args.res_root+args.expnum+'/'+'base'+args.expnum+'E'+str(i))
         logger.info('Train Accuracy= {:.3f}, loss = {:.3f} '.format(train_accuracy,train_loss))
-
-        val_accuracy,val_loss=evaluate(X_validation,y_validation,ques_validation,args.batch_size,valid_writer,merged,iternum)
+        if args.use_senenc==True:
+            val_accuracy, val_loss = evaluate(X_validation, y_validation, qvec_valid, args.batch_size, valid_writer,merged, iternum,args.use_senenc)
+        else:
+            val_accuracy,val_loss=evaluate(X_validation,y_validation,ques_validation,args.batch_size,valid_writer,merged,iternum,args.use_senenc)
         logger.info("Validation Accuracy = {:.3f} , loss = {:.3f} ".format(val_accuracy,val_loss))
 
         # test_accuracy, test_loss = evaluate(X_test, y_test,ques_test, args.batch_size,test_writer, merged, iternum)

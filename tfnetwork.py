@@ -27,41 +27,44 @@ def Combine(img_features, q_features,dimg,dq,dcommon,pool_method,keep_prob):#???
     #         fc3_drop = tf.nn.dropout(fc3, keep_prob=keep_prob)
     #         img_features_dimg=fc3_drop
     print 'img_feature in combine:',img_features
-    # img_dim=img_features.get_shape()[1].value
-    img_dim=192
+    print 'keep_prob in combine:',keep_prob
+    img_dim=img_features.get_shape()[1].value
     assert (dimg==img_dim)
     #project img from dimg to dcommon
     img_features_dcommon = img_features
-    if  dimg!=dcommon:
+    if  img_dim!=dcommon:
         with tf.name_scope('dimg2d'):
             print 'dimg2d'
-            fc_w = tf.Variable(tf.truncated_normal(shape=(dimg, dcommon), mean=0, stddev=1))
-            fc_b = tf.Variable(tf.zeros(dcommon))
+            fc_w = tf.Variable(tf.truncated_normal(shape=(dimg, dcommon), mean=0, stddev=1),name='weights')
+            fc_b = tf.Variable(tf.zeros(dcommon),name='biases')
             fc = tf.matmul(img_features, fc_w) + fc_b
             fc = tf.nn.relu(fc)
             fc_drop = tf.nn.dropout(fc, keep_prob=keep_prob)
             img_features_dcommon=fc_drop
     #project qfeatures from dq to dcommon
     q_features_dcommon=q_features
-    if dq!=dcommon:
+    q_dim=q_features.get_shape()[1].value
+    assert (q_dim==dq)
+    if q_dim!=dcommon:
         with tf.name_scope('dq2d'):
-            projectq_w = tf.Variable(tf.truncated_normal(shape=(dq, dcommon), mean=0, stddev=1))
-            projectq_b = tf.Variable(tf.zeros(dcommon))
+            projectq_w = tf.Variable(tf.truncated_normal(shape=(dq, dcommon), mean=0, stddev=1),name='weights')
+            projectq_b = tf.Variable(tf.zeros(dcommon),name='biases')
             q_fc = tf.matmul(q_features, projectq_w) + projectq_b
             q_relu = tf.nn.relu(q_fc)
             q_drop = tf.nn.dropout(q_relu, keep_prob=keep_prob)
             q_features_dcommon=q_drop
-    if pool_method==0:
-        print 'Combine concat'
-        mixed_features = tf.concat([img_features_dcommon, q_features_dcommon], 1, 'concat')
-    elif pool_method==1:
-        print 'Combine multiply'
-        mixed_features = tf.multiply(img_features_dcommon, q_features_dcommon)
-    elif pool_method==2:
-        print 'Combine add'
-        mixed_features=tf.add(img_features_dcommon,q_features_dcommon)
-    else:
-        mixed_features = tf.multiply(img_features_dcommon, q_features_dcommon)
+    with tf.name_scope('mix'):
+        if pool_method==0:
+            print 'Combine concat','img_f_d:',img_features_dcommon,'q_f_d',q_features_dcommon
+            mixed_features = tf.concat([img_features_dcommon, q_features_dcommon], 1, 'concat')
+        elif pool_method==1:
+            print 'Combine multiply'
+            mixed_features = tf.multiply(img_features_dcommon, q_features_dcommon,name='multiply')
+        elif pool_method==2:
+            print 'Combine add'
+            mixed_features=tf.add(img_features_dcommon,q_features_dcommon)
+        else:
+            mixed_features = tf.multiply(img_features_dcommon, q_features_dcommon)
     return mixed_features
 
 def Routine(mixed_features, output_dim, dcommon, pool_method,keep_prob=0.5, hidden1_units=200):
@@ -74,27 +77,29 @@ def Routine(mixed_features, output_dim, dcommon, pool_method,keep_prob=0.5, hidd
     else:
         combine_size=dcommon
     print 'Combine size:',combine_size
+    print 'keep_prob in Routine:',keep_prob
     with tf.name_scope('Routine'):
-        weights = tf.Variable(
-            tf.truncated_normal([combine_size, hidden1_units],mean=0,stddev=1),name='weights')
+        with tf.name_scope('fc1'):
+            weights = tf.Variable(
+                tf.truncated_normal([combine_size, hidden1_units],mean=0,stddev=1),name='weights')
 
-        biases = tf.Variable(tf.zeros([hidden1_units]),name='biases')
+            biases = tf.Variable(tf.zeros([hidden1_units]),name='biases')
 
-        fc1 = tf.nn.relu(tf.matmul(mixed_features, weights) + biases)
+            fc1 = tf.nn.relu(tf.matmul(mixed_features, weights) + biases)
+        with tf.name_scope('fc2'):
+            weights2 = tf.Variable(
+                tf.truncated_normal([hidden1_units, hidden1_units], mean=0,stddev=1),name='weights')
 
-        weights2 = tf.Variable(
-            tf.truncated_normal([hidden1_units, hidden1_units], mean=0,stddev=1),name='weights')
+            biases2 = tf.Variable(tf.zeros([hidden1_units]),name='biases')
 
-        biases2 = tf.Variable(tf.zeros([hidden1_units]),name='biases')
+            fc2 = tf.nn.relu(tf.matmul(fc1, weights2) + biases2)
 
-        fc2 = tf.nn.relu(tf.matmul(fc1, weights2) + biases2)
+            fc2_drop=tf.nn.dropout(fc2,keep_prob=keep_prob)
+        with tf.name_scope('output'):
+            weights_o = tf.Variable(
+                tf.truncated_normal([hidden1_units, output_dim],mean=0, stddev=1),name='weights')
+            biases_o = tf.Variable(tf.zeros([output_dim]),name='biases')
 
-        fc2_drop=tf.nn.dropout(fc2,keep_prob=keep_prob)
-
-        weights_o = tf.Variable(
-            tf.truncated_normal([hidden1_units, output_dim],mean=0, stddev=1))
-        biases_o = tf.Variable(tf.zeros([output_dim]))
-
-        logits = tf.matmul(fc2_drop, weights_o) + biases_o
+            logits = tf.matmul(fc2_drop, weights_o) + biases_o
         return logits
 
