@@ -21,21 +21,23 @@ parser = argparse.ArgumentParser(description='tune VQA MLB baseline')
 
 
 
+parser.add_argument('--projectdp', type=float, default=1.0,
+                    help='projection dropout')
 parser.add_argument('--gdp', type=float, default=0.5,
                     help='general dropout')
 parser.add_argument('--dembd', type=int, default=50,
                     help='dimension for word embedding')
 parser.add_argument('--dcommon', type=int, default=256,
                     help='q and img projected to the same dimension')
-parser.add_argument('--dq', type=int, default=4800,
+parser.add_argument('--dq', type=int, default=256,
                     help='dimension for question feature')
-parser.add_argument('--dimg', type=int, default=4096,
+parser.add_argument('--dimg', type=int, default=192,
                     help='dimension for images CNN feature')
 parser.add_argument('--use-mlb', type=int, default=0,
                     help='0 do not use mlb,1 use mlb')
 parser.add_argument('--max-doclength', type=int, default=7,
                     help='max length for each question')
-parser.add_argument('--epochs', type=int, default=200,
+parser.add_argument('--epochs', type=int, default=50,
                     help='training epochs')
 parser.add_argument('--batch-size', type=int, default=128,
                     help='batch size for training epoch')
@@ -45,7 +47,7 @@ parser.add_argument('--is-emtrainable', type=bool, default=False,
                     help='whether embedding matrix trainable')
 parser.add_argument('--vocabs', type=int, default=400001,
                     help='if use-glove is true,vocabs=400001')
-parser.add_argument('--lr', type=float, default=0.001,
+parser.add_argument('--lr', type=float, default=0.0001,
                     help='learning rate')
 parser.add_argument('--n-class', type=int, default=2,
                     help='# output class')
@@ -53,19 +55,16 @@ parser.add_argument('--img-size', type=int, default=30,
                     help='size of input images')
 parser.add_argument('--channel', type=int, default=3,
                     help='channel for input images')
-parser.add_argument('--log-dir', type=str, default='../data/tensorboard',
-                    help='directory for tensorboard')
-parser.add_argument('--pool-method', type=int, default=1,
+parser.add_argument('--pool-method', type=int, default=0,
                     help='0 concatenate,1 element-wise product')
 parser.add_argument('--use-lenet', type=int, default=0,
                     help='0 cifar network,1 lenet')
-parser.add_argument('--expnum', type=str, default='exp01',
-                    help='0 concatenate,1 element-wise product')
-parser.add_argument('--res-root', type=str, default='../data/expresult/0520/',
+parser.add_argument('--expnum', type=str, default='exp16',
+                    help='exp number')
+parser.add_argument('--res-root', type=str, default='../data/expresult/0523/',
                     help='path for restoring result')
-parser.add_argument('--data-root', type=str, default='../data/shapes',
+parser.add_argument('--data-root', type=str, default='../data/shapes_control-3x/',
                     help='path for restoring result')
-
 
 
 #para for MLB
@@ -122,7 +121,7 @@ ques=tf.placeholder(tf.int32,name='ques')
 y=tf.placeholder(tf.int64,(None),name='y_label')
 keep_prob=tf.placeholder(dtype=tf.float32,name='gdp')
 # q_features=tf.placeholder(dtype=tf.float32,shape=[None,4800],name='q_features')
-imgvec=tf.placeholder(dtype=tf.float32,shape=[None,4096],name='imgvec-pretrained')
+imgvec=tf.placeholder(dtype=tf.float32,shape=[None,192],name='imgvec-pretrained')
 
 #imdb_data=tfimdbloader.load_imdb(max_length=tfargs.max_doc_length)
 
@@ -137,7 +136,7 @@ val_prefix=os.path.join(args.data_root,'val')
 test_prefix=os.path.join(args.data_root,'test')
 
 qfeatures_prefix='../data/shapes/'
-imgfeature_prefix='../data/shapes/features/'
+imgfeature_prefix='../data/shapes_control-3x/cifarfeatures/'
 
 # train_prefix='../data/shapes_control-2x/train.large'
 # val_prefix='../data/shapes_control-2x/val'
@@ -166,6 +165,16 @@ def load_imgfeature(data_prefix):
     test=np.load(test_path)
     return train,valid,test
 
+def load_cifa_feature(data_prefix):
+    train_path=data_prefix+'train_cifarimg_lg.npy'
+    valid_path=data_prefix+'valid_cifarimg.npy'
+    test_path=data_prefix+'test_cifarimg.npy'
+    train=np.load(train_path)
+    valid=np.load(valid_path)
+    test=np.load(test_path)
+    print 'load cifar features',type(train),train.shape,valid.shape,test.shape
+    return train,valid,test
+
 tfembedding.embedding_prepare(args.max_doclength,args.vocabs,args.use_glove,args.is_emtrainable,args.dembd)
 
 shapes_data=tfloader.get_dataset(train_prefix,val_prefix,test_prefix,max_document_length=args.max_doclength,use_glove=args.use_glove)
@@ -175,7 +184,7 @@ X_validation,y_validation,q_validation,ques_validation= shapes_data.val.images, 
 X_test,y_test,q_test,ques_test= shapes_data.test.images, shapes_data.test.labels, shapes_data.test.queries, shapes_data.test.ques
 
 qvec_train,qvec_valid,qvec_test=load_feature(qfeatures_prefix)
-imgvec_train,imgvec_valid,imgvec_test=load_imgfeature(imgfeature_prefix)
+imgvec_train,imgvec_valid,imgvec_test=load_cifa_feature(imgfeature_prefix)
 #shuffle
 X_train,y_train,q_train,ques_train,imgvec_train=shuffle(X_train,y_train,q_train,ques_train,imgvec_train)
 X_validation,y_validation,q_validation,ques_validation,imgvec_valid=shuffle(X_validation,y_validation,q_validation,ques_validation,imgvec_valid)
@@ -200,7 +209,7 @@ q_features=outputs[:,-1,:]
 if args.use_mlb==0:
     with tf.name_scope('Combine-0'):
         logger.info('Combine-0')
-        mixed_features=tfnetwork.Combine(imgvec, q_features,args.dimg,args.dq,args.dcommon,args.pool_method,keep_prob)
+        mixed_features=tfnetwork.Combine(imgvec, q_features,args.dimg,args.dq,args.dcommon,args.pool_method,args.projectdp)
         logits=tfnetwork.Routine(mixed_features, args.n_class, args.dcommon,args.pool_method,keep_prob)
 if args.use_mlb==1:
     with tf.name_scope('Combine-1'):
@@ -278,6 +287,8 @@ test_writer=tf.summary.FileWriter(args.res_root+args.expnum+'/test')
 with sess.as_default():
     sess.run(tf.global_variables_initializer())
     iternum=0
+    max_val_accuracy=0
+    savenum=0
     for i in range(args.epochs):
         logger.info('Epoch{}...'.format(i))
         #before each epoch,shuffle the training set
@@ -307,7 +318,12 @@ with sess.as_default():
         # t_merged=tf.summary.merge([t_acc])
         # t_summary=sess.run(t_merged,feed_dict=None)
         # train_writer.add_summary(t_summary)
+        
         val_accuracy,val_loss=evaluate(imgvec_valid,y_validation,ques_validation,args.batch_size,valid_writer,merged,iternum)
+        if val_accuracy>max_val_accuracy:
+            max_val_accuracy=val_accuracy
+            saver.save(sess, args.res_root+args.expnum+'/'+'fiximg'+args.expnum+'E'+str(i))
+            savenum+=1
         logger.info("Validation Accuracy = {:.3f} , loss = {:.3f} ".format(val_accuracy,val_loss))
 
         # test_accuracy, test_loss = evaluate(X_test, y_test,ques_test, args.batch_size,test_writer, merged, iternum)

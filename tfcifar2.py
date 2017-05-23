@@ -100,6 +100,8 @@ def inference(images,batch_size):
   sess = tf.get_default_session()
   new_saver = tf.train.import_meta_graph('../data/Pretrain/cifar10_train/model.ckpt-186329.meta')
   new_saver.restore(sess, tf.train.latest_checkpoint('../data/Pretrain/cifar10_train'))
+#  new_saver = tf.train.import_meta_graph('../data/expresult/0523/exp09/fixqexp09E0.meta')
+#  new_saver.restore(sess, tf.train.latest_checkpoint('../data/expresult/0523/exp09'))
   graph = tf.get_default_graph()
   w1 = graph.get_tensor_by_name("conv1/weights:0")
   b1=graph.get_tensor_by_name("conv1/biases:0")
@@ -114,6 +116,7 @@ def inference(images,batch_size):
   print 'w3',w3,'b3',b3
   print 'w4',w4,'b4',b4
   print type(w1)
+  
 #  print sess.run([w1,b1,w2,b2,w3,b3,w4,b4])
   
   with tf.variable_scope('conv1') as scope:

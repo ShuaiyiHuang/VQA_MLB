@@ -29,6 +29,8 @@ def Combine(img_features, q_features,dimg,dq,dcommon,pool_method,keep_prob):#???
     print 'img_feature in combine:',img_features
     print 'keep_prob in combine:',keep_prob
     img_dim=img_features.get_shape()[1].value
+    print 'img_dim:',img_dim
+    print 'dimg:',dimg
     assert (dimg==img_dim)
     #project img from dimg to dcommon
     img_features_dcommon = img_features

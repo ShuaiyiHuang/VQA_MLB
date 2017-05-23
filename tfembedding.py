@@ -88,6 +88,7 @@ def embedding_prepare(max_document_length=7,vocabs=400001,use_glove=True,trainab
                                           trainable=trainable, name="W")
         tfargs.Embedding_tensor=tfargs.Embedding_tensor.assign(embedding_matrix)
         vocab_processor = learn.preprocessing.VocabularyProcessor(max_document_length)
+        #using fit_vocab not fit
         tfargs.Pretrain= vocab_processor.fit_vocab(vocab)
     else:
         tfargs.Embedding_tensor = tf.Variable(tf.random_normal(shape=[vocabs,dembd]),trainable=True, name="W")

@@ -149,6 +149,7 @@ def input_pipeline(data_prefix='../data/shapes/train.tiny',max_doc_length=6,use_
     labels_arr=np.array(labels_list)
     queries_arr=np.array(queries_list)
     if use_glove:
+        #using self defined transform_vocab not transform
         ques_arr=np.array(list(tfargs.Pretrain.transform_vocab(queries_arr)))
     else:
         ques_arr=np.array(ques_list)
