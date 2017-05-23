@@ -15,10 +15,11 @@ import tfcifar2
 #saver = tf.train.Saver({"my_v2": v2})
 
 ckpt_path='../data/Pretrain/cifar10_train'
-file_name= '../data/expresult/0521/exp03'
+file_name= '../data/expresult/0523/exp10/'
 file_name_test='../data/Pretrain/cifar10_train/model.ckpt-186392'
 tensor_name1='weights'
-tensor_name2='bias'
+
+#tensor_name2='bias'
 
 
 # reader = pywrap_tensorflow.NewCheckpointReader(file_name_test)
@@ -30,7 +31,28 @@ tensor_name2='bias'
 #     print(reader.get_tensor(key))
 
 
+file_name2='../data/imgpreprocessing/exp09'
+file_name3='../data/Models/baseline'
 with tf.Session() as sess:
+#    file_name2_nouse='../data/expresult/0523/exp09/fixqexp09E1'
+#    new_saver = tf.train.import_meta_graph(file_name2_nouse+'.meta')
+##    new_saver.restore(sess, tf.train.latest_checkpoint('../data/expresult/0523/exp09/'))
+#    restore_path='../data/expresult/0523/exp09/fixqexp09E1'
+#    new_saver.restore(sess, restore_path)
+    
+#    file_name2_nouse='../data/expresult/0523/exp18/fixqexp18E12'
+#    new_saver = tf.train.import_meta_graph(file_name2_nouse+'.meta')
+##    new_saver.restore(sess, tf.train.latest_checkpoint('../data/expresult/0523/exp09/'))
+#    restore_path='../data/expresult/0523/exp18/fixqexp18E12'
+#    new_saver.restore(sess, restore_path)
+    
+    
+    
+    
+    
+#    print_tensors_in_checkpoint_file(file_name=file_name3, tensor_name=tensor_name1, all_tensors=True)
+    
+###works
 #    new_saver = tf.train.import_meta_graph('../data/Pretrain/cifar10_train/model.ckpt-186329.meta')
 #    
 #    new_saver.restore(sess, tf.train.latest_checkpoint('../data/Pretrain/cifar10_train'))
@@ -41,6 +63,15 @@ with tf.Session() as sess:
 #    w2 = graph.get_tensor_by_name("conv2/weights:0")
 #    print w1,w2
 #    print sess.run([w1,w2])
-    tfcifar2.inference(None,None)
-    
-#    print_tensors_in_checkpoint_file(file_name=file_name, tensor_name=tensor_name1, all_tensors=True)
+#    tfcifar2.inference(None,None)
+
+##works
+#file_name= '../data/expresult/0521/exp03'
+#tensor_name1='weights'
+#print_tensors_in_checkpoint_file(file_name=file_name, tensor_name=tensor_name1, all_tensors=True)
+
+#works
+#if file_name='../data/Models/',then error
+#file_name3='../data/Models/baseline'
+#print_tensors_in_checkpoint_file(file_name=file_name3, tensor_name=tensor_name1, all_tensors=True)
+

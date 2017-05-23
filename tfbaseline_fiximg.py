@@ -37,7 +37,7 @@ parser.add_argument('--use-mlb', type=int, default=0,
                     help='0 do not use mlb,1 use mlb')
 parser.add_argument('--max-doclength', type=int, default=7,
                     help='max length for each question')
-parser.add_argument('--epochs', type=int, default=50,
+parser.add_argument('--epochs', type=int, default=10,
                     help='training epochs')
 parser.add_argument('--batch-size', type=int, default=128,
                     help='batch size for training epoch')
@@ -59,7 +59,7 @@ parser.add_argument('--pool-method', type=int, default=0,
                     help='0 concatenate,1 element-wise product')
 parser.add_argument('--use-lenet', type=int, default=0,
                     help='0 cifar network,1 lenet')
-parser.add_argument('--expnum', type=str, default='exp16',
+parser.add_argument('--expnum', type=str, default='expdelete',
                     help='exp number')
 parser.add_argument('--res-root', type=str, default='../data/expresult/0523/',
                     help='path for restoring result')

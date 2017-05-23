@@ -81,9 +81,9 @@ with tf.Session() as sess:
     
 if not os.path.exists(data_dir):
     os.makedirs(data_dir)
-#np.save(data_dir+'train_cifarimg_lg', all_features_train)
-#np.save(data_dir+'valid_cifarimg',all_features_valid)
-#np.save(data_dir+'test_cifarimg',all_features_test)
+np.save(data_dir+'train_cifarimg_lg', all_features_train)
+np.save(data_dir+'valid_cifarimg',all_features_valid)
+np.save(data_dir+'test_cifarimg',all_features_test)
 
 
 

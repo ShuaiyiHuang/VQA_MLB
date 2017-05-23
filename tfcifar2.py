@@ -75,7 +75,7 @@ def restore_variables():
 #return [batch_size,192]
 def inference(images,batch_size):
 
-  images=tf.image.resize_images(images,[24,24])
+#  images=tf.image.resize_images(images,[24,24])
   print 'resized images:',images
   """Build the CIFAR-10 model.
 
@@ -98,10 +98,26 @@ def inference(images,batch_size):
   print 'batch_size',batch_size
   # conv1
   sess = tf.get_default_session()
-  new_saver = tf.train.import_meta_graph('../data/Pretrain/cifar10_train/model.ckpt-186329.meta')
-  new_saver.restore(sess, tf.train.latest_checkpoint('../data/Pretrain/cifar10_train'))
+#  new_saver = tf.train.import_meta_graph('../data/Pretrain/cifar10_train/model.ckpt-186329.meta')
+#  new_saver.restore(sess, tf.train.latest_checkpoint('../data/Pretrain/cifar10_train'))
 #  new_saver = tf.train.import_meta_graph('../data/expresult/0523/exp09/fixqexp09E0.meta')
 #  new_saver.restore(sess, tf.train.latest_checkpoint('../data/expresult/0523/exp09'))
+
+  file_name2_nouse='../data/expresult/0523/exp09/fixqexp09E1'
+  new_saver = tf.train.import_meta_graph(file_name2_nouse+'.meta')
+  restore_path='../data/expresult/0523/exp09/fixqexp09E1'
+  new_saver.restore(sess, restore_path)
+
+#  file_name2_nouse='../data/expresult/0523/exp18/fixqexp18E12'
+#  new_saver = tf.train.import_meta_graph(file_name2_nouse+'.meta')
+#  restore_path='../data/expresult/0523/exp18/fixqexp18E12'
+#  new_saver.restore(sess, restore_path)
+  
+#  file_name2_nouse='../data/expresult/0523/exp12/fixqexp12E2'
+#  new_saver = tf.train.import_meta_graph(file_name2_nouse+'.meta')
+#  restore_path='../data/expresult/0523/exp12/fixqexp12E2'
+#  new_saver.restore(sess, restore_path)
+  
   graph = tf.get_default_graph()
   w1 = graph.get_tensor_by_name("conv1/weights:0")
   b1=graph.get_tensor_by_name("conv1/biases:0")
