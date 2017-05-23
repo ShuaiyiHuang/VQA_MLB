@@ -27,7 +27,15 @@ tensor_name2='bias'
 #     print type(reader.get_tensor(key))
 #     print(reader.get_tensor(key))
 
+
 with tf.Session() as sess:
-#     # saver = tf.train.Saver()
-#     # saver.restore(sess, tf.train.latest_checkpoint(ckpt_path))
-    print_tensors_in_checkpoint_file(file_name=file_name, tensor_name=tensor_name1, all_tensors=True)
+    new_saver = tf.train.import_meta_graph('../data/Pretrain/cifar10_train/model.ckpt-186329.meta')
+    
+    new_saver.restore(sess, tf.train.latest_checkpoint('../data/Pretrain/cifar10_train'))
+    sess.run(tf.global_variables_initializer())
+    graph = tf.get_default_graph()
+    w1 = graph.get_tensor_by_name("conv1/weights:0")
+    w2 = graph.get_tensor_by_name("conv2/weights:0")
+    print w1,w2
+    print sess.run([w1,w2])
+#    print_tensors_in_checkpoint_file(file_name=file_name, tensor_name=tensor_name1, all_tensors=True)
