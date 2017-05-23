@@ -3,6 +3,8 @@ import tensorflow as tf
 from tensorflow.python.tools.inspect_checkpoint import print_tensors_in_checkpoint_file
 from tensorflow.python import pywrap_tensorflow
 
+import tfcifar2
+
 # # Create a variable with a random value.
 # weights = tf.Variable(tf.random_normal([784, 200], stddev=0.35),name="weights")
 # # Create another variable with the same value as 'weights'.
@@ -29,13 +31,16 @@ tensor_name2='bias'
 
 
 with tf.Session() as sess:
-    new_saver = tf.train.import_meta_graph('../data/Pretrain/cifar10_train/model.ckpt-186329.meta')
+#    new_saver = tf.train.import_meta_graph('../data/Pretrain/cifar10_train/model.ckpt-186329.meta')
+#    
+#    new_saver.restore(sess, tf.train.latest_checkpoint('../data/Pretrain/cifar10_train'))
     
-    new_saver.restore(sess, tf.train.latest_checkpoint('../data/Pretrain/cifar10_train'))
-    sess.run(tf.global_variables_initializer())
-    graph = tf.get_default_graph()
-    w1 = graph.get_tensor_by_name("conv1/weights:0")
-    w2 = graph.get_tensor_by_name("conv2/weights:0")
-    print w1,w2
-    print sess.run([w1,w2])
+#    sess.run(tf.global_variables_initializer())
+#    graph = tf.get_default_graph()
+#    w1 = graph.get_tensor_by_name("conv1/weights:0")
+#    w2 = graph.get_tensor_by_name("conv2/weights:0")
+#    print w1,w2
+#    print sess.run([w1,w2])
+    tfcifar2.inference(None,None)
+    
 #    print_tensors_in_checkpoint_file(file_name=file_name, tensor_name=tensor_name1, all_tensors=True)
