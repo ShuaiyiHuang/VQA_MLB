@@ -75,7 +75,7 @@ def restore_variables():
 #return [batch_size,192]
 def inference(images,batch_size):
 
-#  images=tf.image.resize_images(images,[24,24])
+#  
   print 'resized images:',images
   """Build the CIFAR-10 model.
 
@@ -98,8 +98,12 @@ def inference(images,batch_size):
   print 'batch_size',batch_size
   # conv1
   sess = tf.get_default_session()
+  
+  #if use pretrained cifar,resize images
+#  images=tf.image.resize_images(images,[24,24])
 #  new_saver = tf.train.import_meta_graph('../data/Pretrain/cifar10_train/model.ckpt-186329.meta')
 #  new_saver.restore(sess, tf.train.latest_checkpoint('../data/Pretrain/cifar10_train'))
+  
 #  new_saver = tf.train.import_meta_graph('../data/expresult/0523/exp09/fixqexp09E0.meta')
 #  new_saver.restore(sess, tf.train.latest_checkpoint('../data/expresult/0523/exp09'))
 
@@ -108,9 +112,10 @@ def inference(images,batch_size):
   restore_path='../data/expresult/0523/exp09/fixqexp09E1'
   new_saver.restore(sess, restore_path)
 
-#  file_name2_nouse='../data/expresult/0523/exp18/fixqexp18E12'
+  #achieved valid acccuray 0.699 in 4w ,run tfbaseline_fixq.py
+#  file_name2_nouse='../data/expresult/0524/exp05/fixqexp05E34'
+#  restore_path='../data/expresult/0524/exp05/fixqexp05E34'
 #  new_saver = tf.train.import_meta_graph(file_name2_nouse+'.meta')
-#  restore_path='../data/expresult/0523/exp18/fixqexp18E12'
 #  new_saver.restore(sess, restore_path)
   
 #  file_name2_nouse='../data/expresult/0523/exp12/fixqexp12E2'
@@ -132,8 +137,9 @@ def inference(images,batch_size):
   print 'w3',w3,'b3',b3
   print 'w4',w4,'b4',b4
   print type(w1)
-  
-#  print sess.run([w1,b1,w2,b2,w3,b3,w4,b4])
+  #no need to print,it works
+#  print 'in tfcifar2 restore:',sess.run([w1,b1,w2,b2,w3,b3,w4,b4])
+  print sess.run([w1,b1,w2,b2,w3,b3,w4,b4])
   
   with tf.variable_scope('conv1') as scope:
     
@@ -187,4 +193,7 @@ def inference(images,batch_size):
     local4 = tf.nn.relu(tf.matmul(local3, w4) + b4, name=scope.name)
     # _activation_summary(local4)
   print 'cifar local 4',local4,type(local4)
+#  res=sess.run(local4,feed_dict={})
+#  print 'result return:',res[0:10,:]
+  
   return local4

@@ -5,7 +5,7 @@ import tfloader
 import tfargs
 
 
-def loadGloVe(filename='../data/glove.6B/glove.6B.50d.txt'):
+def loadGloVe(filename='../data/glove.6B/glove.6B.100d.txt'):
     vocab = []
     embd = []
     file = open(filename,'r')
@@ -70,13 +70,15 @@ def embedding_prepare2(max_document_length=10,use_glove=True,trainable=False):
 def embedding_prepare(max_document_length=7,vocabs=400001,use_glove=True,trainable=False,dembd=50):
     print 'use_glove:',use_glove,'max_document_length:',max_document_length
     if use_glove:
-
-        vocab,embd=loadGloVe()
+        if dembd==100:
+            vocab,embd=loadGloVe(filename='../data/glove.6B/glove.6B.100d.txt')
+        elif dembd==50:
+            vocab,embd=loadGloVe(filename='../data/glove.6B/glove.6B.50d.txt')
         vocab_size = len(vocab)
         embedding_dim = len(embd[0])
-        print 'original vocab size from glove:',vocab_size
+        print 'original size from glove [vocab_size,dembd]:',vocab_size,':',embedding_dim
 
-        assert(dembd==50)
+        assert(dembd==50 or dembd==100)
         assert(vocab_size+1==vocabs)
 
         #zero vector for unknow word or pad word

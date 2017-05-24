@@ -4,19 +4,20 @@ import tensorflow as tf
 import tfcifar2
 import scipy.misc
 import os
+import shutil
 #train_prefix='../../myMLB/data/shapes_control-2x/train.large'
 #val_prefix='../../myMLB/data/shapes_control-2x/val'
 #test_prefix='../../myMLB/data/shapes_control-2x/test'
 
-#data_dir = '../../myMLB/data/shapes/cifar_features/'
-#train_prefix='../../myMLB/data/shapes/train.large'
-#val_prefix='../../myMLB/data/shapes/val'
-#test_prefix='../../myMLB/data/shapes/test'
+data_dir = '../../myMLB/data/shapes/cifarfeatures/'
+train_prefix='../../myMLB/data/shapes/train.large'
+val_prefix='../../myMLB/data/shapes/val'
+test_prefix='../../myMLB/data/shapes/test'
 
-data_dir = '../../myMLB/data/shapes_control-2x/cifarfeatures-delete/'
-train_prefix='../../myMLB/data/shapes_control-2x/train.large'
-val_prefix='../../myMLB/data/shapes_control-2x/val'
-test_prefix='../../myMLB/data/shapes_control-2x/test'
+#data_dir = '../../myMLB/data/shapes_control-3x/cifarfeatures/'
+#train_prefix='../../myMLB/data/shapes_control-3x/train.large'
+#val_prefix='../../myMLB/data/shapes_control-3x/val'
+#test_prefix='../../myMLB/data/shapes_control-3x/test'
 
 
 max_doclength=7
@@ -55,10 +56,11 @@ with tf.Session() as sess:
         batch_features=sess.run(cifar_features,feed_dict={img:batch_X})
         if offset==0:
             all_features_train=batch_features
+            print 'offset 0:',all_features_train
         else:
             all_features_train=np.concatenate((all_features_train,batch_features),axis=0)
 #        print 'all_features_train shape',all_features_train.shape
-        
+    print 'all_features_train',all_features_train[0:10,:]
     all_features_valid=[]
     for offset in range(0,len_valid,batch_size):
         batch_X=X_validation[offset:offset+batch_size]
@@ -67,7 +69,9 @@ with tf.Session() as sess:
             all_features_valid=batch_features
         else:
             all_features_valid=np.concatenate((all_features_valid,batch_features),axis=0)
-        
+    
+    print 'all_features_valid',all_features_valid[0:10,:]
+    
     all_features_test=[]
     for offset in range(0,len_test,batch_size):
         batch_X=X_test[offset:offset+batch_size]
@@ -76,14 +80,19 @@ with tf.Session() as sess:
             all_features_test=batch_features
         else:
             all_features_test=np.concatenate((all_features_test,batch_features),axis=0)
+    print 'all_features_test',all_features_test[0:10,:]
 
-    print 'all_features shape:',all_features_train.shape,all_features_valid.shape,all_features_test.shape
+print 'all_features_test',all_features_test
     
 if not os.path.exists(data_dir):
     os.makedirs(data_dir)
+#else:
+#    shutil.rmtree(data_dir)
 np.save(data_dir+'train_cifarimg_lg', all_features_train)
 np.save(data_dir+'valid_cifarimg',all_features_valid)
 np.save(data_dir+'test_cifarimg',all_features_test)
+print 'all_features shape:',all_features_train.shape,all_features_valid.shape,all_features_test.shape
+
 
 
 

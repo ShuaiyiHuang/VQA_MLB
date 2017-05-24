@@ -59,13 +59,13 @@ parser.add_argument('--pool-method', type=int, default=0,
                     help='0 concatenate,1 element-wise product')
 parser.add_argument('--use-lenet', type=int, default=0,
                     help='0 cifar network,1 lenet')
-parser.add_argument('--expnum', type=str, default='exp05',
+parser.add_argument('--expnum', type=str, default='expdelete',
                     help='exp number')
 parser.add_argument('--res-root', type=str, default='../data/expresult/0524/',
                     help='path for restoring result')
 parser.add_argument('--data-root', type=str, default='../data/shapes_control-3x/',
                     help='path for restoring result')
-parser.add_argument('--use-padding', type=bool, default=True,
+parser.add_argument('--use-padding', type=bool, default=False,
                     help='whether pad images to 32*32')
 
 
@@ -248,6 +248,7 @@ def evaluate(X_data, y_data, qvec_data, batch_size, writer, merged, iternum):
     total_accuracy = 0
     total_loss=0
     sess = tf.get_default_session()
+    all_features=[]
     for offset in range(0, num_examples, batch_size):
         batch_x, batch_y,batch_qvec= X_data[offset:offset + batch_size], y_data[offset:offset + batch_size], qvec_data[offset:offset + batch_size]
         loss=sess.run(loss_operation, feed_dict={x:batch_x, y:batch_y,q_features:batch_qvec,keep_prob:1.0})
@@ -259,12 +260,19 @@ def evaluate(X_data, y_data, qvec_data, batch_size, writer, merged, iternum):
             mixf = sess.run(mixed_features, feed_dict={x: batch_x, y: batch_y, q_features: batch_qvec, keep_prob: 1.0})
             mat_str=matpath+'iternum'+str(iternum)
             sio.savemat(mat_str,{'feature':mixf})
+        batch_img_features=sess.run(img_features,feed_dict={x: batch_x, y: batch_y, q_features: batch_qvec, keep_prob: 1.0})
+        if offset==0:
+            all_features=batch_img_features
+            print 'offset 0 imgfeatures',all_features
+        else:
+            all_features=np.concatenate((all_features,batch_img_features),axis=0)
+            
         writer.add_summary(summary, iternum)
         total_accuracy += (accuracy *len(batch_x))
         total_loss+=(loss*len(batch_x))
     mean_accuracy=total_accuracy/num_examples
     mean_loss=total_loss/num_examples
-    return mean_accuracy,mean_loss
+    return mean_accuracy,mean_loss,all_features
 
 sess=tf.Session()
 train_writer=tf.summary.FileWriter(args.res_root+args.expnum+'/train',sess.graph)
@@ -272,62 +280,92 @@ valid_writer=tf.summary.FileWriter(args.res_root+args.expnum+'/valid')
 test_writer=tf.summary.FileWriter(args.res_root+args.expnum+'/test')
 
 
-with sess.as_default():
-    sess.run(tf.global_variables_initializer())
-    iternum=0
-    savenum=0
-    max_val_accuracy=0
-    for i in range(args.epochs):
-        logger.info(('Epoch{}...'.format(i)))
-        #before each epoch,shuffle the training set
-        X_train, y_train, q_train, ques_train,qvec_train = shuffle(X_train, y_train, q_train, ques_train,qvec_train)
-        total_train_accuracy=0
-        total_train_loss=0
-        for offset in range(0,num_examples,args.batch_size):
+#with sess.as_default():
+#    sess.run(tf.global_variables_initializer())
+#    iternum=0
+#    savenum=0
+#    max_val_accuracy=0
+#    for i in range(args.epochs):
+#        logger.info(('Epoch{}...'.format(i)))
+#        #before each epoch,shuffle the training set
+#        X_train, y_train, q_train, ques_train,qvec_train = shuffle(X_train, y_train, q_train, ques_train,qvec_train)
+#        total_train_accuracy=0
+#        total_train_loss=0
+#        for offset in range(0,num_examples,args.batch_size):
+#
+#            batch_x=X_train[offset:offset+args.batch_size]
+#            # batch_ques=ques_train[offset:offset+args.batch_size]
+#            batch_y=y_train[offset:offset+args.batch_size]
+#            batch_qvec=qvec_train[offset:offset+args.batch_size]
+#            # print batch_y.shape,batch_y
+#            # print type(batch_y[0])
+#            # batch_ques=np.ones(shape=[tfargs.batch_size,tfargs.max_doc_length],dtype=int)
+#            # print 'np.ones',batch_ques.shape,batch_ques
+#            train_loss=sess.run(loss_operation, feed_dict={x:batch_x,y:batch_y,q_features:batch_qvec,keep_prob:args.gdp})
+#            train_accuracy=sess.run(accuracy_operation, feed_dict={x:batch_x, y:batch_y,q_features:batch_qvec,keep_prob:args.gdp})
+#            sess.run(training_operation, feed_dict={x:batch_x, y:batch_y,q_features:batch_qvec,keep_prob:args.gdp})
+#            summary=sess.run(merged,feed_dict={x:batch_x, y:batch_y,q_features:batch_qvec,keep_prob:args.gdp})
+#
+#            total_train_accuracy += (train_accuracy * len(batch_y))
+#            total_train_loss+=(train_loss*len(batch_y))
+#
+#            train_writer.add_summary(summary,iternum)
+#            iternum=iternum+1
+#        train_accuracy=total_train_accuracy/num_examples
+#        train_loss=total_train_loss/num_examples
+#        logger.info('Train Accuracy= {:.3f}, loss = {:.3f} '.format(train_accuracy,train_loss))
+#
+#        val_accuracy,val_loss=evaluate(X_validation,y_validation,qvec_valid,args.batch_size,valid_writer,merged,iternum)
+#        if val_accuracy>max_val_accuracy:
+#            max_val_accuracy=val_accuracy
+#            saver.save(sess, args.res_root+args.expnum+'/'+'fixq'+args.expnum+'E'+str(i))
+#            savenum+=1
+#        logger.info("Validation Accuracy = {:.3f} , loss = {:.3f} ".format(val_accuracy,val_loss))
+#        logger.info("savenum:{}".format(savenum))
+#
+#        # test_accuracy, test_loss = evaluate(X_test, y_test,ques_test, args.batch_size,test_writer, merged, iternum)
+#        # print("Test Accuracy = {:.3f}".format(test_accuracy))
+#
+#    train_writer.close()
+#    valid_writer.close()
+#    test_writer.close()
+#    saver.save(sess, args.res_root+args.expnum+'/'+'fixq'+args.expnum)
+#    logger.info("fixq Model saved")
 
-            batch_x=X_train[offset:offset+args.batch_size]
-            # batch_ques=ques_train[offset:offset+args.batch_size]
-            batch_y=y_train[offset:offset+args.batch_size]
-            batch_qvec=qvec_train[offset:offset+args.batch_size]
-            # print batch_y.shape,batch_y
-            # print type(batch_y[0])
-            # batch_ques=np.ones(shape=[tfargs.batch_size,tfargs.max_doc_length],dtype=int)
-            # print 'np.ones',batch_ques.shape,batch_ques
-            train_loss=sess.run(loss_operation, feed_dict={x:batch_x,y:batch_y,q_features:batch_qvec,keep_prob:args.gdp})
-            train_accuracy=sess.run(accuracy_operation, feed_dict={x:batch_x, y:batch_y,q_features:batch_qvec,keep_prob:args.gdp})
-            sess.run(training_operation, feed_dict={x:batch_x, y:batch_y,q_features:batch_qvec,keep_prob:args.gdp})
-            summary=sess.run(merged,feed_dict={x:batch_x, y:batch_y,q_features:batch_qvec,keep_prob:args.gdp})
-
-            total_train_accuracy += (train_accuracy * len(batch_y))
-            total_train_loss+=(train_loss*len(batch_y))
-
-            train_writer.add_summary(summary,iternum)
-            iternum=iternum+1
-        train_accuracy=total_train_accuracy/num_examples
-        train_loss=total_train_loss/num_examples
-        logger.info('Train Accuracy= {:.3f}, loss = {:.3f} '.format(train_accuracy,train_loss))
-
-        val_accuracy,val_loss=evaluate(X_validation,y_validation,qvec_valid,args.batch_size,valid_writer,merged,iternum)
-        if val_accuracy>max_val_accuracy:
-            max_val_accuracy=val_accuracy
-            saver.save(sess, args.res_root+args.expnum+'/'+'fixq'+args.expnum+'E'+str(i))
-            savenum+=1
-        logger.info("Validation Accuracy = {:.3f} , loss = {:.3f} ".format(val_accuracy,val_loss))
-        logger.info("savenum:{}".format(savenum))
-
-        # test_accuracy, test_loss = evaluate(X_test, y_test,ques_test, args.batch_size,test_writer, merged, iternum)
-        # print("Test Accuracy = {:.3f}".format(test_accuracy))
-
-    train_writer.close()
-    valid_writer.close()
-    test_writer.close()
-    saver.save(sess, args.res_root+args.expnum+'/'+'fixq'+args.expnum)
-    logger.info("fixq Model saved")
 
 
-
-#with tf.Session() as sess:
-    #saver.restore(sess, tf.train.latest_checkpoint('../data/Models'))
-
-    #test_accuracy2,test_loss2 = evaluate(X_test, y_test,ques_test,args.batch_size)
-    #print("Test Accuracy = {:.3f}".format(test_accuracy2))
+with tf.Session() as sess:
+#    saver.restore(sess, tf.train.latest_checkpoint('../data/Models'))
+#    file_name2_nouse='../data/expresult/0524/exp05/fixqexp05E34'
+#    restore_path='../data/expresult/0524/exp05/fixqexp05E34'
+#    new_saver = tf.train.import_meta_graph(file_name2_nouse+'.meta')
+#    new_saver.restore(sess, restore_path)
+    
+    file_name2_nouse='../data/expresult/0523/exp09/fixqexp09E1'
+    new_saver = tf.train.import_meta_graph(file_name2_nouse+'.meta')
+    restore_path='../data/expresult/0523/exp09/fixqexp09E1'
+    new_saver.restore(sess, restore_path)
+  
+    test_accuracy2,test_loss2,all_features_test = evaluate(X_test, y_test,qvec_test,args.batch_size,test_writer,merged,0)
+    train_accuracy2,train_loss2,all_features_train = evaluate(X_train, y_train,qvec_train,args.batch_size,train_writer,merged,0)
+    valid_accuracy2,valid_loss2,all_features_valid = evaluate(X_validation,y_validation,qvec_valid,args.batch_size,valid_writer,merged,0)
+    print("Test Accuracy = {:.3f}".format(test_accuracy2))
+    print("Train Accuracy = {:.3f}".format(train_accuracy2))
+    print("Valid Accuracy = {:.3f}".format(valid_accuracy2))
+    print('valid features:',all_features_valid)
+    for item in all_features_valid:
+        print 'item',item
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

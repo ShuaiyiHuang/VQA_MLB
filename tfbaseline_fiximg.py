@@ -25,11 +25,11 @@ parser.add_argument('--projectdp', type=float, default=1.0,
                     help='projection dropout')
 parser.add_argument('--gdp', type=float, default=0.5,
                     help='general dropout')
-parser.add_argument('--dembd', type=int, default=50,
+parser.add_argument('--dembd', type=int, default=100,
                     help='dimension for word embedding')
 parser.add_argument('--dcommon', type=int, default=256,
                     help='q and img projected to the same dimension')
-parser.add_argument('--dq', type=int, default=256,
+parser.add_argument('--dq', type=int, default=512,
                     help='dimension for question feature')
 parser.add_argument('--dimg', type=int, default=192,
                     help='dimension for images CNN feature')
@@ -37,7 +37,7 @@ parser.add_argument('--use-mlb', type=int, default=0,
                     help='0 do not use mlb,1 use mlb')
 parser.add_argument('--max-doclength', type=int, default=7,
                     help='max length for each question')
-parser.add_argument('--epochs', type=int, default=10,
+parser.add_argument('--epochs', type=int, default=200,
                     help='training epochs')
 parser.add_argument('--batch-size', type=int, default=128,
                     help='batch size for training epoch')
@@ -59,12 +59,14 @@ parser.add_argument('--pool-method', type=int, default=0,
                     help='0 concatenate,1 element-wise product')
 parser.add_argument('--use-lenet', type=int, default=0,
                     help='0 cifar network,1 lenet')
-parser.add_argument('--expnum', type=str, default='expdelete',
+parser.add_argument('--expnum', type=str, default='exp03',
                     help='exp number')
-parser.add_argument('--res-root', type=str, default='../data/expresult/0523/',
+parser.add_argument('--res-root', type=str, default='../data/expresult/0524/',
                     help='path for restoring result')
 parser.add_argument('--data-root', type=str, default='../data/shapes_control-3x/',
                     help='path for restoring result')
+parser.add_argument('--use-padding', type=bool, default=False,
+                    help='whether pad images to 32*32')
 
 
 #para for MLB
@@ -116,7 +118,11 @@ logger.addHandler(ch)
 logger.info('\n'+'Starting '+args.expnum+'......')
 logger.info(args)
 
-x = tf.placeholder(tf.float32, (None, 32, 32, args.channel),name='x_img')
+if args.use_padding==True:
+    x = tf.placeholder(tf.float32, (args.batch_size, 32, 32, args.channel),name='x_img')
+else:
+    x = tf.placeholder(tf.float32, (args.batch_size, 30, 30, args.channel),name='x_img')
+    
 ques=tf.placeholder(tf.int32,name='ques')
 y=tf.placeholder(tf.int64,(None),name='y_label')
 keep_prob=tf.placeholder(dtype=tf.float32,name='gdp')
@@ -192,9 +198,12 @@ X_test,y_test,q_test,ques_test,imgvec_test=shuffle(X_test,y_test,q_test,ques_tes
 
 
 #Padding to fit Lenet
-X_train=tflenet.padding(X_train,args.img_size)
-X_validation=tflenet.padding(X_validation,args.img_size)
-X_test=tflenet.padding(X_test,args.img_size)
+if args.use_padding==True:
+    X_train=tflenet.padding(X_train,args.img_size)
+    X_validation=tflenet.padding(X_validation,args.img_size)
+    X_test=tflenet.padding(X_test,args.img_size)
+else:
+    logger.info('no padding')
 
 #LSTM
 embedded_chars=tfembedding.get_embedded_from_wordid(ques,args.batch_size,args.max_doclength,args.dembd)
