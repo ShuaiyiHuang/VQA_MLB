@@ -76,7 +76,7 @@ def restore_variables():
 def inference(images,batch_size):
 
 #  
-  print 'resized images:',images
+  print 'original input images:',images
   """Build the CIFAR-10 model.
 
   Args:
@@ -100,28 +100,18 @@ def inference(images,batch_size):
   sess = tf.get_default_session()
   
   #if use pretrained cifar,resize images
-#  images=tf.image.resize_images(images,[24,24])
-#  new_saver = tf.train.import_meta_graph('../data/Pretrain/cifar10_train/model.ckpt-186329.meta')
-#  new_saver.restore(sess, tf.train.latest_checkpoint('../data/Pretrain/cifar10_train'))
-  
-#  new_saver = tf.train.import_meta_graph('../data/expresult/0523/exp09/fixqexp09E0.meta')
-#  new_saver.restore(sess, tf.train.latest_checkpoint('../data/expresult/0523/exp09'))
+  images=tf.image.resize_images(images,[24,24])
+  print 'images in cifar2:',images
+  new_saver = tf.train.import_meta_graph('../data/Pretrain/cifar10_train/model.ckpt-186329.meta')
+  new_saver.restore(sess, tf.train.latest_checkpoint('../data/Pretrain/cifar10_train'))
 
-  file_name2_nouse='../data/expresult/0523/exp09/fixqexp09E1'
-  new_saver = tf.train.import_meta_graph(file_name2_nouse+'.meta')
-  restore_path='../data/expresult/0523/exp09/fixqexp09E1'
-  new_saver.restore(sess, restore_path)
 
   #achieved valid acccuray 0.699 in 4w ,run tfbaseline_fixq.py
-#  file_name2_nouse='../data/expresult/0524/exp05/fixqexp05E34'
-#  restore_path='../data/expresult/0524/exp05/fixqexp05E34'
-#  new_saver = tf.train.import_meta_graph(file_name2_nouse+'.meta')
-#  new_saver.restore(sess, restore_path)
-  
-#  file_name2_nouse='../data/expresult/0523/exp12/fixqexp12E2'
-#  new_saver = tf.train.import_meta_graph(file_name2_nouse+'.meta')
-#  restore_path='../data/expresult/0523/exp12/fixqexp12E2'
-#  new_saver.restore(sess, restore_path)
+  # file_name2_nouse='../data/expresult/0524/exp05/fixqexp05E34'
+  # restore_path='../data/expresult/0524/exp05/fixqexp05E34'
+  # new_saver = tf.train.import_meta_graph(file_name2_nouse+'.meta')
+  # new_saver.restore(sess, restore_path)
+
   
   graph = tf.get_default_graph()
   w1 = graph.get_tensor_by_name("conv1/weights:0")
@@ -139,7 +129,7 @@ def inference(images,batch_size):
   print type(w1)
   #no need to print,it works
 #  print 'in tfcifar2 restore:',sess.run([w1,b1,w2,b2,w3,b3,w4,b4])
-  print sess.run([w1,b1,w2,b2,w3,b3,w4,b4])
+#   print sess.run([w1,b1,w2,b2,w3,b3,w4,b4])
   
   with tf.variable_scope('conv1') as scope:
     

@@ -5,19 +5,24 @@ import tfcifar2
 import scipy.misc
 import os
 import shutil
-#train_prefix='../../myMLB/data/shapes_control-2x/train.large'
-#val_prefix='../../myMLB/data/shapes_control-2x/val'
-#test_prefix='../../myMLB/data/shapes_control-2x/test'
 
-data_dir = '../../myMLB/data/shapes/cifarfeatures/'
-train_prefix='../../myMLB/data/shapes/train.large'
-val_prefix='../../myMLB/data/shapes/val'
-test_prefix='../../myMLB/data/shapes/test'
+data_dir = '../../myMLB/data/shapes_control-2x/tutorialcifarfeatures/'
+# data_dir = '../../myMLB/data/shapes_control-2x/cifarfeatures/'
+train_prefix='../../myMLB/data/shapes_control-2x/train.large'
+val_prefix='../../myMLB/data/shapes_control-2x/val'
+test_prefix='../../myMLB/data/shapes_control-2x/test'
 
-#data_dir = '../../myMLB/data/shapes_control-3x/cifarfeatures/'
-#train_prefix='../../myMLB/data/shapes_control-3x/train.large'
-#val_prefix='../../myMLB/data/shapes_control-3x/val'
-#test_prefix='../../myMLB/data/shapes_control-3x/test'
+# data_dir = '../../myMLB/data/shapes/tutorialcifarfeatures/'
+# # data_dir = '../../myMLB/data/shapes/cifarfeatures/'
+# train_prefix='../../myMLB/data/shapes/train.large'
+# val_prefix='../../myMLB/data/shapes/val'
+# test_prefix='../../myMLB/data/shapes/test'
+
+# data_dir = '../../myMLB/data/shapes_control-3x/tutorialcifarfeatures/'
+# #data_dir = '../../myMLB/data/shapes_control-3x/cifarfeatures/'
+# train_prefix='../../myMLB/data/shapes_control-3x/train.large'
+# val_prefix='../../myMLB/data/shapes_control-3x/val'
+# test_prefix='../../myMLB/data/shapes_control-3x/test'
 
 
 max_doclength=7

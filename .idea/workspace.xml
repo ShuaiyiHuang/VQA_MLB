@@ -2,10 +2,119 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d161e4ba-acac-4d38-9b02-4c5a0a22dc7b" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tf_gen_imgf.py" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/imdb.test.pkl" afterPath="$PROJECT_DIR$/imdb/imdb.test.pkl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/imdb.train.pkl" afterPath="$PROJECT_DIR$/imdb/imdb.train.pkl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/imdb.valid.pkl" afterPath="$PROJECT_DIR$/imdb/imdb.valid.pkl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum10.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum10.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum15.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum15.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum20.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum20.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum25.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum25.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum30.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum30.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum35.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum35.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum40.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum40.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum45.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum45.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum5.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum5.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum50.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum50.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum55.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum55.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum60.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum60.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum10.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum10.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum15.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum15.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum20.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum20.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum25.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum25.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum30.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum30.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum35.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum35.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum40.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum40.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum45.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum45.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum5.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum5.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum50.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum50.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum55.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum55.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum60.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum60.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum10.mat" afterPath="$PROJECT_DIR$/mattiny/iternum10.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum100.mat" afterPath="$PROJECT_DIR$/mattiny/iternum100.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum110.mat" afterPath="$PROJECT_DIR$/mattiny/iternum110.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum120.mat" afterPath="$PROJECT_DIR$/mattiny/iternum120.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum20.mat" afterPath="$PROJECT_DIR$/mattiny/iternum20.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum30.mat" afterPath="$PROJECT_DIR$/mattiny/iternum30.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum40.mat" afterPath="$PROJECT_DIR$/mattiny/iternum40.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum50.mat" afterPath="$PROJECT_DIR$/mattiny/iternum50.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum60.mat" afterPath="$PROJECT_DIR$/mattiny/iternum60.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum70.mat" afterPath="$PROJECT_DIR$/mattiny/iternum70.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum80.mat" afterPath="$PROJECT_DIR$/mattiny/iternum80.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum90.mat" afterPath="$PROJECT_DIR$/mattiny/iternum90.mat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result-table.odt" afterPath="$PROJECT_DIR$/result-table.odt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result0523.xlsx" afterPath="$PROJECT_DIR$/result0523.xlsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/VQA_MLB.iml" afterPath="$PROJECT_DIR$/.idea/VQA_MLB.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.ipynb_checkpoints/Untitled-checkpoint.ipynb" afterPath="$PROJECT_DIR$/.ipynb_checkpoints/Untitled-checkpoint.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.~lock.result-table.odt#" afterPath="$PROJECT_DIR$/.~lock.result-table.odt#" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.~lock.result0523.xlsx#" afterPath="$PROJECT_DIR$/.~lock.result0523.xlsx#" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/delete.py" afterPath="$PROJECT_DIR$/delete.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb.py" afterPath="$PROJECT_DIR$/imdb.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/.idea/imdb.iml" afterPath="$PROJECT_DIR$/imdb/.idea/imdb.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/.idea/inspectionProfiles/profiles_settings.xml" afterPath="$PROJECT_DIR$/imdb/.idea/inspectionProfiles/profiles_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/.idea/misc.xml" afterPath="$PROJECT_DIR$/imdb/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/.idea/modules.xml" afterPath="$PROJECT_DIR$/imdb/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/.idea/workspace.xml" afterPath="$PROJECT_DIR$/imdb/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/imdb.py" afterPath="$PROJECT_DIR$/imdb/imdb.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/imdbLSTM.py" afterPath="$PROJECT_DIR$/imdb/imdbLSTM.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/imdb_preprocess.py" afterPath="$PROJECT_DIR$/imdb/imdb_preprocess.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/testMLB.py" afterPath="$PROJECT_DIR$/imdb/testMLB.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/testpickle.py" afterPath="$PROJECT_DIR$/imdb/testpickle.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/text.py" afterPath="$PROJECT_DIR$/imdb/text.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfLSTM.py" afterPath="$PROJECT_DIR$/imdb/tfLSTM.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfLSTM_testques.py" afterPath="$PROJECT_DIR$/imdb/tfLSTM_testques.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfargs.py" afterPath="$PROJECT_DIR$/imdb/tfargs.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfbaseline.py" afterPath="$PROJECT_DIR$/imdb/tfbaseline.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfbaseline_MLB.py" afterPath="$PROJECT_DIR$/imdb/tfbaseline_MLB.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfembedding.py" afterPath="$PROJECT_DIR$/imdb/tfembedding.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfimdb_train.py" afterPath="$PROJECT_DIR$/imdb/tfimdb_train.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfimdbloader.py" afterPath="$PROJECT_DIR$/imdb/tfimdbloader.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tflenet-test.py" afterPath="$PROJECT_DIR$/imdb/tflenet-test.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tflenet.py" afterPath="$PROJECT_DIR$/imdb/tflenet.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfloader.py" afterPath="$PROJECT_DIR$/imdb/tfloader.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tflstm_api.py" afterPath="$PROJECT_DIR$/imdb/tflstm_api.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfnet.py" afterPath="$PROJECT_DIR$/imdb/tfnet.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfnetwork.py" afterPath="$PROJECT_DIR$/imdb/tfnetwork.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfsolveglove.py" afterPath="$PROJECT_DIR$/imdb/tfsolveglove.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tftestglove.py" afterPath="$PROJECT_DIR$/imdb/tftestglove.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tokenizer.perl" afterPath="$PROJECT_DIR$/imdb/tokenizer.perl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdbLSTM.py" afterPath="$PROJECT_DIR$/imdbLSTM.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb_preprocess.py" afterPath="$PROJECT_DIR$/imdb_preprocess.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/log_filename.txt" afterPath="$PROJECT_DIR$/log_filename.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testMLB.py" afterPath="$PROJECT_DIR$/testMLB.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testpickle.py" afterPath="$PROJECT_DIR$/testpickle.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/text.py" afterPath="$PROJECT_DIR$/text.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfLSTM.py" afterPath="$PROJECT_DIR$/tfLSTM.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfLSTM_testques.py" afterPath="$PROJECT_DIR$/tfLSTM_testques.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tf_gen_imgf2.py" afterPath="$PROJECT_DIR$/tf_gen_imgf2.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfargs.py" afterPath="$PROJECT_DIR$/tfargs.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfbaseline.py" afterPath="$PROJECT_DIR$/tfbaseline.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfbaseline_MLB.py" afterPath="$PROJECT_DIR$/tfbaseline_MLB.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfbaseline_fiximg.py" afterPath="$PROJECT_DIR$/tfbaseline_fiximg.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfbaseline_fixq.py" afterPath="$PROJECT_DIR$/tfbaseline_fixq.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfbaseline_fixqrestore.py" afterPath="$PROJECT_DIR$/tfbaseline_fixqrestore.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfcifar.py" afterPath="$PROJECT_DIR$/tfcifar.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfcifar2.py" afterPath="$PROJECT_DIR$/tfcifar2.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfembedding.py" afterPath="$PROJECT_DIR$/tfembedding.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfimdb_train.py" afterPath="$PROJECT_DIR$/tfimdb_train.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfimdbloader.py" afterPath="$PROJECT_DIR$/tfimdbloader.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tflenet-test.py" afterPath="$PROJECT_DIR$/tflenet-test.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tflenet.py" afterPath="$PROJECT_DIR$/tflenet.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfloader.py" afterPath="$PROJECT_DIR$/tfloader.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfloader2.py" afterPath="$PROJECT_DIR$/tfloader2.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tflstm_api.py" afterPath="$PROJECT_DIR$/tflstm_api.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfnet.py" afterPath="$PROJECT_DIR$/tfnet.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfnetwork.py" afterPath="$PROJECT_DIR$/tfnetwork.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfrestore.py" afterPath="$PROJECT_DIR$/tfrestore.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfsolveglove.py" afterPath="$PROJECT_DIR$/tfsolveglove.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tftestglove.py" afterPath="$PROJECT_DIR$/tftestglove.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -32,24 +141,34 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="tfbaseline.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="tfbaseline.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tfbaseline.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="223">
-              <caret line="62" column="56" lean-forward="false" selection-start-line="62" selection-start-column="56" selection-end-line="62" selection-end-column="56" />
-              <folding>
-                <element signature="e#0#23#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="1386">
+              <caret line="223" column="0" lean-forward="true" selection-start-line="223" selection-start-column="0" selection-end-line="223" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tfnetwork.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tfnetwork.py">
+      <file leaf-file-name="tfbaseline_fiximgandq.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tfbaseline_fiximgandq.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="88">
-              <caret line="29" column="45" lean-forward="false" selection-start-line="29" selection-start-column="45" selection-end-line="29" selection-end-column="45" />
+            <state relative-caret-position="234">
+              <caret line="13" column="9" lean-forward="true" selection-start-line="13" selection-start-column="9" selection-end-line="13" selection-end-column="9" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tfbaseline_fiximg.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/tfbaseline_fiximg.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="432">
+              <caret line="150" column="0" lean-forward="true" selection-start-line="150" selection-start-column="0" selection-end-line="150" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -79,6 +198,9 @@
       <find>shape</find>
       <find>saver</find>
       <find>q_features</find>
+      <find>qfeatures_prefix</find>
+      <find>qvec_train</find>
+      <find>imgfeature_prefix</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -100,13 +222,16 @@
         <option value="$PROJECT_DIR$/tfargs.py" />
         <option value="$PROJECT_DIR$/tflenet.py" />
         <option value="$PROJECT_DIR$/tfbaseline_MLB.py" />
-        <option value="$PROJECT_DIR$/tfbaseline_fiximg.py" />
         <option value="$PROJECT_DIR$/delete.py" />
         <option value="$PROJECT_DIR$/tfrestore.py" />
         <option value="$PROJECT_DIR$/tfbaseline_fixq.py" />
         <option value="$PROJECT_DIR$/tfcifar.py" />
         <option value="$PROJECT_DIR$/tfnetwork.py" />
         <option value="$PROJECT_DIR$/tfbaseline.py" />
+        <option value="$PROJECT_DIR$/tfcifar2.py" />
+        <option value="$PROJECT_DIR$/tf_gen_imgf2.py" />
+        <option value="$PROJECT_DIR$/tfbaseline_fiximgandq.py" />
+        <option value="$PROJECT_DIR$/tfbaseline_fiximg.py" />
       </list>
     </option>
   </component>
@@ -118,9 +243,9 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="64" />
-    <option name="y" value="-4" />
+    <option name="y" value="-11" />
     <option name="width" value="1857" />
-    <option name="height" value="1085" />
+    <option name="height" value="1212" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -137,6 +262,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -151,8 +278,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -457,16 +582,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="64" y="-4" width="1857" height="1085" extended-state="6" />
+    <frame x="64" y="-11" width="1857" height="1212" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29021558" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2968491" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20354906" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32881" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32881" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.61273485" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.61273485" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4645094" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -517,18 +642,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/tfloader.py</url>
-          <line>188</line>
+          <line>189</line>
           <option name="timeStamp" value="27" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/delete.py</url>
           <line>24</line>
           <option name="timeStamp" value="30" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/tfbaseline_fiximg.py</url>
-          <line>115</line>
-          <option name="timeStamp" value="33" />
         </line-breakpoint>
       </breakpoints>
       <option name="time" value="34" />
@@ -541,40 +661,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/tftestglove.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="552">
-          <caret line="31" column="31" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="50" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tfbaseline.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="966">
-          <caret line="49" column="0" lean-forward="false" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="101" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tfloader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4370">
-          <caret line="190" column="0" lean-forward="false" selection-start-line="190" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#18#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tfembedding.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1886">
-          <caret line="82" column="0" lean-forward="false" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#18#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tfsolveglove.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="368">
@@ -646,9 +732,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2507">
           <caret line="109" column="41" lean-forward="true" selection-start-line="109" selection-start-column="41" selection-end-line="109" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#18#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -716,9 +799,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1458">
           <caret line="82" column="36" lean-forward="false" selection-start-line="82" selection-start-column="36" selection-end-line="82" selection-end-column="36" />
-          <folding>
-            <element signature="e#0#23#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -747,7 +827,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="141">
           <caret line="530" column="0" lean-forward="false" selection-start-line="530" selection-start-column="0" selection-end-line="530" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -755,7 +834,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="141">
           <caret line="98" column="0" lean-forward="false" selection-start-line="98" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -770,7 +848,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3780">
           <caret line="220" column="11" lean-forward="false" selection-start-line="220" selection-start-column="11" selection-end-line="220" selection-end-column="70" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -812,9 +889,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1638">
           <caret line="95" column="0" lean-forward="false" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#18#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -822,7 +896,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -830,7 +903,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="142">
           <caret line="1912" column="4" lean-forward="false" selection-start-line="1912" selection-start-column="4" selection-end-line="1912" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -838,7 +910,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-789">
           <caret line="62" column="19" lean-forward="false" selection-start-line="62" selection-start-column="19" selection-end-line="62" selection-end-column="50" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -846,7 +917,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -854,7 +924,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1908">
           <caret line="106" column="48" lean-forward="true" selection-start-line="106" selection-start-column="48" selection-end-line="106" selection-end-column="48" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -862,7 +931,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1752">
           <caret line="228" column="29" lean-forward="true" selection-start-line="228" selection-start-column="29" selection-end-line="228" selection-end-column="29" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -870,7 +938,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="4045" column="4" lean-forward="false" selection-start-line="4045" selection-start-column="4" selection-end-line="4045" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -878,9 +945,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#13#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -888,17 +952,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="295">
           <caret line="105" column="46" lean-forward="true" selection-start-line="105" selection-start-column="46" selection-end-line="105" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tfbaseline_fiximg.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2142">
-          <caret line="269" column="37" lean-forward="true" selection-start-line="269" selection-start-column="37" selection-end-line="269" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -916,7 +969,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
           <caret line="29" column="26" lean-forward="true" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="26" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -924,9 +976,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="313">
           <caret line="245" column="0" lean-forward="false" selection-start-line="245" selection-start-column="0" selection-end-line="248" selection-end-column="101" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -934,24 +983,67 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="355">
           <caret line="152" column="15" lean-forward="false" selection-start-line="152" selection-start-column="15" selection-end-line="152" selection-end-column="15" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tfnetwork.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="29" column="45" lean-forward="false" selection-start-line="29" selection-start-column="45" selection-end-line="29" selection-end-column="45" />
+        <state relative-caret-position="468">
+          <caret line="28" column="45" lean-forward="false" selection-start-line="28" selection-start-column="45" selection-end-line="28" selection-end-column="45" />
+          <folding>
+            <marker date="1495542331522" expanded="true" signature="567:605" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tf_gen_imgf2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="809">
+          <caret line="98" column="25" lean-forward="false" selection-start-line="98" selection-start-column="25" selection-end-line="98" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#16#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tfcifar2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="78" column="23" lean-forward="false" selection-start-line="78" selection-start-column="23" selection-end-line="78" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#23#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tf_gen_imgf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tfbaseline.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="223">
-          <caret line="62" column="56" lean-forward="false" selection-start-line="62" selection-start-column="56" selection-end-line="62" selection-end-column="56" />
+        <state relative-caret-position="1386">
+          <caret line="223" column="0" lean-forward="true" selection-start-line="223" selection-start-column="0" selection-end-line="223" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tfbaseline_fiximgandq.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="13" column="9" lean-forward="true" selection-start-line="13" selection-start-column="9" selection-end-line="13" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tfbaseline_fiximg.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="150" column="0" lean-forward="true" selection-start-line="150" selection-start-column="0" selection-end-line="150" selection-end-column="0" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>

@@ -59,13 +59,15 @@ parser.add_argument('--pool-method', type=int, default=0,
                     help='0 concatenate,1 element-wise product')
 parser.add_argument('--use-lenet', type=int, default=0,
                     help='0 cifar network,1 lenet')
-parser.add_argument('--expnum', type=str, default='exp03',
+parser.add_argument('--expnum', type=str, default='exp08',
                     help='exp number')
 parser.add_argument('--res-root', type=str, default='../data/expresult/0524/',
                     help='path for restoring result')
 parser.add_argument('--data-root', type=str, default='../data/shapes_control-3x/',
                     help='path for restoring result')
-parser.add_argument('--use-padding', type=bool, default=False,
+parser.add_argument('--imgfeature-prefix', type=str, default='../data/shapes_control-3x/cifarfeatures/',
+                    help='pretrained imgfeature')
+parser.add_argument('--use-padding', type=bool, default=True,
                     help='whether pad images to 32*32')
 
 
@@ -142,7 +144,6 @@ val_prefix=os.path.join(args.data_root,'val')
 test_prefix=os.path.join(args.data_root,'test')
 
 qfeatures_prefix='../data/shapes/'
-imgfeature_prefix='../data/shapes_control-3x/cifarfeatures/'
 
 # train_prefix='../data/shapes_control-2x/train.large'
 # val_prefix='../data/shapes_control-2x/val'
@@ -178,7 +179,7 @@ def load_cifa_feature(data_prefix):
     train=np.load(train_path)
     valid=np.load(valid_path)
     test=np.load(test_path)
-    print 'load cifar features',type(train),train.shape,valid.shape,test.shape
+    print 'load cifar features from',data_prefix,type(train),train.shape,valid.shape,test.shape
     return train,valid,test
 
 tfembedding.embedding_prepare(args.max_doclength,args.vocabs,args.use_glove,args.is_emtrainable,args.dembd)
@@ -189,8 +190,8 @@ X_train,y_train,q_train,ques_train= shapes_data.train.images, shapes_data.train.
 X_validation,y_validation,q_validation,ques_validation= shapes_data.val.images, shapes_data.val.labels, shapes_data.val.queries, shapes_data.val.ques
 X_test,y_test,q_test,ques_test= shapes_data.test.images, shapes_data.test.labels, shapes_data.test.queries, shapes_data.test.ques
 
-qvec_train,qvec_valid,qvec_test=load_feature(qfeatures_prefix)
-imgvec_train,imgvec_valid,imgvec_test=load_cifa_feature(imgfeature_prefix)
+# qvec_train,qvec_valid,qvec_test=load_feature(qfeatures_prefix)
+imgvec_train,imgvec_valid,imgvec_test=load_cifa_feature(args.imgfeature_prefix)
 #shuffle
 X_train,y_train,q_train,ques_train,imgvec_train=shuffle(X_train,y_train,q_train,ques_train,imgvec_train)
 X_validation,y_validation,q_validation,ques_validation,imgvec_valid=shuffle(X_validation,y_validation,q_validation,ques_validation,imgvec_valid)
