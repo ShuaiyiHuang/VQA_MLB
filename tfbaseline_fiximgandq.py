@@ -56,7 +56,7 @@ parser.add_argument('--pool-method', type=int, default=0,
                     help='0 concatenate,1 element-wise product')
 parser.add_argument('--use-lenet', type=int, default=0,
                     help='0 cifar network,1 lenet')
-parser.add_argument('--expnum', type=str, default='exp09',
+parser.add_argument('--expnum', type=str, default='exp10',
                     help='exp number')
 parser.add_argument('--res-root', type=str, default='../data/expresult/0524/',
                     help='path for restoring result')
@@ -66,6 +66,8 @@ parser.add_argument('--use-padding', type=bool, default=True,
                     help='whether pad images to 32*32')
 parser.add_argument('--use-senenc', type=bool, default=True,
                     help='whether use sentence encoding')
+parser.add_argument('--imgfeature-prefix', type=str, default='../data/shapes_control-3x/cifarfeatures',
+                    help='path for pretrained cifar featrues')
 
 # para for MLB
 # grid size s*s
@@ -135,8 +137,8 @@ train_prefix = os.path.join(args.data_root, 'train.large')
 val_prefix = os.path.join(args.data_root, 'val')
 test_prefix = os.path.join(args.data_root, 'test')
 
-qfeatures_prefix = args.data_root
-imgfeature_prefix = '../data/shapes_control-3x/tutorialcifarfeatures/'
+
+# imgfeature_prefix = '../data/shapes_control-3x/tutorialcifarfeatures/'
 
 
 # train_prefix='../data/shapes_control-2x/train.large'
@@ -189,11 +191,11 @@ X_validation, y_validation, q_validation, ques_validation = shapes_data.val.imag
 X_test, y_test, q_test, ques_test = shapes_data.test.images, shapes_data.test.labels, shapes_data.test.queries, shapes_data.test.ques
 
 
-imgvec_train, imgvec_valid, imgvec_test = load_cifa_feature(imgfeature_prefix)
+imgvec_train, imgvec_valid, imgvec_test = load_cifa_feature(args.imgfeature_prefix)
 # shuffle
 if args.use_senenc==True:
     logger.info('shuffle use_senenc:yes,')
-    qvec_train, qvec_valid, qvec_test = load_feature(qfeatures_prefix)
+    qvec_train, qvec_valid, qvec_test = load_feature(args.data_root)
     X_train,y_train,q_train,ques_train,qvec_train=shuffle(X_train,y_train,q_train,ques_train,qvec_train)
     X_validation,y_validation,q_validation,ques_validation,qvec_valid=shuffle(X_validation,y_validation,q_validation,ques_validation,qvec_valid)
     X_test,y_test,q_test,ques_test,qvec_test=shuffle(X_test,y_test,q_test,ques_test,qvec_test)

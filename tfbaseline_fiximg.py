@@ -59,7 +59,7 @@ parser.add_argument('--pool-method', type=int, default=0,
                     help='0 concatenate,1 element-wise product')
 parser.add_argument('--use-lenet', type=int, default=0,
                     help='0 cifar network,1 lenet')
-parser.add_argument('--expnum', type=str, default='exp08',
+parser.add_argument('--expnum', type=str, default='delete',
                     help='exp number')
 parser.add_argument('--res-root', type=str, default='../data/expresult/0524/',
                     help='path for restoring result')
@@ -67,6 +67,8 @@ parser.add_argument('--data-root', type=str, default='../data/shapes_control-3x/
                     help='path for restoring result')
 parser.add_argument('--imgfeature-prefix', type=str, default='../data/shapes_control-3x/cifarfeatures/',
                     help='pretrained imgfeature')
+parser.add_argument('--use-senenc', type=bool, default=False,
+                    help='whether use sentence encoding')
 parser.add_argument('--use-padding', type=bool, default=True,
                     help='whether pad images to 32*32')
 

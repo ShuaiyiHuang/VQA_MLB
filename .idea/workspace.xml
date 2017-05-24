@@ -2,119 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d161e4ba-acac-4d38-9b02-4c5a0a22dc7b" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/tf_gen_imgf.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/imdb.test.pkl" afterPath="$PROJECT_DIR$/imdb/imdb.test.pkl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/imdb.train.pkl" afterPath="$PROJECT_DIR$/imdb/imdb.train.pkl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/imdb.valid.pkl" afterPath="$PROJECT_DIR$/imdb/imdb.valid.pkl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum10.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum10.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum15.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum15.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum20.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum20.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum25.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum25.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum30.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum30.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum35.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum35.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum40.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum40.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum45.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum45.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum5.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum5.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum50.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum50.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum55.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum55.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall-past/iternum60.mat" afterPath="$PROJECT_DIR$/matsmall-past/iternum60.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum10.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum10.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum15.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum15.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum20.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum20.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum25.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum25.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum30.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum30.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum35.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum35.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum40.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum40.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum45.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum45.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum5.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum5.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum50.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum50.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum55.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum55.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matsmall2/iternum60.mat" afterPath="$PROJECT_DIR$/matsmall2/iternum60.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum10.mat" afterPath="$PROJECT_DIR$/mattiny/iternum10.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum100.mat" afterPath="$PROJECT_DIR$/mattiny/iternum100.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum110.mat" afterPath="$PROJECT_DIR$/mattiny/iternum110.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum120.mat" afterPath="$PROJECT_DIR$/mattiny/iternum120.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum20.mat" afterPath="$PROJECT_DIR$/mattiny/iternum20.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum30.mat" afterPath="$PROJECT_DIR$/mattiny/iternum30.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum40.mat" afterPath="$PROJECT_DIR$/mattiny/iternum40.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum50.mat" afterPath="$PROJECT_DIR$/mattiny/iternum50.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum60.mat" afterPath="$PROJECT_DIR$/mattiny/iternum60.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum70.mat" afterPath="$PROJECT_DIR$/mattiny/iternum70.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum80.mat" afterPath="$PROJECT_DIR$/mattiny/iternum80.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mattiny/iternum90.mat" afterPath="$PROJECT_DIR$/mattiny/iternum90.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result-table.odt" afterPath="$PROJECT_DIR$/result-table.odt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result0523.xlsx" afterPath="$PROJECT_DIR$/result0523.xlsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/VQA_MLB.iml" afterPath="$PROJECT_DIR$/.idea/VQA_MLB.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.ipynb_checkpoints/Untitled-checkpoint.ipynb" afterPath="$PROJECT_DIR$/.ipynb_checkpoints/Untitled-checkpoint.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.~lock.result-table.odt#" afterPath="$PROJECT_DIR$/.~lock.result-table.odt#" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.~lock.result0523.xlsx#" afterPath="$PROJECT_DIR$/.~lock.result0523.xlsx#" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/delete.py" afterPath="$PROJECT_DIR$/delete.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb.py" afterPath="$PROJECT_DIR$/imdb.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/.idea/imdb.iml" afterPath="$PROJECT_DIR$/imdb/.idea/imdb.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/.idea/inspectionProfiles/profiles_settings.xml" afterPath="$PROJECT_DIR$/imdb/.idea/inspectionProfiles/profiles_settings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/.idea/misc.xml" afterPath="$PROJECT_DIR$/imdb/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/.idea/modules.xml" afterPath="$PROJECT_DIR$/imdb/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/.idea/workspace.xml" afterPath="$PROJECT_DIR$/imdb/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/imdb.py" afterPath="$PROJECT_DIR$/imdb/imdb.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/imdbLSTM.py" afterPath="$PROJECT_DIR$/imdb/imdbLSTM.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/imdb_preprocess.py" afterPath="$PROJECT_DIR$/imdb/imdb_preprocess.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/testMLB.py" afterPath="$PROJECT_DIR$/imdb/testMLB.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/testpickle.py" afterPath="$PROJECT_DIR$/imdb/testpickle.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/text.py" afterPath="$PROJECT_DIR$/imdb/text.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfLSTM.py" afterPath="$PROJECT_DIR$/imdb/tfLSTM.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfLSTM_testques.py" afterPath="$PROJECT_DIR$/imdb/tfLSTM_testques.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfargs.py" afterPath="$PROJECT_DIR$/imdb/tfargs.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfbaseline.py" afterPath="$PROJECT_DIR$/imdb/tfbaseline.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfbaseline_MLB.py" afterPath="$PROJECT_DIR$/imdb/tfbaseline_MLB.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfembedding.py" afterPath="$PROJECT_DIR$/imdb/tfembedding.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfimdb_train.py" afterPath="$PROJECT_DIR$/imdb/tfimdb_train.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfimdbloader.py" afterPath="$PROJECT_DIR$/imdb/tfimdbloader.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tflenet-test.py" afterPath="$PROJECT_DIR$/imdb/tflenet-test.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tflenet.py" afterPath="$PROJECT_DIR$/imdb/tflenet.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfloader.py" afterPath="$PROJECT_DIR$/imdb/tfloader.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tflstm_api.py" afterPath="$PROJECT_DIR$/imdb/tflstm_api.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfnet.py" afterPath="$PROJECT_DIR$/imdb/tfnet.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfnetwork.py" afterPath="$PROJECT_DIR$/imdb/tfnetwork.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tfsolveglove.py" afterPath="$PROJECT_DIR$/imdb/tfsolveglove.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tftestglove.py" afterPath="$PROJECT_DIR$/imdb/tftestglove.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb/tokenizer.perl" afterPath="$PROJECT_DIR$/imdb/tokenizer.perl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdbLSTM.py" afterPath="$PROJECT_DIR$/imdbLSTM.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imdb_preprocess.py" afterPath="$PROJECT_DIR$/imdb_preprocess.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/log_filename.txt" afterPath="$PROJECT_DIR$/log_filename.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testMLB.py" afterPath="$PROJECT_DIR$/testMLB.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testpickle.py" afterPath="$PROJECT_DIR$/testpickle.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/text.py" afterPath="$PROJECT_DIR$/text.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfLSTM.py" afterPath="$PROJECT_DIR$/tfLSTM.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfLSTM_testques.py" afterPath="$PROJECT_DIR$/tfLSTM_testques.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tf_gen_imgf2.py" afterPath="$PROJECT_DIR$/tf_gen_imgf2.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfargs.py" afterPath="$PROJECT_DIR$/tfargs.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfbaseline.py" afterPath="$PROJECT_DIR$/tfbaseline.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfbaseline_MLB.py" afterPath="$PROJECT_DIR$/tfbaseline_MLB.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfbaseline_fiximg.py" afterPath="$PROJECT_DIR$/tfbaseline_fiximg.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfbaseline_fixq.py" afterPath="$PROJECT_DIR$/tfbaseline_fixq.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfbaseline_fixqrestore.py" afterPath="$PROJECT_DIR$/tfbaseline_fixqrestore.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfcifar.py" afterPath="$PROJECT_DIR$/tfcifar.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfcifar2.py" afterPath="$PROJECT_DIR$/tfcifar2.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfembedding.py" afterPath="$PROJECT_DIR$/tfembedding.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfimdb_train.py" afterPath="$PROJECT_DIR$/tfimdb_train.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfimdbloader.py" afterPath="$PROJECT_DIR$/tfimdbloader.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tflenet-test.py" afterPath="$PROJECT_DIR$/tflenet-test.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tflenet.py" afterPath="$PROJECT_DIR$/tflenet.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfloader.py" afterPath="$PROJECT_DIR$/tfloader.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfloader2.py" afterPath="$PROJECT_DIR$/tfloader2.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tflstm_api.py" afterPath="$PROJECT_DIR$/tflstm_api.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfnet.py" afterPath="$PROJECT_DIR$/tfnet.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfnetwork.py" afterPath="$PROJECT_DIR$/tfnetwork.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfrestore.py" afterPath="$PROJECT_DIR$/tfrestore.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfsolveglove.py" afterPath="$PROJECT_DIR$/tfsolveglove.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tftestglove.py" afterPath="$PROJECT_DIR$/tftestglove.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tfbaseline_fiximgandq.py" afterPath="$PROJECT_DIR$/tfbaseline_fiximgandq.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -133,7 +21,7 @@
     <SUITE FILE_PATH="coverage/VQA_MLB$tfrestore.coverage" NAME="tfrestore Coverage Results" MODIFIED="1495377919793" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/VQA_MLB$tfbaseline_fiximg.coverage" NAME="tfbaseline_fiximg Coverage Results" MODIFIED="1495250465030" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/VQA_MLB$delete.coverage" NAME="delete Coverage Results" MODIFIED="1495329779691" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/VQA_MLB$tfbaseline.coverage" NAME="tfbaseline Coverage Results" MODIFIED="1495452932650" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/VQA_MLB$tfbaseline.coverage" NAME="tfbaseline Coverage Results" MODIFIED="1495596447318" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/VQA_MLB$tfbaseline_MLB.coverage" NAME="tfbaseline_MLB Coverage Results" MODIFIED="1495157428354" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/VQA_MLB$tftestglove.coverage" NAME="tftestglove Coverage Results" MODIFIED="1494511005166" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/VQA_MLB$tfsolveglove.coverage" NAME="tfsolveglove Coverage Results" MODIFIED="1494557649847" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -151,20 +39,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tfbaseline_fiximgandq.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="tfbaseline_fiximgandq.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tfbaseline_fiximgandq.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="13" column="9" lean-forward="true" selection-start-line="13" selection-start-column="9" selection-end-line="13" selection-end-column="9" />
-              <folding />
+            <state relative-caret-position="-198">
+              <caret line="34" column="49" lean-forward="true" selection-start-line="34" selection-start-column="49" selection-end-line="34" selection-end-column="49" />
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tfbaseline_fiximg.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="tfbaseline_fiximg.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tfbaseline_fiximg.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
+            <state relative-caret-position="1620">
               <caret line="150" column="0" lean-forward="true" selection-start-line="150" selection-start-column="0" selection-end-line="150" selection-end-column="0" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
@@ -230,8 +120,8 @@
         <option value="$PROJECT_DIR$/tfbaseline.py" />
         <option value="$PROJECT_DIR$/tfcifar2.py" />
         <option value="$PROJECT_DIR$/tf_gen_imgf2.py" />
-        <option value="$PROJECT_DIR$/tfbaseline_fiximgandq.py" />
         <option value="$PROJECT_DIR$/tfbaseline_fiximg.py" />
+        <option value="$PROJECT_DIR$/tfbaseline_fiximgandq.py" />
       </list>
     </option>
   </component>
@@ -591,7 +481,7 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32881" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32881" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.61273485" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5166976" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4645094" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -1032,18 +922,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tfbaseline_fiximgandq.py">
+    <entry file="file://$PROJECT_DIR$/tfbaseline_fiximg.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="13" column="9" lean-forward="true" selection-start-line="13" selection-start-column="9" selection-end-line="13" selection-end-column="9" />
-          <folding />
+        <state relative-caret-position="1620">
+          <caret line="150" column="0" lean-forward="true" selection-start-line="150" selection-start-column="0" selection-end-line="150" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tfbaseline_fiximg.py">
+    <entry file="file://$PROJECT_DIR$/tfbaseline_fiximgandq.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="150" column="0" lean-forward="true" selection-start-line="150" selection-start-column="0" selection-end-line="150" selection-end-column="0" />
+        <state relative-caret-position="-198">
+          <caret line="34" column="49" lean-forward="true" selection-start-line="34" selection-start-column="49" selection-end-line="34" selection-end-column="49" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>

@@ -1,0 +1,23 @@
+exp10 python tfbaseline_fiximg.py  --data-root='../data/shapes_control-3x/' --imgfeature-prefix='../data/shapes_control-3x/cifarfeatures/' --expnum='exp10' --dembd=100 --dq=256 --use-senenc=False
+exp11 python tfbaseline_fiximg.py  --data-root='../data/shapes/' --imgfeature-prefix='../data/shapes/cifarfeatures/' --expnum='exp11' --dembd=100 --dq=512 --use-senenc=False
+exp12 python tfbaseline_fiximg.py  --data-root='../data/shapes/' --imgfeature-prefix='../data/shapes/cifarfeatures/' --expnum='exp12' --dembd=100 --dq=256 --use-senenc=False
+
+Glove 50 dim
+exp13 python tfbaseline_fiximg.py  --data-root='../data/shapes/' --imgfeature-prefix='../data/shapes/cifarfeatures/' --expnum='exp13' --dembd=50 --dq=256 --use-senenc=False
+exp14 python tfbaseline_fiximg.py  --data-root='../data/shapes/' --imgfeature-prefix='../data/shapes/cifarfeatures/' --expnum='exp14' --dembd=50 --dq=512 --use-senenc=False
+exp15 python tfbaseline_fiximg.py  --data-root='../data/shapes_control-3x/' --imgfeature-prefix='../data/shapes_control-3x/cifarfeatures/' --expnum='exp15' --dembd=50 --dq=256 --use-senenc=False
+exp16 python tfbaseline_fiximg.py  --data-root='../data/shapes_control-3x/' --imgfeature-prefix='../data/shapes_control-3x/cifarfeatures/' --expnum='exp16' --dembd=50 --dq=512 --use-senenc=False
+
+Test multiply
+exp17 python tfbaseline_fiximg.py  --data-root='../data/shapes/' --imgfeature-prefix='../data/shapes/cifarfeatures/' --expnum='exp17' --dembd=50 --dq=256 --use-senenc=False --pool-method=1
+exp18 python tfbaseline_fiximg.py  --data-root='../data/shapes/' --imgfeature-prefix='../data/shapes/cifarfeatures/' --expnum='exp18' --dembd=50 --dq=512 --use-senenc=False --pool-method=1
+exp19 python tfbaseline_fiximg.py  --data-root='../data/shapes_control-3x/' --imgfeature-prefix='../data/shapes_control-3x/cifarfeatures/' --expnum='exp19' --dembd=50 --dq=256 --use-senenc=False --pool-method=1
+exp20 python tfbaseline_fiximg.py  --data-root='../data/shapes_control-3x/' --imgfeature-prefix='../data/shapes_control-3x/cifarfeatures/' --expnum='exp20' --dembd=50 --dq=512 --use-senenc=False --pool-method=1
+
+#baseline CNN+RNN+no dropout
+python tfbaseline_restore.py --data-root='../data/shapes_control-3x/' --gdp=1.0 --expnum='exptest' --dembd=50 --dq=256 --use-lenet=0 --pool-method=0
+
+python tfbaseline_restore.py --data-root='../data/shapes_control-2x/' --gdp=1.0 --expnum='exptest' --dembd=50 --dq=256 --use-lenet=0 --pool-method=0
+python tfbaseline_restore.py --data-root='../data/shapes/' --gdp=1.0 --expnum='exptest' --dembd=50 --dq=256 --use-lenet=0 --pool-method=0
+
+python tfbaseline_restore.py --data-root='../../nmn2/data/shapes/' --gdp=1.0 --expnum='exp22' --dembd=50 --dq=256 --use-lenet=0 --pool-method=0

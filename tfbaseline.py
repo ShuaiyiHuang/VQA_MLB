@@ -69,6 +69,8 @@ parser.add_argument('--data-root', type=str, default='../data/shapes_control-3x'
                     help='path for restoring result')
 parser.add_argument('--use-senenc', type=bool, default=True,
                     help='whether use sentence encoding')
+parser.add_argument('--glimpse', type=int, default=2,
+                    help='number of glimpse')
 
 
 
@@ -78,7 +80,7 @@ s=5
 #feature vector length
 M=16
 #number of glimpse
-G=2
+
 
 args=parser.parse_args()
 
@@ -213,7 +215,7 @@ if args.use_mlb==0:
 if args.use_mlb==1:
     with tf.name_scope('Combine-1'):
         logger.info('Combine-1')
-        logits = testMLB.MLB_predict(img_features, q_features, s, args.dq, M, args.dcommon, G, args.batch_size, args.n_class)
+        logits = testMLB.MLB_predict(img_features, q_features, s, args.dq, M, args.dcommon, args.glimpse, args.batch_size, args.n_class)
 
 # logits=tfnetwork.FullyConnected(q_features,tfargs.hidden_size,tfargs.n_classes)
 cross_entropy=tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y,logits=logits)

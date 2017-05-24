@@ -100,33 +100,33 @@ def inference(images,batch_size):
   sess = tf.get_default_session()
   
   #if use pretrained cifar,resize images
-  images=tf.image.resize_images(images,[24,24])
-  print 'images in cifar2:',images
-  new_saver = tf.train.import_meta_graph('../data/Pretrain/cifar10_train/model.ckpt-186329.meta')
-  new_saver.restore(sess, tf.train.latest_checkpoint('../data/Pretrain/cifar10_train'))
+#  images=tf.image.resize_images(images,[24,24])
+#  print 'images in cifar2:',images
+#  new_saver = tf.train.import_meta_graph('../data/Pretrain/cifar10_train/model.ckpt-186329.meta')
+#  new_saver.restore(sess, tf.train.latest_checkpoint('../data/Pretrain/cifar10_train'))
 
 
   #achieved valid acccuray 0.699 in 4w ,run tfbaseline_fixq.py
-  # file_name2_nouse='../data/expresult/0524/exp05/fixqexp05E34'
-  # restore_path='../data/expresult/0524/exp05/fixqexp05E34'
-  # new_saver = tf.train.import_meta_graph(file_name2_nouse+'.meta')
-  # new_saver.restore(sess, restore_path)
+  file_name2_nouse='../data/expresult/0524/exp05/fixqexp05E34'
+  restore_path='../data/expresult/0524/exp05/fixqexp05E34'
+  new_saver = tf.train.import_meta_graph(file_name2_nouse+'.meta')
+  new_saver.restore(sess, restore_path)
 
-  
-  graph = tf.get_default_graph()
-  w1 = graph.get_tensor_by_name("conv1/weights:0")
-  b1=graph.get_tensor_by_name("conv1/biases:0")
-  w2 = graph.get_tensor_by_name("conv2/weights:0")
-  b2=graph.get_tensor_by_name("conv2/biases:0")
-  w3=graph.get_tensor_by_name("local3/weights:0")
-  b3=graph.get_tensor_by_name("local3/biases:0")
-  w4=graph.get_tensor_by_name("local4/weights:0")
-  b4=graph.get_tensor_by_name("local4/biases:0")
-  print 'w1:',w1,'b1:',b1
-  print 'w2',w2,'b2',b2
-  print 'w3',w3,'b3',b3
-  print 'w4',w4,'b4',b4
-  print type(w1)
+  with tf.name_scope('inferencestart'):
+      graph = tf.get_default_graph()
+      w1 = graph.get_tensor_by_name("conv1/weights:0")
+      b1=graph.get_tensor_by_name("conv1/biases:0")
+      w2 = graph.get_tensor_by_name("conv2/weights:0")
+      b2=graph.get_tensor_by_name("conv2/biases:0")
+      w3=graph.get_tensor_by_name("local3/weights:0")
+      b3=graph.get_tensor_by_name("local3/biases:0")
+      w4=graph.get_tensor_by_name("local4/weights:0")
+      b4=graph.get_tensor_by_name("local4/biases:0")
+      print 'w1:',w1,'b1:',b1
+      print 'w2',w2,'b2',b2
+      print 'w3',w3,'b3',b3
+      print 'w4',w4,'b4',b4
+      print type(w1)
   #no need to print,it works
 #  print 'in tfcifar2 restore:',sess.run([w1,b1,w2,b2,w3,b3,w4,b4])
 #   print sess.run([w1,b1,w2,b2,w3,b3,w4,b4])
