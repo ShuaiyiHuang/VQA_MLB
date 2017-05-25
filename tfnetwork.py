@@ -40,8 +40,10 @@ def Combine(img_features, q_features,dimg,dq,dcommon,pool_method,keep_prob):#???
             fc_w = tf.Variable(tf.truncated_normal(shape=(dimg, dcommon), mean=0, stddev=1),name='weights')
             fc_b = tf.Variable(tf.zeros(dcommon),name='biases')
             fc = tf.matmul(img_features, fc_w) + fc_b
-            fc = tf.nn.relu(fc)
-            fc_drop = tf.nn.dropout(fc, keep_prob=keep_prob)
+#            fc = tf.nn.relu(fc)
+#            fc_drop = tf.nn.dropout(fc, keep_prob=keep_prob)
+            fc=tf.nn.tanh(fc)
+            fc_drop=tf.nn.dropout(fc,keep_prob=keep_prob)
             img_features_dcommon=fc_drop
     #project qfeatures from dq to dcommon
     q_features_dcommon=q_features
@@ -52,8 +54,10 @@ def Combine(img_features, q_features,dimg,dq,dcommon,pool_method,keep_prob):#???
             projectq_w = tf.Variable(tf.truncated_normal(shape=(dq, dcommon), mean=0, stddev=1),name='weights')
             projectq_b = tf.Variable(tf.zeros(dcommon),name='biases')
             q_fc = tf.matmul(q_features, projectq_w) + projectq_b
-            q_relu = tf.nn.relu(q_fc)
-            q_drop = tf.nn.dropout(q_relu, keep_prob=keep_prob)
+#            q_relu = tf.nn.relu(q_fc)
+#            q_drop = tf.nn.dropout(q_relu, keep_prob=keep_prob)
+            q_tanh=tf.nn.tanh(q_fc)
+            q_drop=tf.nn.dropout(q_tanh,keep_prob=keep_prob)
             q_features_dcommon=q_drop
     with tf.name_scope('mix'):
         if pool_method==0:

@@ -207,7 +207,8 @@ if args.use_mlb==1:
 # logits=tfnetwork.FullyConnected(q_features,tfargs.hidden_size,tfargs.n_classes)
 cross_entropy=tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y,logits=logits)
 loss_operation = tf.reduce_mean(cross_entropy)
-optimizer = tf.train.AdamOptimizer(learning_rate =args.lr)
+# optimizer = tf.train.AdamOptimizer(learning_rate =args.lr)
+optimizer = tf.train.RMSPropOptimizer(learning_rate =args.lr)
 training_operation = optimizer.minimize(loss_operation)
 argmax_logits=tf.argmax(logits, 1)
 
@@ -313,10 +314,10 @@ with sess.as_default():
             saver.save(sess, args.res_root+args.expnum+'/'+'fixq'+args.expnum+'E'+str(i))
             savenum+=1
         logger.info("Validation Accuracy = {:.3f} , loss = {:.3f} ".format(val_accuracy,val_loss))
-        logger.info("savenum:{}".format(savenum))
 
-        # test_accuracy, test_loss = evaluate(X_test, y_test,ques_test, args.batch_size,test_writer, merged, iternum)
-        # print("Test Accuracy = {:.3f}".format(test_accuracy))
+        test_accuracy, test_loss = evaluate(X_test, y_test,qvec_test, args.batch_size,test_writer, merged, iternum)
+        logger.info("Test Accuracy = {:.3f},loss={:.3f}".format(test_accuracy,test_loss))
+        logger.info("savenum:{}".format(savenum))
 
     train_writer.close()
     valid_writer.close()

@@ -21,3 +21,13 @@ python tfbaseline_restore.py --data-root='../data/shapes_control-2x/' --gdp=1.0 
 python tfbaseline_restore.py --data-root='../data/shapes/' --gdp=1.0 --expnum='exptest' --dembd=50 --dq=256 --use-lenet=0 --pool-method=0
 
 python tfbaseline_restore.py --data-root='../../nmn2/data/shapes/' --gdp=1.0 --expnum='exp22' --dembd=50 --dq=256 --use-lenet=0 --pool-method=0
+
+#Script 0524
+python tfbaseline.py --data-root='../data/shapes_control-3x/' --gdp 1.0 --projectdp 1.0 --expnum 'exp01' --res-root '../data/expresult/0525/' --dembd 50 --dp 256 --use-lenet 0 --pool-method 0 --use-senenc False
+
+exp01 python tfbaseline_restore.py --data-root='../data/shapes_control-3x/' --res-root='../data/expresult/0525/' --gdp=1.0 --projectdp=1.0 --expnum='exp01' --dembd=50 --dq=256 --use-lenet=0 --pool-method=0
+exp02 python tfbaseline_restore.py --data-root='../data/shapes/' --res-root='../data/expresult/0525/' --gdp=1.0 --projectdp=1.0 --expnum='exp02' --dembd=50 --dq=256 --use-lenet=0 --pool-method=0 --epochs=200
+exp03 python tfbaseline_fixq.py --data-root='../data/shapes_control-3x/' --res-root='../data/expresult/0525/' --gdp=0.5 --projectdp=1.0 --lr=0.001 --expnum='exp03' --dembd=50 --dq=4800 --use-lenet=0 --pool-method=0 --epochs=200 
+#change to tanh in projection.Using rsmprop optimizer
+exp04 python tfbaseline_fixq.py --data-root='../data/shapes_control-3x/' --res-root='../data/expresult/0525/' --gdp=0.5 --projectdp=1.0 --lr=0.0001 --expnum='exp04' --dembd=50 --dq=4800 --use-lenet=0 --pool-method=0 --epochs=200
+exp05 python tfbaseline_fixq.py --data-root='../data/shapes_control-3x/' --res-root='../data/expresult/0525/' --gdp=0.5 --projectdp=1.0 --lr=0.0001 --expnum='exp05' --dembd=50 --dq=4800 --use-lenet=0 --pool-method=0 --epochs=200 --batch-size 64

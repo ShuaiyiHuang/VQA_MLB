@@ -29,7 +29,7 @@ parser.add_argument('--dembd', type=int, default=50,
                     help='dimension for word embedding')
 parser.add_argument('--dcommon', type=int, default=256,
                     help='q and img projected to the same dimension')
-parser.add_argument('--dq', type=int, default=4800,
+parser.add_argument('--dq', type=int, default=256,
                     help='dimension for question feature')
 parser.add_argument('--dimg', type=int, default=192,
                     help='dimension for images CNN feature')
@@ -37,7 +37,7 @@ parser.add_argument('--use-mlb', type=int, default=0,
                     help='0 do not use mlb,1 use mlb')
 parser.add_argument('--max-doclength', type=int, default=7,
                     help='max length for each question')
-parser.add_argument('--epochs', type=int, default=20,
+parser.add_argument('--epochs', type=int, default=150,
                     help='training epochs')
 parser.add_argument('--batch-size', type=int, default=128,
                     help='batch size for training epoch')
@@ -55,13 +55,11 @@ parser.add_argument('--img-size', type=int, default=30,
                     help='size of input images')
 parser.add_argument('--channel', type=int, default=3,
                     help='channel for input images')
-parser.add_argument('--log-dir', type=str, default='../data/tensorboard',
-                    help='directory for tensorboard')
 parser.add_argument('--pool-method', type=int, default=0,
                     help='0 concatenate,1 element-wise product')
 parser.add_argument('--use-lenet', type=int, default=0,
                     help='0 cifar network,1 lenet')
-parser.add_argument('--expnum', type=str, default='exp05',
+parser.add_argument('--expnum', type=str, default='exp',
                     help='exp number')
 parser.add_argument('--res-root', type=str, default='../data/expresult/0523/',
                     help='path for restoring result')
